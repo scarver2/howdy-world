@@ -1,4 +1,6 @@
-# howdy-world
+![Howdy World](https://raw.githubusercontent.com/scarver2/howdy-world/main/nginx/www/howdy-world.png)
+
+# Howdy World
 
 Howdy World is a web server demonstration of many software languages and frameworks. It uses NGINX as a reverse-proxy and Docker for deployment. It's *Hello World* Texas-style!
 
@@ -11,6 +13,6 @@ docker-compose up --build
 open http://localhost
 ```
 
-![Made in Texas](https://www.texasembroideryranch.com/images/Made-in-Texas-white-50h.png)
-
 &copy;2025 Stan Carver II
+
+![Made in Texas](https://raw.githubusercontent.com/scarver2/howdy-world/main/nginx/www/made-in-texas.png)
