@@ -1,0 +1,18 @@
+services:
+  nginx: # e.g. http://localhost/
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/www:/usr/share/nginx/html:ro
+    depends_on:
+      - ruby
+
+  ruby: # e.g. http://localhost/ruby
+    build: ./ruby
+    container_name: ruby-app
+    expose:
+      - "3000" # Ruby HTTP server listens on 3000
