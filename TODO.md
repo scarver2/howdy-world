@@ -46,4 +46,4 @@
 
 ### NGINX
 
-- [ ] Reverse Proxy
+- [x] Reverse Proxy
