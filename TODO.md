@@ -37,7 +37,7 @@
   - [ ] Jekyll
   - [ ] Middleman
   - [ ] Rack
-  - [ ] Rails
+  - [x] Rails
   - [ ] Sinatra
   - [x] WEBrick
 - [ ] Rust

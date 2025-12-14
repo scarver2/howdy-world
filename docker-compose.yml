@@ -11,6 +11,7 @@ services:
       - ./nginx/www:/usr/share/nginx/html:ro
     depends_on:
       - ruby
+      - ruby-on-rails
 
   ruby:
     # e.g. http://localhost/ruby
@@ -18,3 +19,9 @@ services:
     container_name: ruby-app
     expose:
       - "3000" # Ruby HTTP server listens on this port
+  ruby-on-rails:
+    # e.g. http://localhost/ruby-on-rails
+    build: ./ruby-on-rails
+    container_name: ruby-on-rails-app
+    expose:
+      - "3000" # Ruby on Rails HTTP server listens on 3000

@@ -10,6 +10,5 @@ COPY howdy.rb /app/howdy.rb
 ENV PORT=3000
 
 EXPOSE $PORT
-# EXPOSE 3000
 
 CMD ["ruby", "howdy.rb"]
