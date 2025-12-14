@@ -1,5 +1,6 @@
 services:
-  nginx: # e.g. http://localhost/
+  nginx:
+    # e.g. http://localhost/
     image: nginx:alpine
     container_name: nginx
     ports:
@@ -11,8 +12,9 @@ services:
     depends_on:
       - ruby
 
-  ruby: # e.g. http://localhost/ruby
+  ruby:
+    # e.g. http://localhost/ruby
     build: ./ruby
     container_name: ruby-app
     expose:
-      - "3000" # Ruby HTTP server listens on 3000
+      - "3000" # Ruby HTTP server listens on this port

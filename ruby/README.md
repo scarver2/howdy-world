@@ -10,7 +10,7 @@ brew install ruby
 
 ```
 docker build --no-cache -t howdy-ruby .
-docker run --rm -p 3000:3000 howdy-ruby
+docker run --rm -p 3000:80 howdy-ruby
 ```
 
 ## Execution

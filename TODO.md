@@ -1,6 +1,6 @@
 # TODO List for Howdy World
 
-### Master Control
+### Master Control Builder
 
 - [ ] docker-compose.yml
 - [ ] Write script to build docker-compose.yml
@@ -32,13 +32,14 @@
   - [ ] Flask
   - [ ] FastAPI
   - [ ] Django
-- [ ] Ruby
+- [x] Ruby
   - [ ] Cuba
   - [ ] Jekyll
   - [ ] Middleman
   - [ ] Rack
-  - [ ] Sinatra
   - [ ] Rails
+  - [ ] Sinatra
+  - [x] WEBrick
 - [ ] Rust
 - [ ] Shell
 - [ ] Swift
@@ -47,3 +48,5 @@
 ### NGINX
 
 - [x] Reverse Proxy
+- [x] index catalog of available applications
+- [x] place available applications in conf.d
