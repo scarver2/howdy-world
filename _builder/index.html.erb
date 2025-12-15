@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Available Applications</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 40px;
+      background: #f7f7f7;
+    }
+    h1 {
+      color: #333;
+    }
+    .app-list a {
+      display: block;
+      padding: 10px 0;
+      text-decoration: none;
+      font-size: 1.2em;
+      color: #0645AD;
+    }
+    .app-list a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Available Applications</h1>
+  <div class="app-list">
+    <% languages.each do |lang| %>
+      <a href="/<%= lang[:name] %>/"><%= lang[:name].capitalize %></a>
+    <% end %>
+  </div>
+</body>
+</html>

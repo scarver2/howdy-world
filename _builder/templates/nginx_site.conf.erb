@@ -1,0 +1,52 @@
+# # Auto-generated NGINX config for <%= name %>
+# # Service type: <%= service_type %>
+# # Internal app port: <%= port %>
+
+# TODO
+# <% if service_type == "fastcgi" %>
+# server {
+#     listen 80;
+#     server_name _;
+
+#     # Example URL: http://localhost/<%= name %>/script.cgi
+#     location /<%= name %>/ {
+#         include fastcgi_params;
+#         # Adjust socket or host:port to match your FastCGI handler
+#         fastcgi_pass unix:/run/<%= name %>.sock;
+#         fastcgi_param SCRIPT_FILENAME /var/www/<%= name %>$fastcgi_script_name;
+#     }
+# }
+# <% else %>
+# upstream <%= name %>_app {
+#     # Match the docker-compose service/container name and internal port
+#     server <%= name %>-app:<%= port %>;
+# }
+
+# server {
+#     listen 80;
+#     server_name _;
+
+#     # Example URL: http://localhost/<%= name %>/
+#     location /<%= name %>/ {
+#         proxy_pass http://<%= name %>_app/;
+#         proxy_set_header Host $host;
+#         proxy_set_header X-Real-IP $remote_addr;
+#         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+#         proxy_set_header X-Forwarded-Proto $scheme;
+#     }
+# }
+# <% end %>
+
+server {
+    listen 80 default_server;
+    server_name _;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location = / {
+        try_files /index.html =404;
+    }
+
+    include /etc/nginx/conf.d/*.conf;
+}

@@ -1,0 +1,28 @@
+# Auto-generated Dockerfile for <%= name.capitalize %>
+# Service type: <%= service_type %>
+# Expected app port (inside container): <%= port %>
+#
+# TODO:
+#   - Replace this scaffold with a real build/run recipe
+#   - Ensure your app listens on $PORT or <%= port %>
+#
+# Example (pseudo):
+#   COPY . /app
+#   WORKDIR /app
+#   RUN <build commands>
+#   EXPOSE <%= port %>
+#   CMD ["sh", "-c", "./your_server --port <%= port %>"]
+#
+FROM alpine:latest
+
+WORKDIR /app
+COPY . /app
+
+ENV PORT=<%= port %>
+
+# Expose the internal app port
+EXPOSE <%= port %>
+
+# Placeholder: keeps container running; replace with real server command
+CMD ["sh", "-c", "echo 'Container for <%= name %> (type=<%= service_type %>) listening on port $PORT - implement me!' && sleep infinity"]
+

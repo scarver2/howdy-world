@@ -1,0 +1,74 @@
+# This is an example of the end state of docker-compose.yml
+# TODO: This config file will be built using a CSV and builder script
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "8080:80" # e.g. http://localhost:8080/fortran
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - ada
+      - fortran
+      - go
+      - java
+      - lisp
+      - odin
+      - perl
+      - rust
+      - zig
+
+  ada:
+    build: ./ada
+    container_name: ada-app
+    expose:
+      - "8006" # Ada HTTP server listens on 8006
+
+  fortran:
+    build: ./fortran
+    container_name: fortran-app
+    expose:
+      - "8008" # Fortran HTTP server listens on 8008
+
+  go:
+    build: ./go
+    container_name: go-app
+    expose:
+      - "8002" # Go HTTP server listens on 8002
+
+  java:
+    build: ./java
+    container_name: java-app
+    expose:
+      - "8009" # Java HTTP server listens on 8009
+
+  lisp:
+    build: ./lisp
+    container_name: lisp-app
+    expose:
+      - "8007" # Lisp HTTP server listens on 8007
+
+  odin:
+    build: ./odin
+    container_name: odin-app
+    expose:
+      - "8003" # Odin HTTP server listens on 8003
+
+  perl:
+    build: ./perl
+    container_name: perl-app
+    expose:
+      - "8005" # Perl HTTP server listens on 8005
+
+  rust:
+    build: ./rust
+    container_name: rust-app
+    expose:
+      - "8001" # Rust HTTP server listens on 8001 inside container
+
+  zig:
+    build: ./zig
+    container_name: zig-app
+    expose:
+      - "8004" # Zig HTTP server listens on 8004

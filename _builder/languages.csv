@@ -1,0 +1,6 @@
+language,service_type,port,docker_template
+java,proxy,8009,java
+go,proxy,8002,go
+rust,proxy,8001,rust
+fortran,proxy,8008,generic
+perl,fastcgi,8005,generic
