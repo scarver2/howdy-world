@@ -16,7 +16,11 @@
       color: #333;
     }
 
-    .app-list a {
+    ul {
+      list-style-type: none;
+    }
+
+    ul a {
       display: block;
       padding: 10px 0;
       text-decoration: none;
@@ -24,27 +28,26 @@
       color: #0645AD;
     }
 
-    .app-list a:hover {
+    ul a:hover {
       text-decoration: underline;
     }
   </style>
 </head>
 
 <body>
-  <img src="howdy-world.png" alt="Howdy World Cowboy" />
+  <img src="/howdy-world.png" alt="Howdy World Cowboy" />
   <h1>Howdy World</h1>
-  <p>It's Hello World, Texas-style!</p>
-  <h2>Available Applications</h2>
-  <div class="app-list">
-    <ul>
-      <li><a href="./ruby">Ruby</a></li>
-      <li><a href="./ruby-on-rails">Ruby on Rails</a></li>
-    </ul>
-  </div>
+  <h2>It's Hello World, <em>Texas-style!</em></h2>
+  <h3>Languages and Frameworks</h3>
+  <p>Click on any of the links below to see a demo of that language or framework.</p>
+  <ul>
+    <li><a href="/ruby/">Ruby</a></li>
+    <li><a href="/ruby-on-rails/">Ruby on Rails</a></li>
+  </ul>
 
   <footer>
     <p>&copy;2025 Stan Carver II</p>
-    <img src="made-in-texas.png" alt="Made in Texas" />
+    <img src="/made-in-texas.png" alt="Made in Texas" />
   </footer>
 </body>
 
