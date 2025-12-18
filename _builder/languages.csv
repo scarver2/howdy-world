@@ -5,7 +5,7 @@ ALGOL,,compiled,nonserviceable,,generic,no,language,academic,none,,Legacy or nic
 Algol 68,,compiled,nonserviceable,,generic,no,language,academic,none,https://algol68-lang.org/,Legacy or niche; limited tooling
 APL,,compiled,proxy,,generic,no,language,academic,none,https://aplwiki.com,
 AWK,,scripting,fastcgi,,generic,no,language,unix,none,https://www.gnu.org/software/gawk/,AWK script via CGI/FastCGI
-Bash,,scripting,fastcgi,,generic,no,language,unix,none,https://www.gnu.org/software/bash/,Shell script via CGI/FastCGI
+Bash,,scripting,fastcgi,8081,generic,yes,language,unix,none,https://www.gnu.org/software/bash/,Shell script via CGI/FastCGI
 Boo,,compiled,nonserviceable,,generic,no,language,dotnet,none,https://github.com/boo-lang/boo,Unmaintained
 C,,compiled,proxy,,generic,no,language,native,none,https://en.cppreference.com/w/c,
 C#,,vm,proxy,,generic,no,language,dotnet,dotnet,https://learn.microsoft.com/dotnet/csharp/,

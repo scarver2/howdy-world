@@ -23,6 +23,25 @@ module HowdyBuilder
       b
     end
 
+    # Returns an array of hashes so HTML can render cleanly:
+    # [{ key: "family", value: "jvm" }, ...]
+    def badge_pairs_for(svc)
+      pairs = []
+      pairs << { key: 'family', value: svc[:language_family] } if svc[:language_family].present?
+      pairs << { key: 'category', value: svc[:category] } if svc[:category].present?
+      pairs << { key: 'service', value: svc[:service_type] } if svc[:service_type].present?
+      pairs << { key: 'runtime', value: svc[:runtime_dependency] } if svc[:runtime_dependency].present?
+      pairs << { key: 'active',  value: (svc[:active] ? 'yes' : 'no') }
+      pairs
+    end
+
+    # Render badges as HTML spans. Keep this tiny and style via CSS.
+    def html_badges(svc)
+      badge_pairs_for(svc).map do |p|
+        %(<span class="badge badge-#{p[:key]}">#{p[:key]}:#{p[:value]}</span>)
+      end.join(' ')
+    end
+
     # Markdown badge rendering (simple bracketed tags).
     # Example: `[family:jvm] [service:proxy]`
     def markdown_badges(svc)

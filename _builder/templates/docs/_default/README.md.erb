@@ -1,0 +1,35 @@
+# <%= display_name %>
+
+<%= HowdyBuilder::Badges.markdown_badges(self) %>
+
+<% if url.present? %>
+**Primary URL:** <%= url %>
+<% end %>
+
+## Local endpoint
+
+<% if active %>
+- <%= root_url %>/<%= slug %>/
+<% else %>
+- Not active in this build (`active=no`)
+<% end %>
+
+## Notes
+
+<% if notes.present? %>
+- <%= notes %>
+<% else %>
+- (No notes provided.)
+<% end %>
+
+## Implementation
+
+- Slug: `<%= slug %>`
+- Service: `<%= service_name %>`
+<% if port.present? %>
+- Port: `<%= port %>`
+<% end %>
+<% if docker_template.present? %>
+- Docker template: `<%= docker_template %>`
+<% end %>
+
