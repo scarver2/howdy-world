@@ -1,0 +1,23 @@
+# Howdy World Docs
+
+Generated from `languages.csv`. Grouped by **language_family → category**.
+
+<% grouped_by_family.each do |family, categories| %>
+## <%= family %>
+
+<% categories.each do |category, services| %>
+### <%= category %>
+
+<% services.each do |svc| %>
+- **<%= svc[:display_name] %>** <%= HowdyBuilder::Badges.markdown_badges(svc) %>
+  - Docs: `docs/<%= svc[:slug] %>/README.md`
+  <% if svc[:active] %>
+  - Endpoint: <%= root_url %>/<%= svc[:slug] %>/
+  <% end %>
+  <% if svc[:url].present? %>
+  - Upstream: <%= svc[:url] %>
+  <% end %>
+<% end %>
+
+<% end %>
+<% end %>
