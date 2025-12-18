@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require_relative "spec_helper"
+require_relative 'spec_helper'
 
-RSpec.describe "Howdy World endpoints" do
-  it "serves the dashboard at /" do
-    res = http_get("/")
+RSpec.describe 'Howdy World endpoints' do
+  it 'serves the dashboard at /' do
+    res = http_get('/')
     expect(res.code.to_i).to eq(200)
-    expect(res.body).to include("Howdy World")
+    expect(res.body).to include('Howdy World')
   end
 
   ACTIVE_WEB.each do |svc|

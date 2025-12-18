@@ -63,6 +63,7 @@ module HowdyBuilder
       validate_rows!
       validate_uniqueness!
       raise ValidationError, @errors.join("\n") if @errors.any?
+
       true
     end
 
@@ -80,23 +81,57 @@ module HowdyBuilder
         assert_in!(s, :category, CATEGORIES)
         assert_in!(s, :runtime_dependency, RUNTIME_DEPENDENCIES)
 
-        if s[:active]
-          if s[:service_type] == "nonserviceable"
-            @errors << "#{s[:slug]}: active=yes but service_type=nonserviceable"
-          end
+        next unless s[:active]
 
-          if %w[fastcgi proxy].include?(s[:service_type]) && blank?(s[:port])
-            @errors << "#{s[:slug]}: active=yes but port is blank"
-          end
-
-          if blank?(s[:docker_template])
-            @errors << "#{s[:slug]}: active=yes but docker_template is blank"
-          end
-        end
+        validate_servicable(s)
+        validate_service_port(s)
+        validate_javascript_consistency(s)
+        validate_language_and_framework_cells(s)
+        validate_docker_template_cell(s)
       end
     end
 
-    def validate_uniqueness!
+    def validate_service_port(service)
+      return unless %w[fastcgi proxy].include?(service[:service_type]) && blank?(service[:port])
+
+      @errors << "#{service[:slug]}: active=yes but port is blank"
+    end
+
+    def validate_javascript_consistency(service)
+      if service[:framework].present? &&
+         service[:runtime_dependency] == 'node' &&
+         service[:language] != 'JavaScript'
+        @errors << "#{service[:slug]}: JavaScript frameworks must use language=JavaScript"
+      end
+    end
+
+    def validate_servicable(service)
+      return unless service[:service_type] == 'nonserviceable'
+
+      @errors << "#{service[:slug]}: active=yes but service_type=nonserviceable"
+    end
+
+    def validate_port(service)
+      return unless %w[fastcgi proxy].include?(service[:service_type]) && blank?(service[:port])
+
+      @errors << "#{service[:slug]}: active=yes but port is blank"
+    end
+
+    # Header-row leakage detection
+    def validate_language_and_framework_cells(service)
+      return unless service[:language] == 'language' && service[:framework] == 'framework'
+
+      @errors << 'CSV contains a header row inside data'
+    end
+
+    # Docker template cell validation
+    def validate_docker_template_cell(service)
+      return unless blank?(service[:docker_template])
+
+      @errors << "#{service[:slug]}: active=yes but docker_template is blank"
+    end
+
+    def validate_slug_uniqueness!
       slugs = @reader.services.map { |s| s[:slug] }
       dupes = slugs.group_by(&:itself).select { |_k, v| v.size > 1 }.keys
       @errors << "Slug collision(s): #{dupes.join(', ')}" if dupes.any?
@@ -109,8 +144,8 @@ module HowdyBuilder
       @errors << "#{service[:slug]}: invalid #{field}=#{value.inspect} (allowed: #{allowed.join(', ')})"
     end
 
-    def blank?(v)
-      v.nil? || v.to_s.strip.empty?
+    def blank?(value)
+      value.nil? || value.to_s.strip.empty?
     end
   end
 end

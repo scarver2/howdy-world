@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-require "csv"
-require "active_support/core_ext/string/inflections"
+require 'csv'
+require 'active_support/core_ext/string/inflections'
 
 module HowdyBuilder
   class CsvReader
     DEFAULT_PORTS = {
-      "go" => "8080",
-      "java" => "8080",
-      "prolog" => "8080",
-      "ruby" => "3000",
-      "ruby-on-rails" => "3000",
-      "rust" => "8080"
+      'go' => '8080',
+      'java' => '8080',
+      'prolog' => '8080',
+      'ruby' => '3000',
+      'ruby-on-rails' => '3000',
+      'rust' => '8080'
     }.freeze
 
     def initialize(csv_path:)
@@ -39,11 +39,30 @@ module HowdyBuilder
         .to_h
     end
 
+    # Group all services (or active only) by family, then by category.
+    # Returns a nested hash:
+    # { "jvm" => { "functional" => [svc...], "vm" => [svc...] }, "native" => {...} }
+    def grouped_services_by_family_and_category(only_active: false)
+      list = only_active ? active_services : services
+
+      list
+        .group_by { |s| s[:language_family].presence || 'unknown' }
+        .transform_values do |items|
+          items
+            .group_by { |s| s[:category].presence || 'uncategorized' }
+            .transform_values { |xs| xs.sort_by { |s| s[:display_name] } }
+            .sort_by { |(cat, _)| cat.to_s }
+            .to_h
+        end
+        .sort_by { |(fam, _)| fam.to_s }
+        .to_h
+    end
+
     private
 
     def normalize_row(r)
-      language  = clean(r["language"])
-      framework = clean(r["framework"])
+      language  = clean(r['language'])
+      framework = clean(r['framework'])
 
       return nil if language.empty?
 
@@ -61,26 +80,25 @@ module HowdyBuilder
           "#{language}-#{framework}".parameterize
         end
 
-      service_name = "#{slug}-app"
+      active             = clean(r['active']).to_bool
+      category           = clean(r['category']).downcase
+      docker_template    = clean(r['docker_template']).downcase
+      language_family    = clean(r['language_family']).downcase
+      language_type      = clean(r['language_type']).downcase
+      notes              = clean(r['notes'])
+      runtime_dependency = clean(r['runtime_dependency']).downcase
+      service_name       = "#{slug}-app"
+      service_type       = clean(r['service_type']).downcase
+      url                = clean(r['url'])
 
-      service_type       = clean(r["service_type"]).downcase
-      category           = clean(r["category"]).downcase
-      runtime_dependency = clean(r["runtime_dependency"]).downcase
-      docker_template    = clean(r["docker_template"]).downcase
-      language_type      = clean(r["language_type"]).downcase
-      url                = clean(r["url"])
-      notes              = clean(r["notes"])
-
-      active = clean(r["active"]).downcase == "yes"
-
-      port = clean(r["port"])
-      if port.empty? && active && %w[fastcgi proxy].include?(service_type)
-        port = DEFAULT_PORTS[slug] || ""
-      end
+      port = clean(r['port'])
+      port = DEFAULT_PORTS[slug] || '' if port.empty? && active && %w[fastcgi proxy].include?(service_type)
 
       {
         language: language,
         framework: framework,
+        language_family: language_family,
+        language_type: language_type,
         display_name: display_name,
         slug: slug,
         service_name: service_name,
@@ -90,7 +108,6 @@ module HowdyBuilder
         port: port,
         docker_template: docker_template,
         active: active,
-        language_type: language_type,
         url: url,
         notes: notes
       }

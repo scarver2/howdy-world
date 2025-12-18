@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require "net/http"
-require "uri"
+require 'net/http'
+require 'uri'
 
-require_relative "../_builder/lib/howdy_builder/csv_reader"
+require_relative '../_builder/lib/howdy_builder/csv_reader'
 
 RSpec.configure do |config|
   config.order = :defined
 end
 
 def base_url
-  ENV.fetch("HOWDY_BASE_URL", "http://localhost:8080")
+  ENV.fetch('HOWDY_BASE_URL', 'http://localhost:8080')
 end
 
 def http_get(path)
@@ -20,5 +20,5 @@ def http_get(path)
   end
 end
 
-READER = HowdyBuilder::CsvReader.new(csv_path: File.expand_path("../_builder/languages.csv", __dir__))
+READER = HowdyBuilder::CsvReader.new(csv_path: File.expand_path('../_builder/languages.csv', __dir__))
 ACTIVE_WEB = READER.active_services.select { |s| %w[fastcgi proxy static].include?(s[:service_type]) }
