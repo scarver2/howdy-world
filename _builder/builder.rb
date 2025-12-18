@@ -5,6 +5,7 @@ require 'thor'
 require 'thor/actions'
 require 'active_support/core_ext/string/inflections'
 
+require_relative 'lib/howdy_builder/badges'
 require_relative 'lib/howdy_builder/csv_reader'
 require_relative 'lib/howdy_builder/validator'
 
@@ -37,6 +38,8 @@ module HowdyBuilder
       generate_conf_d(services: services)
       generate_index(grouped: grouped)
       generate_compose(services: services)
+      generate_docs_readmes(reader.services)
+      generate_docs_index(reader)
 
       say_status :ok, 'Generation complete.', :green
     end
@@ -45,6 +48,28 @@ module HowdyBuilder
 
     def root_path(*parts)
       File.join(options[:root], *parts)
+    end
+
+    def generate_docs_index(reader)
+      say_status :docs, 'Generating docs/README.md...', :green
+
+      destination = File.join(options[:root], 'docs', 'README.md')
+      source = File.join(options[:root], 'docs', 'README.md.erb')
+
+      raise "Missing docs index template: #{source}" unless File.exist?(source)
+
+      grouped_by_family = reader.grouped_services_by_family_and_category(only_active: false)
+
+      template(
+        source,
+        destination,
+        {
+          grouped_by_family: grouped_by_family,
+          root_url: root_url
+        }
+      )
+
+      say_status :create, 'docs/README.md', :green
     end
 
     def generate_nginx(services:, grouped:)
