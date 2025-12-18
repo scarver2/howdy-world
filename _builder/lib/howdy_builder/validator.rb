@@ -1,31 +1,11 @@
 # frozen_string_literal: true
 
+require 'active_support/core_ext/object/blank'
+
 module HowdyBuilder
   class ValidationError < StandardError; end
 
   class Validator
-    REQUIRED_COLUMNS = %w[
-      active
-      category
-      docker_template
-      framework
-      language
-      language_type
-      notes
-      port
-      runtime_dependency
-      service_type
-      url
-    ].freeze
-
-    SERVICE_TYPES = %w[
-      cli
-      fastcgi
-      nonserviceable
-      proxy
-      static
-    ].freeze
-
     CATEGORIES = %w[
       compiled
       framework
@@ -37,6 +17,42 @@ module HowdyBuilder
       scripting
       tooling
       vm
+    ].freeze
+
+    LANGUAGE_FAMILIES = %w[
+      academic
+      assembly
+      beam
+      business
+      dotnet
+      educational
+      enterprise
+      functional
+      hpc
+      javascript
+      jvm
+      markup
+      native
+      platform
+      scientific
+      tooling
+      unix
+      web
+    ].freeze
+
+    REQUIRED_COLUMNS = %w[
+      active
+      category
+      docker_template
+      framework
+      language
+      language_family
+      language_type
+      notes
+      port
+      runtime_dependency
+      service_type
+      url
     ].freeze
 
     RUNTIME_DEPENDENCIES = %w[
@@ -51,6 +67,14 @@ module HowdyBuilder
       python
       ruby
       tooling
+    ].freeze
+
+    SERVICE_TYPES = %w[
+      cli
+      fastcgi
+      nonserviceable
+      proxy
+      static
     ].freeze
 
     def initialize(reader:)
@@ -77,9 +101,10 @@ module HowdyBuilder
 
     def validate_rows!
       @reader.services.each do |s|
-        assert_in!(s, :service_type, SERVICE_TYPES)
         assert_in!(s, :category, CATEGORIES)
+        assert_in!(s, :language_family, LANGUAGE_FAMILIES)
         assert_in!(s, :runtime_dependency, RUNTIME_DEPENDENCIES)
+        assert_in!(s, :service_type, SERVICE_TYPES)
 
         next unless s[:active]
 
@@ -131,7 +156,7 @@ module HowdyBuilder
       @errors << "#{service[:slug]}: active=yes but docker_template is blank"
     end
 
-    def validate_slug_uniqueness!
+    def validate_uniqueness!
       slugs = @reader.services.map { |s| s[:slug] }
       dupes = slugs.group_by(&:itself).select { |_k, v| v.size > 1 }.keys
       @errors << "Slug collision(s): #{dupes.join(', ')}" if dupes.any?
