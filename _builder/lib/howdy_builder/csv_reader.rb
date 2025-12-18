@@ -80,7 +80,7 @@ module HowdyBuilder
           "#{language}-#{framework}".parameterize
         end
 
-      active             = clean(r['active']).to_bool
+      active             = to_bool(clean(r['active']))
       category           = clean(r['category']).downcase
       docker_template    = clean(r['docker_template']).downcase
       language_family    = clean(r['language_family']).downcase
@@ -115,6 +115,10 @@ module HowdyBuilder
 
     def clean(v)
       v.to_s.strip
+    end
+
+    def to_bool(v)
+      %w[true yes 1].include?(v.to_s.downcase)
     end
   end
 end
