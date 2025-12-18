@@ -1,20 +1,35 @@
 worker_processes  1;
 
 events {
-    worker_connections 1024;
+  worker_connections 1024;
 }
 
 http {
-    include       /etc/nginx/mime.types;
-    default_type  application/octet-stream;
+  include       /etc/nginx/mime.types;
+  default_type  application/octet-stream;
 
-    sendfile        on;
-    keepalive_timeout 65;
+  sendfile        on;
+  keepalive_timeout 65;
 
-    # Log to stdout/stderr for Docker
-    access_log /dev/stdout;
-    error_log  /dev/stderr warn;
+  access_log /dev/stdout;
+  error_log  /dev/stderr warn;
 
-    # Include all generated language configs
+  server {
+    listen 80 default_server;
+    server_name _;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location = / {
+      try_files /index.html =404;
+    }
+
+    # Friendly fallback for unknown paths
+    location / {
+      try_files $uri $uri/ /index.html;
+    }
+
     include /etc/nginx/conf.d/*.conf;
+  }
 }

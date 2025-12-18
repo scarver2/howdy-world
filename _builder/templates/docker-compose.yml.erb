@@ -1,16 +1,14 @@
 version: "3.9"
 
 services:
-<% languages.each do |lang| %>
-  <%= lang[:name] %>:
-    build: ./<%= lang[:name] %>
-    container_name: <%= lang[:name] %>-app
-    ports:
-      - "<%= lang[:port] %>:<%= lang[:port] %>"
+<% services.each do |svc| %>
+  <%= svc[:service_name] %>:
+    build: ./<%= svc[:slug] %>
+    container_name: <%= svc[:service_name] %>
+    expose:
+      - "<%= svc[:port] %>"
     environment:
-      - PORT=<%= lang[:port] %>
-    labels:
-      - "service_type=<%= lang[:service_type] %>"
+      - PORT=<%= svc[:port] %>
 <% end %>
 
   nginx:
@@ -21,7 +19,8 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/www:/usr/share/nginx/html:ro
     depends_on:
-<% languages.each do |lang| %>
-      - <%= lang[:name] %>
+<% services.each do |svc| %>
+      - <%= svc[:service_name] %>
 <% end %>

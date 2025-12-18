@@ -1,21 +1,122 @@
-language,service_type,port,docker_template,active,language_type
-Ada,,,,no,language
-Awk,,,,no,language
-dotnet,,,,no,
-Elixir,,,,no,language
-Fortran,proxy,8008,generic,no,language
-Go,proxy,8002,go,no,language
-Java,proxy,8009,java,no,language
-Lisp,,,,no,language
-Odin,,,,no,language
-Pascal,,,,no,language
-Perl,fastcgi,8005,generic,no,language
-Phoenix,,,,no,framework
-PHP,,,,no,language
-Rack,,,,no,
-Ruby,,,,yes,language
-Ruby on Rails,,,,yes,framework
-Rust,proxy,8001,rust,no,language
-Rust,,,,no,language
-Swift,,,,no,language
-Zig,,,,no,language
+68000 Assembly,,compiled,nonserviceable,,generic,no,language,none,,No portable HTTP stack
+Ada,,compiled,proxy,,generic,no,language,none,https://www.adacore.com/,
+Algol 68,,compiled,nonserviceable,,generic,,language,none,https://algol68-lang.org/,Legacy or niche; limited tooling
+ALGOL,,compiled,proxy,,generic,no,language,none,,Legacy or niche; limited tooling
+Angular,,framework,static,,generic,no,framework,browser,,Build output is static assets
+APL,,compiled,proxy,,generic,no,language,none,https://aplwiki.com,
+AWK,,scripting,fastcgi,,generic,no,language,none,https://www.gnu.org/software/gawk/,AWK script via CGI/FastCGI
+Bash,,scripting,fastcgi,,generic,no,language,none,https://www.gnu.org/software/bash/,Shell script via CGI/FastCGI
+Boo,,compiled,proxy,,generic,no,language,none,https://github.com/boo-lang/boo,
+C,,compiled,proxy,,generic,no,language,none,https://en.cppreference.com/w/c,
+C#,,vm,proxy,,generic,no,language,dotnet,https://learn.microsoft.com/dotnet/csharp/,
+C++,,compiled,proxy,,generic,no,language,none,https://isocpp.org/,
+Carbon,,compiled,nonserviceable,,generic,no,language,none,https://docs.carbon-lang.dev,Experimental; unstable toolchain
+Chapel,,compiled,proxy,,generic,no,language,none,https://chapel-lang.org,
+Clojure,,functional,proxy,,generic,no,language,jvm,https://clojure.org,
+CLU,,compiled,proxy,,generic,no,language,none,http://pmg.csail.mit.edu/CLU.html,
+COBOL,,compiled,proxy,,generic,no,language,none,https://cobollang.github.io/,Legacy or niche; limited tooling
+Cobra,,compiled,proxy,,generic,no,language,none,http://cobra-language.com,
+CoffeeScript,,scripting,cli,,generic,no,language,node,,Compiles to JavaScript
+CSV,,markup,cli,,static,no,markup,tooling,https://en.wikipedia.org/wiki/Comma-separated_values,Data format; render via CLI
+Curl,,tooling,nonserviceable,,generic,no,language,tooling,,HTTP client only; not a server
+D,,compiled,proxy,,generic,no,language,none,http://dlang.org,
+Dart,,compiled,proxy,,generic,no,language,none,https://dart.dev/,
+dotnet,,vm,proxy,,generic,no,platform,dotnet,https://dotnet.microsoft.com/,
+Eiffel,,compiled,proxy,,generic,no,language,none,https://www.eiffel.org,
+Elixir,,functional,proxy,,generic,no,language,beam,https://elixir-lang.org/,
+Elixir,Phoenix,functional,proxy,,generic,no,framework,beam,https://www.phoenixframework.org/,
+Elm,,functional,static,,generic,no,language,node,,Compiles to JavaScript; served statically
+Ember,,framework,static,,generic,no,framework,browser,,Build output is static assets
+Emerald,,compiled,nonserviceable,,generic,no,language,none,https://www.emeraldprogramminglanguage.org,Legacy or niche; limited tooling
+Erlang,,functional,proxy,,generic,no,language,beam,https://www.erlang.org/,
+F#,,functional,proxy,,generic,no,language,dotnet,https://fsharp.org,
+Fortran,,compiled,proxy,,generic,no,language,none,https://fortran-lang.org/,
+FreeBASIC,,compiled,proxy,,generic,no,language,none,https://www.freebasic.net,
+Go,,compiled,proxy,,go,no,language,none,https://go.dev/,
+Groovy,,vm,proxy,,generic,no,language,jvm,https://groovy-lang.org,
+Haml,,markup,cli,,static,no,markup,tooling,https://haml.info/,Rendered via haml CLI
+Haskell,,functional,proxy,,generic,no,language,none,https://www.haskell.org/,
+Icon,,compiled,nonserviceable,,generic,no,language,none,https://www2.cs.arizona.edu/icon/,Legacy or niche; limited tooling
+Java,,vm,proxy,,java,no,language,jvm,https://www.oracle.com/java/,
+JavaScript,Astro,framework,static,,generic,no,framework,node,https://astro.build,Builds static-first sites
+JavaScript,Ember,framework,static,,generic,no,framework,node,https://emberjs.com,Opinionated SPA framework
+JavaScript,Next.js,framework,proxy,,generic,no,framework,node,https://nextjs.org,React framework with SSR
+JavaScript,Nuxt.js,framework,proxy,,generic,no,framework,node,https://nuxt.com,Vue framework with SSR
+JavaScript,Qwik,framework,static,,generic,no,framework,node,https://qwik.builder.io,Resumability-focused framework
+JavaScript,Refine,framework,proxy,,generic,no,framework,node,https://refine.dev,Data-driven React framework
+JavaScript,Remix,framework,proxy,,generic,no,framework,node,https://remix.run,Full-stack React framework
+JavaScript,SolidJS,framework,proxy,,generic,no,framework,node,https://www.solidjs.com,Fine-grained reactive UI
+JavaScript,Svelte,framework,static,,generic,no,framework,node,https://svelte.dev,Compile-time UI framework
+JavaScript,SvelteKit,framework,proxy,,generic,no,framework,node,https://kit.svelte.dev,Full-stack Svelte framework
+JavaScript,Vite,framework,static,,generic,no,framework,node,https://vitejs.dev,Build tool and dev server
+Joy,,compiled,nonserviceable,,generic,no,language,none,https://www.kevinalbrecht.com/code/joy-mirror/joy.html,Legacy or niche; limited tooling
+JSON,,markup,cli,,static,no,markup,tooling,https://www.json.org/,Validate via jq
+Julia,,compiled,proxy,,generic,no,language,none,https://julialang.org/,
+Kotlin,,vm,proxy,,generic,no,language,jvm,https://kotlinlang.org,
+language,framework,category,service_type,port,docker_template,active,language_type,runtime_dependency,url,notes
+Lisp,,functional,proxy,,generic,no,language,none,https://lisp-lang.org/,
+Logo,,compiled,proxy,,generic,no,language,none,https://el.media.mit.edu/logo-foundation/,
+Lua,,compiled,proxy,,generic,no,language,none,https://www.lua.org/,
+Maple,,compiled,nonserviceable,,generic,no,language,proprietary,https://www.maplesoft.com/products/maple/,Proprietary; licensing required
+Markdown,,markup,cli,,static,no,markup,tooling,https://commonmark.org/,Rendered via CLI tooling
+MATLAB,,compiled,nonserviceable,,generic,no,language,proprietary,https://www.mathworks.com/products/matlab.html,Proprietary; licensing required
+Modula-2,,compiled,fastcgi,,generic,no,language,none,https://www.modula2.org/,
+Modula-3,,compiled,fastcgi,,generic,no,language,none,https://www.modula3.org/,
+Mojo,,compiled,proxy,,generic,no,language,none,https://www.modular.com/mojo,
+NGINX,,platform,proxy, ,nginx,yes,markup,none,https://nginx.org/,
+Nim,,compiled,proxy,,generic,no,language,none,https://nim-lang.org,
+Node.js,,scripting,proxy,,generic,no,language,node,https://nodejs.org/,
+Oberon-2,,compiled,proxy,,generic,no,language,none,https://en.wikipedia.org/wiki/Oberon-2,
+Oberon,,compiled,proxy,,generic,no,language,none,https://projectoberon.net/,
+Odin,,compiled,proxy,,generic,no,language,none,https://odin-lang.org/,
+Opa,,compiled,proxy,,generic,no,language,none,http://opalang.org,
+Opal,,scripting,cli,,generic,no,language,node,https://en.wikipedia.org/wiki/Opal_(programming_language),Compiles to JavaScript
+Oxygene,,compiled,proxy,,generic,no,language,none,https://www.remobjects.com/elements/oxygene/,
+Oz,,compiled,proxy,,generic,no,language,none,https://mozart2.org,
+Pascal,,compiled,fastcgi,,generic,no,language,none,https://www.freepascal.org/,
+PDF,,markup,static,,generic,no,markup,none,,Static document format
+Perl,,scripting,fastcgi,,generic,no,language,none,https://www.perl.org/,
+PHP,,scripting,proxy,,generic,no,language,php,https://www.php.net/,
+Prolog,,logic,proxy,,generic,no,language,tooling,,
+Python,,scripting,proxy,,generic,no,language,python,https://www.python.org/,
+Python,Django,scripting,proxy,,generic,no,framework,python,https://www.djangoproject.com/,
+Python,FastAPI,scripting,proxy,,generic,no,framework,python,https://fastapi.tiangolo.com/,
+Python,Flask,scripting,proxy,,generic,no,framework,python,https://flask.palletsprojects.com/,
+R,,compiled,proxy,,generic,no,language,none,https://www.r-project.org,
+Raku,,compiled,proxy,,generic,no,language,none,https://raku.org,
+RDoc,,markup,cli,,static,no,markup,tooling,https://ruby.github.io/rdoc/,Rendered via rdoc
+React,,framework,static,,generic,no,framework,browser,,Build output is static assets
+Rebol,,compiled,nonserviceable,,generic,no,language,none,https://www.rebol.com,Legacy or niche; limited tooling
+Red,,compiled,proxy,,generic,no,language,none,https://www.red-lang.org,
+Rexx,,compiled,proxy,,generic,no,language,none,,
+Ring,,compiled,proxy,,generic,no,language,none,https://ring-lang.github.io,
+Ruby,,scripting,proxy,,generic,yes,language,ruby,https://www.ruby-lang.org/,
+Ruby,Cuba,scripting,proxy,,generic,no,framework,ruby,https://cuba.is/,
+Ruby,Jekyll,scripting,proxy,,generic,no,framework,ruby,https://jekyllrb.com/,
+Ruby,Middleman,scripting,proxy,,generic,no,framework,ruby,https://middlemanapp.com/,
+Ruby,Rack,scripting,proxy,,generic,no,framework,ruby,https://rack.github.io/,
+Ruby,Ruby on Rails,scripting,proxy,,generic,yes,framework,ruby,https://rubyonrails.org/,
+Ruby,Sinatra,scripting,proxy,,generic,no,framework,ruby,https://sinatrarb.com/,
+Ruby,WEBrick,scripting,proxy,,generic,no,framework,ruby,https://ruby-doc.org/stdlib/libdoc/webrick/rdoc/WEBrick.html,
+Rust,,compiled,proxy,,rust,no,language,none,https://www.rust-lang.org/,
+Sather,,compiled,nonserviceable,,generic,no,language,none,https://www.gnu.org/software/sather/,Legacy or niche; limited tooling
+Scala,,functional,proxy,,generic,no,language,jvm,http://www.scala-lang.org,
+Scheme,,functional,proxy,,generic,no,language,none,https://www.scheme.org,
+Scratch,,compiled,proxy,,generic,no,language,none,https://scratch.mit.edu,
+Simula67,,compiled,nonserviceable,,generic,no,language,none,https://en.wikipedia.org/wiki/Simula,Legacy or niche; limited tooling
+Slim,,markup,cli,,static,no,markup,tooling,https://slim-template.github.io/,Rendered via slim CLI
+Smalltalk,,compiled,proxy,,generic,no,language,none,https://squeak.org/,
+SNOBOL,,compiled,proxy,,generic,no,language,none,https://www.regressive.org/snobol4/,
+SQL,,tooling,nonserviceable,,generic,no,language,tooling,,Query language; needs database engine
+Swift,,compiled,proxy,,generic,no,language,none,https://www.swift.org/,
+Textile,,markup,cli,,static,no,markup,tooling,https://textile-lang.com/,Rendered via CLI tooling
+TypeScript,,scripting,cli,,generic,no,language,node,,Compiles to JavaScript
+V,,compiled,proxy,,generic,no,language,none,https://vlang.io,
+Vala,,compiled,proxy,,generic,no,language,none,https://vala.dev,
+VB.NET,,vm,proxy,,generic,no,language,dotnet,,
+Vue,,framework,static,,generic,no,framework,browser,,Build output is static assets
+WebAssembly,,platform,static,,static,no,markup,browser,https://webassembly.org/,Needs host runtime to execute
+x86 Assembly,,compiled,nonserviceable,,generic,no,language,none,,No portable HTTP stack
+XML,,markup,cli,,static,no,markup,tooling,https://www.w3.org/XML/,Validate/transform via CLI tools
+YAML,,markup,cli,,static,no,markup,tooling,https://yaml.org/,Validate via CLI tooling
+Zig,,compiled,proxy,,generic,no,language,none,https://ziglang.org/,
