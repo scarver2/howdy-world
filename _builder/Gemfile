@@ -3,7 +3,14 @@
 source 'http://rubygems.org'
 
 gem 'activesupport'
-gem 'rspec'
-gem 'rubocop'
-gem 'rubocop-rspec'
+gem 'csv'
 gem 'thor'
+
+group :development, :test do
+  gem 'guard', require: false
+  gem 'guard-rspec', require: false
+  gem 'guard-rubocop', require: false
+  gem 'rspec', require: false
+  gem 'rubocop', require: false
+  gem 'rubocop-rspec', require: false
+end
