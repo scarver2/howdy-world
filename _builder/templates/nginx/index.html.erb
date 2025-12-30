@@ -2,37 +2,52 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Available Applications</title>
+  <title>Howdy World</title>
   <style>
     body {
       font-family: sans-serif;
       margin: 40px;
       background: #f7f7f7;
     }
-    h1 {
+    h1,
+    h2 {
       color: #333;
     }
-    .app-list a {
+    ul a,.app-list a {
       display: block;
       padding: 10px 0;
       text-decoration: none;
       font-size: 1.2em;
       color: #0645AD;
     }
+    ul a:hover,
     .app-list a:hover {
       text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <h1>Available Applications</h1>
+  <img src="/howdy-world.png" alt="Howdy World Cowboy" />
+  <h1>Howdy World</h1>
+  <h2>It&rsquo;s Hello World, <em>Texas-style!</em></h2>
+  <h3>Languages and Frameworks</h3>
+  <p>Click on the links below to see a demonstration of that language or framework.</p>
+  <!--ul>
+    <li><a href="/ruby/">Ruby</a></li>
+    <li><a href="/ruby-on-rails/">Ruby on Rails</a></li>
+  </ul-->
   <div class="app-list">
     <% config.each do |service_type, languages| %>
-      <h2><%= service_type.capitalize %></h2>
+      <ul><li><%= service_type.capitalize %><ul>
       <% languages.each do |language| %>
-        <a href="/<%= language[:slug] %>/"><%= language[:display_name] %></a>
+        <li><a href="/<%= language[:slug] %>/"><%= language[:display_name] %></a></li>
       <% end %>
+      </ul></li></ul>
     <% end %>
   </div>
+  <footer>
+    <p>&copy;2025 Stan Carver II</p>
+    <img src="/made-in-texas.png" alt="Made in Texas" />
+  </footer>
 </body>
 </html>
