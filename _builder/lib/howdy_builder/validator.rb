@@ -35,6 +35,7 @@ module HowdyBuilder
       native
       platform
       scientific
+      scripting
       tooling
       unix
       web

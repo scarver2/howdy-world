@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'pry'
 require 'thor'
 require 'thor/actions'
 require 'active_support/core_ext/string/inflections'
@@ -38,8 +39,7 @@ module HowdyBuilder
       generate_conf_d(services: services)
       generate_index(grouped: grouped)
       generate_compose(services: services)
-      generate_docs_readmes(reader.services)
-      generate_docs_index(reader)
+      # TODO: generate_docs_readmes(reader.services)
 
       say_status :ok, 'Generation complete.', :green
     end
@@ -50,13 +50,16 @@ module HowdyBuilder
       File.join(options[:root], *parts)
     end
 
-    def generate_docs_index(reader)
+    def generate_docs_readmes(reader)
       say_status :docs, 'Generating docs/README.md...', :green
 
-      destination = File.join(options[:root], 'docs', 'README.md')
-      source = File.join(options[:root], 'docs', 'README.md.erb')
+      # source = File.join(options[:root], 'docs', 'README.md.erb')
+      # destination = File.join(options[:root], 'docs', 'README.md')
 
-      raise "Missing docs index template: #{source}" unless File.exist?(source)
+      source = root_path('_builder', 'templates','docs', 'README.md.erb')
+      destination = root_path('docs', 'README.md')
+
+      raise "Missing docs README template: #{source}" unless File.exist?(source)
 
       grouped_by_family = reader.grouped_services_by_family_and_category(only_active: false)
 
@@ -74,7 +77,7 @@ module HowdyBuilder
 
     def generate_nginx(services:, grouped:)
       empty_directory root_path('nginx')
-      template 'nginx.conf.erb', root_path('nginx', 'nginx.conf')
+      template 'nginx/nginx.conf.erb', root_path('nginx', 'nginx.conf')
     end
 
     def generate_conf_d(services:)
@@ -84,14 +87,9 @@ module HowdyBuilder
       services.each do |svc|
         next unless %w[proxy fastcgi static].include?(svc[:service_type]) # runtime endpoints
 
-        template 'nginx.location.conf.erb',
+        template 'nginx/nginx_location.conf.erb',
                  File.join(conf_root, "#{svc[:slug]}.conf"),
-                 {
-                   slug: svc[:slug],
-                   display_name: svc[:display_name],
-                   service_name: svc[:service_name],
-                   port: svc[:port]
-                 }
+                 svc
       end
     end
 
@@ -99,9 +97,9 @@ module HowdyBuilder
       www_root = root_path('nginx', 'www')
       empty_directory www_root
 
-      template 'index.html.erb',
+      template 'nginx/index.html.erb',
                File.join(www_root, 'index.html'),
-               { grouped: grouped }
+               grouped
     end
 
     def generate_compose(services:)

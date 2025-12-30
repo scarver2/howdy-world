@@ -1,26 +1,29 @@
-version: "3.9"
-
 services:
-<% services.each do |svc| %>
-  <%= svc[:service_name] %>:
-    build: ./<%= svc[:slug] %>
-    container_name: <%= svc[:service_name] %>
-    expose:
-      - "<%= svc[:port] %>"
-    environment:
-      - PORT=<%= svc[:port] %>
-<% end %>
-
   nginx:
+    # http://localhost
     image: nginx:alpine
     container_name: nginx-proxy
     ports:
-      - "8080:80"
+      - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ./nginx/www:/usr/share/nginx/html:ro
     depends_on:
-<% services.each do |svc| %>
-      - <%= svc[:service_name] %>
-<% end %>
+    <%- config.each do |service_type, languages| -%>
+    <%- languages.each do |language| -%>
+      - <%= language[:service_name] %>
+    <%- end -%>
+    <%- end -%>
+
+<%- config.each do |service_type, languages| %>
+<%- languages.each do |language| %>
+  <%= language[:service_name] %>:
+    build: ./<%= language[:slug] %>
+    container_name: <%= language[:service_name] %>
+    environment:
+      - PORT=<%= language[:port] %>
+    expose:
+      - "<%= language[:port] %>"
+<%- end -%>
+<%- end -%>

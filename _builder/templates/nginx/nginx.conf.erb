@@ -5,12 +5,14 @@ events {
 }
 
 http {
-  include       /etc/nginx/mime.types;
-  default_type  application/octet-stream;
+  # NGINX MIME setup
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
 
-  sendfile        on;
+  sendfile on;
   keepalive_timeout 65;
 
+  # NGINX logging setup
   access_log /dev/stdout;
   error_log  /dev/stderr warn;
 
@@ -21,15 +23,17 @@ http {
     root /usr/share/nginx/html;
     index index.html;
 
+    # root dashboard
     location = / {
       try_files /index.html =404;
     }
 
-    # Friendly fallback for unknown paths
+    # fallback for unknown paths
     location / {
       try_files $uri $uri/ /index.html;
     }
 
+    # load all language-specific NGINX configs
     include /etc/nginx/conf.d/*.conf;
   }
 }

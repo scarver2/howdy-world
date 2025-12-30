@@ -27,8 +27,11 @@
 <body>
   <h1>Available Applications</h1>
   <div class="app-list">
-    <% languages.each do |lang| %>
-      <a href="/<%= lang[:name] %>/"><%= lang[:name].capitalize %></a>
+    <% config.each do |service_type, languages| %>
+      <h2><%= service_type.capitalize %></h2>
+      <% languages.each do |language| %>
+        <a href="/<%= language[:slug] %>/"><%= language[:display_name] %></a>
+      <% end %>
     <% end %>
   </div>
 </body>
