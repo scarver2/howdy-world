@@ -15,6 +15,7 @@
 - [ ] Create Docker Compose profiles to run “just nginx + ruby” instead of the whole zoo:
   - [ ] e.g. `docker compose --profile ruby up --build`
 - [ ] Test that all endpoint README files contain consistant structure
+- [ ] Remove hard-coded ports. Pass as environment variable e.g. `ENV[PORT]`.
 
 ### Languages and Frameworks
 
