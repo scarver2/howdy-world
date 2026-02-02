@@ -20,9 +20,11 @@
 
 - [ ] Ada
 - [ ] AWK
+- [ ] BASIC
 - [ ] C
 - [ ] C++
-- [ ] C#
+- [ ] C# (.NET)
+- [ ] COBOL
 - [ ] Dart
 - [ ] Elixir
   - [ ] Phoenix
@@ -31,19 +33,31 @@
 - [ ] Go
 - [ ] Haskell
 - [ ] Java
+  - [ ] Spring
 - [ ] JavaScript
+  - [ ] AngularJS
+  - [ ] Angular
+  - [ ] Ember
+  - [ ] jQuery
+  - [ ] Next.js
+  - [ ] Nuxt.js
+  - [ ] Node.js
+  - [ ] React
   - [x] StimulusJS
+  - [ ] Svelte
+  - [ ] TypeScript
+  - [ ] Vue
 - [ ] Lisp
 - [ ] Lua
-- [ ] Node.js
 - [ ] Oberon
 - [ ] Odin
 - [ ] Perl
 - [ ] PHP
+  - [ ] Laravel
+  - [ ] Symfony
 - [ ] Python
-  - [ ] Flask
-  - [ ] FastAPI
   - [ ] Django
+  - [ ] Flask
 - [x] Ruby
   - [ ] Cuba
   - [ ] Jekyll
@@ -54,6 +68,7 @@
   - [x] WEBrick
 - [ ] Rust
 - [ ] Shell
+  - [ ] Bash
 - [ ] Swift
 - [ ] Zig
 
