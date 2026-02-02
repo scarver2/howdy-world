@@ -10,6 +10,7 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ./nginx/www:/usr/share/nginx/html:ro
       - ./javascript-stimulus:/srv/javascript-stimulus:ro
+      - ./javascript-vue:/srv/javascript-vue:ro
     depends_on:
       - ruby
       - ruby-on-rails
