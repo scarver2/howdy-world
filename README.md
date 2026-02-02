@@ -16,11 +16,13 @@ The page will open with a list of endpoints of the currently supported languages
 
 ### Supported Languages and Frameworks.
 
-* [JavaScript](./main/javascript-stimulus)
-* [JavaScript](./main/javascript-vue)
+* JavaScript
+    * [Inertia](./main/javascript-inertia)
+    * [Stimulus](./main/javascript-stimulus)
+    * [Vue](./main/javascript-vue)
 * [NGINX](./main/nginx) (static HTML file)
 * [Ruby](./main/ruby)
-* [Ruby on Rails](./main/ruby-on-rails)
+    * [Ruby on Rails](./main/ruby-on-rails)
 
 &copy;2026 [Stan Carver II](http://stancarver.com)
 

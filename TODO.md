@@ -14,7 +14,13 @@
   - [ ] smoke testing endpoints
 - [ ] Create Docker Compose profiles to run “just nginx + ruby” instead of the whole zoo:
   - [ ] e.g. `docker compose --profile ruby up --build`
-- [ ] Test that all endpoint README files contain consistant structure
+- [ ] Verify service README.md contains consistent structure
+  - [ ] Copyright
+  - [ ] Link to portfolio
+  - [ ] Made in Texas
+- [ ] Verify HTML Structure
+  - [ ] Outputs "Howdy from <service_name>"
+  - [ ] Link back to <root>/index.html, if production
 
 ### Languages and Frameworks
 
@@ -37,6 +43,7 @@
 - [ ] JavaScript
   - [ ] Angular
   - [ ] Ember
+  - [x] Inertia
   - [ ] jQuery
   - [ ] Next
   - [ ] Nuxt
@@ -44,7 +51,7 @@
   - [ ] React
   - [x] Stimulus
   - [ ] Svelte
-  - [ ] TypeScript
+  - [o] TypeScript (see [javascript-inertia][./javascript-inertia])
   - [x] Vue
 - [ ] Lisp
 - [ ] Lua
