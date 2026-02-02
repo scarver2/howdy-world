@@ -1,4 +1,4 @@
-# Howdy, World from [Simulus.JS](https://stimulus.hotwired.dev/)
+# Howdy from [Simulus.JS](https://stimulus.hotwired.dev/)
 
 ## Run Locally
 

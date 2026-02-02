@@ -1,3 +1,4 @@
+# docker-compose.yml
 services:
   nginx:
     # e.g. http://localhost/
@@ -10,10 +11,21 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ./nginx/www:/usr/share/nginx/html:ro
       - ./javascript-stimulus:/srv/javascript-stimulus:ro
+      - ./nginx/conf.d/javascript-inertia.conf:/etc/nginx/conf.d/javascript-inertia.conf:ro
     depends_on:
+      - javascript_inertia
       - ruby
       - ruby-on-rails
 
+  javascript_inertia:
+    build:
+      context: ./javascript-inertia
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - BASE_PATH=/javascript-inertia/
+    expose:
+      - "3000"
   ruby:
     # e.g. http://localhost/ruby
     build: ./ruby

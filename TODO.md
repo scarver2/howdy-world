@@ -38,6 +38,7 @@
   - [ ] AngularJS
   - [ ] Angular
   - [ ] Ember
+  - [x] Inertia
   - [ ] jQuery
   - [ ] Next.js
   - [ ] Nuxt.js
