@@ -12,6 +12,7 @@ COPY . .
 
 ENV NODE_ENV=production
 ENV PORT=3000
+ENV BASE_PATH=/javascript-inertia/
 
 EXPOSE 3000
 

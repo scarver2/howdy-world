@@ -6,9 +6,8 @@
 docker compose up --build
 ```
 
-Visit http://localhost:3000
-or
 Visit http://localhost:3000/javascript-inertia/
+
 ```
   package.json
   server.js
