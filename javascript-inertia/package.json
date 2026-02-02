@@ -1,0 +1,11 @@
+{
+    "name": "howdy-inertia",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "node server.js"
+    },
+    "dependencies": {
+        "express": "^4.19.2"
+    }
+}
