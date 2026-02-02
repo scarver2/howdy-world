@@ -1,18 +1,32 @@
-import express from "express";
+import express, { type Request, type Response } from "express";
+import { type InertiaPage, type InertiaProps } from "./types.js";
+
+// type InertiaPage = {
+//     component: string;
+//     props: Record<string, unknown>;
+//     url: string;
+//     version: string;
+// };
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-const BASE_PATH = (process.env.BASE_PATH || "/")
-    .replace(/\/?$/, "/"); // ensure trailing slash
+
+// const PORT: number = process.env.PORT ? Number(process.env.PORT) : 3000;
+const PORT = Number.parseInt(process.env.PORT || "3000", 10);
+
+const BASE_PATH: string = (process.env.BASE_PATH || "/").replace(/\/?$/, "/"); // ensure trailing slash
 
 // Serve assets under BASE_PATH so /javascript-inertia/app.js works
 app.use(BASE_PATH, express.static("public"));
 
-function isInertia(req) {
+function isInertia(req: Request): boolean {
     return String(req.get("X-Inertia") || "").toLowerCase() === "true";
 }
 
-function page(req, component, props = {}) {
+function page(
+    req: Request,
+    component: string,
+    props: Omit<InertiaProps, "errors"> = {}
+): InertiaPage {
     return {
         component,
         props: { errors: {}, ...props },
@@ -21,7 +35,7 @@ function page(req, component, props = {}) {
     };
 }
 
-function respond(req, res, inertiaPage) {
+function respond(req: Request, res: Response, inertiaPage: InertiaPage) {
     if (isInertia(req)) {
         res.set("Vary", "X-Inertia");
         res.set("X-Inertia", "true");
@@ -44,7 +58,7 @@ function respond(req, res, inertiaPage) {
     res.type("html").send(html);
 }
 
-function escapeHtml(str) {
+function escapeHtml(str: string): string {
     return str
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
@@ -54,12 +68,12 @@ function escapeHtml(str) {
 }
 
 // Route lives at BASE_PATH (e.g. /javascript-inertia/)
-app.get(BASE_PATH, (req, res) => {
+app.get(BASE_PATH, (req: Request, res: Response) => {
     respond(req, res, page(req, "Home", { message: "Howdy, World!" }));
 });
 
 // (Optional) redirect /javascript-inertia -> /javascript-inertia/
-app.get(BASE_PATH.replace(/\/$/, ""), (req, res) => {
+app.get(BASE_PATH.replace(/\/$/, ""), (req: Request, res: Response) => {
     res.redirect(301, BASE_PATH);
 });
 

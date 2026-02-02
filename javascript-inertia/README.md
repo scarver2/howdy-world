@@ -4,13 +4,29 @@
 
 ```bash
 docker compose up --build
+open http://localhost:3000/javascript-inertia/
+
+```
+or
+
+```bash
+npm run dev:ts
 ```
 
-Visit http://localhost:3000/javascript-inertia/
+and visit http://localhost:3000/
+
+## Build and Run
+
+```bash
+npm run typecheck
+npm run build
+node dist/server.js
+```
+
 
 ```
   package.json
-  server.js
+  server.ts
   public/
     app.js
     Pages/

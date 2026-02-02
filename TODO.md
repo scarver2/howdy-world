@@ -46,7 +46,7 @@
   - [ ] React
   - [x] StimulusJS
   - [ ] Svelte
-  - [ ] TypeScript
+  - [o] TypeScript (see javascript-inertia folder)
   - [ ] Vue
 - [ ] Lisp
 - [ ] Lua

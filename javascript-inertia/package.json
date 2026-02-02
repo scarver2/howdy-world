@@ -3,9 +3,20 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "node server.js"
+        "dev": "tsx watch server.ts",
+        "typecheck": "tsc --noEmit",
+        "build": "tsc",
+        "start": "node dist/server.js",
+        "clean": "rm -rf dist",
+        "prestart": "npm run build"
     },
     "dependencies": {
         "express": "^4.19.2"
+    },
+    "devDependencies": {
+        "@types/express": "^5.0.6",
+        "@types/node": "^25.2.0",
+        "tsx": "^4.21.0",
+        "typescript": "^5.9.3"
     }
 }
