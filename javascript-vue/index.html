@@ -9,21 +9,28 @@
 </head>
 
 <body>
-  <div id="app">
+  <div id="app">VueJS did not load.</div>
+
+  <footer>
+    <p>&copy;2026 <a href="http://stancarver.com" title="Stan Carver II's Portfolio Website">Stan Carver II</a></p>
+    <img src="/made-in-texas.png" alt="Made in Texas" />
+  </footer>
+
+  <template id="app-template">
     <h1>{{ message }}</h1>
-  </div>
+  </template>
 
   <script>
     const app = Vue.createApp({
+      template: "#app-template",
       data() {
-        return {
-          message: 'Howdy, World!'
-        }
+        return { message: "Howdy, World!" }
       }
     });
 
-    app.mount('#app');
+    app.mount("#app");
   </script>
+
 </body>
 
 </html>
