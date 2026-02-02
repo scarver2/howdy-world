@@ -20,9 +20,11 @@
 
 - [ ] Ada
 - [ ] AWK
+- [ ] BASIC
 - [ ] C
 - [ ] C++
-- [ ] C#
+- [ ] C# (.NET)
+- [ ] COBOL
 - [ ] Dart
 - [ ] Elixir
   - [ ] Phoenix
@@ -31,19 +33,31 @@
 - [ ] Go
 - [ ] Haskell
 - [ ] Java
+  - [ ] Spring
 - [ ] JavaScript
+  - [ ] AngularJS
+  - [ ] Angular
+  - [ ] Ember
+  - [ ] jQuery
+  - [ ] Next.js
+  - [ ] Nuxt.js
+  - [ ] Node.js
+  - [ ] React
   - [x] StimulusJS
+  - [ ] Svelte
+  - [ ] TypeScript
+  - [x] Vue.js
 - [ ] Lisp
 - [ ] Lua
-- [ ] Node.js
 - [ ] Oberon
 - [ ] Odin
 - [ ] Perl
 - [ ] PHP
+  - [ ] Laravel
+  - [ ] Symfony
 - [ ] Python
-  - [ ] Flask
-  - [ ] FastAPI
   - [ ] Django
+  - [ ] Flask
 - [x] Ruby
   - [ ] Cuba
   - [ ] Jekyll
@@ -54,6 +68,7 @@
   - [x] WEBrick
 - [ ] Rust
 - [ ] Shell
+  - [ ] Bash
 - [ ] Swift
 - [ ] Zig
 
@@ -62,3 +77,22 @@
 - [x] Reverse Proxy
 - [x] index catalog of available endpoints
 - [x] place individual endpoint's configuration into conf.d
+
+
+## HTML
+
+### Possible styling for pages
+```html
+<html class="light">
+  <head>
+    <style>
+      html.dark {
+        color-scheme: dark;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      }
+    </style>
+  </head>
+```

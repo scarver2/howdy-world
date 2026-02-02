@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Howdy from VueJS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+  <div id="app">VueJS did not load.</div>
+
+  <footer>
+    <p>&copy;2026 <a href="http://stancarver.com" title="Stan Carver II's Portfolio Website">Stan Carver II</a></p>
+    <img src="/made-in-texas.png" alt="Made in Texas" />
+  </footer>
+
+  <template id="app-template">
+    <h1>{{ message }}</h1>
+  </template>
+
+  <script>
+    const app = Vue.createApp({
+      template: "#app-template",
+      data() {
+        return { message: "Howdy, World!" }
+      }
+    });
+
+    app.mount("#app");
+  </script>
+
+</body>
+
+</html>
