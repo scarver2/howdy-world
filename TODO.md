@@ -46,7 +46,7 @@
   - [x] StimulusJS
   - [ ] Svelte
   - [ ] TypeScript
-  - [ ] Vue
+  - [x] Vue.js
 - [ ] Lisp
 - [ ] Lua
 - [ ] Oberon
@@ -77,3 +77,22 @@
 - [x] Reverse Proxy
 - [x] index catalog of available endpoints
 - [x] place individual endpoint's configuration into conf.d
+
+
+## HTML
+
+### Possible styling for pages
+```html
+<html class="light">
+  <head>
+    <style>
+      html.dark {
+        color-scheme: dark;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      }
+    </style>
+  </head>
+```
