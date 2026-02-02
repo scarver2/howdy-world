@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Howdy from VueJS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <h1>{{ message }}</h1>
+  </div>
+
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          message: 'Howdy, World!'
+        }
+      }
+    });
+
+    app.mount('#app');
+  </script>
+</body>
+
+</html>
