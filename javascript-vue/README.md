@@ -1,4 +1,4 @@
-# Howdy for [Vue.js](https://vuejs.org/)
+# Howdy from [Vue.js](https://vuejs.org/)
 
 ## Run Locally
 
