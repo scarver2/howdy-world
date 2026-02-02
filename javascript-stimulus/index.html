@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Howdy World with Stimulus JS</title>
+
+
+</head>
+
+<body>
+    <div id="app" data-controller="page"></div>
+
+    <footer>
+        <p>&copy;2026 <a href="http://stancarver.com" title="Stan Carver II's Portfolio Website">Stan Carver II</a></p>
+        <img src="/made-in-texas.png" alt="Made in Texas" />
+    </footer>
+
+    <script type="module">
+        import { Application, Controller } from "https://unpkg.com/@hotwired/stimulus@3.2.2/dist/stimulus.js";
+
+        const application = Application.start();
+
+        application.register("page", class extends Controller {
+            connect() {
+                this.element.textContent = "Howdy, World!";
+            }
+        });
+    </script>
+</body>
+
+</html>
