@@ -40,7 +40,7 @@
 - [ ] Haskell
 - [ ] Java
   - [ ] Spring
-- [ ] JavaScript
+- [x] JavaScript
   - [ ] Angular
   - [ ] Ember
   - [x] Inertia
@@ -52,6 +52,7 @@
   - [x] Stimulus
   - [ ] Svelte
   - [o] TypeScript (see [javascript-inertia][./javascript-inertia])
+  - [ ] Vanilla
   - [x] Vue
 - [ ] Lisp
 - [ ] Lua
