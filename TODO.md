@@ -7,13 +7,18 @@
   - [ ] nginx/conf.d/<language>.conf
   - [ ] Languages section of README of supported languages and frameworks
 - [ ] Add Dockerfile for each language
+- [ ] Add compose.yml for each language
+- [ ] Add README.md for each language
+- [ ] Add TODO.md for each language
 - [ ] Add .gitignore for each language (source: https://github.com/github/gitignore)
+- [ ] Add .dockerignore for each language
 - [ ] Add GitHub Actions for:
   - [ ] `docker compose config` (lint/validate)
   - [ ] building images
   - [ ] smoke testing endpoints
 - [ ] Create Docker Compose profiles to run “just nginx + ruby” instead of the whole zoo:
   - [ ] e.g. `docker compose --profile ruby up --build`
+- [ ] Verify compiled languages produce a binary in `/out` folder
 - [ ] Verify service README.md contains consistent structure
   - [ ] Copyright
   - [ ] Link to portfolio
@@ -36,7 +41,7 @@
   - [ ] Phoenix
 - [ ] Erlang
 - [ ] Fortran
-- [ ] Go
+- [x] Go
 - [ ] Haskell
 - [ ] Java
   - [ ] Spring
