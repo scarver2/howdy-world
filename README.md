@@ -23,6 +23,7 @@ The page will open with a list of endpoints of the currently supported languages
 * [NGINX](./nginx) (static HTML file)
 * [Ruby](./ruby)
     * [Ruby on Rails](./ruby-on-rails)
+* [Zig](./zig)
 
 &copy;2026 [Stan Carver II](http://stancarver.com)
 
