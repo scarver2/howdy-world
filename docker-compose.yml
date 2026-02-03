@@ -20,6 +20,7 @@ services:
       - ruby-on-rails
 
   javascript_inertia:
+    # e.g. http://localhost/javascript-inertia
     build:
       context: ./javascript-inertia
     environment:
@@ -40,3 +41,15 @@ services:
     container_name: ruby-on-rails-app
     expose:
       - "3000" # Ruby on Rails HTTP server listens on 3000
+  rust-leptos:
+    # e.g. http://localhost/rust-leptos
+    build:
+      context: ./rust-leptos
+    container_name: rust-leptos
+    expose:
+      - "3000"
+    networks:
+      - corral
+networks:
+  corral:
+    external: true
