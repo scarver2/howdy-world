@@ -19,6 +19,13 @@ services:
       - ruby
       - ruby-on-rails
 
+  elixir-bandit:
+    build:
+      context: ./srv/elixir-bandit
+    environment:
+      - PORT=4000
+    expose:
+      - "4000"
   javascript_inertia:
     build:
       context: ./javascript-inertia

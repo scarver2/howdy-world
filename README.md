@@ -16,6 +16,8 @@ The page will open with a list of endpoints of the currently supported languages
 
 ### Supported Languages and Frameworks.
 
+* [Elixir](./elixir)
+    * [Bandit](./elixir-bandit)
 * [JavaScript](./javascript)
     * [Inertia](./javascript-inertia)
     * [Stimulus](./javascript-stimulus)
