@@ -17,7 +17,7 @@ const html =
 ;
 
 pub fn main() !void {
-    const address = try std.net.Address.parseIp("127.0.0.1", 3000);
+    const address = try std.net.Address.parseIp("0.0.0.0", 3000);
 
     var server = try address.listen(.{ .reuse_address = true });
     defer server.deinit();
@@ -39,4 +39,3 @@ pub fn main() !void {
         try conn.stream.writeAll(response);
     }
 }
-
