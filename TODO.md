@@ -77,7 +77,7 @@
 - [ ] Shell
   - [ ] Bash
 - [ ] Swift
-- [ ] Zig
+- [x] Zig
 
 ### NGINX
 

@@ -18,6 +18,7 @@ services:
       - javascript_inertia
       - ruby
       - ruby-on-rails
+      - zig
 
   javascript_inertia:
     build:
@@ -40,3 +41,12 @@ services:
     container_name: ruby-on-rails-app
     expose:
       - "3000" # Ruby on Rails HTTP server listens on 3000
+  zig:
+    build:
+      context: ./zig
+    expose:
+      - "3000"
+    restart: unless-stopped
+    # If your nginx is on a custom network, put zig on the same one:
+    # networks:
+    #   - corral
