@@ -51,7 +51,7 @@
 - [ ] Dart
 - [ ] Elixir
   - [x] Bandit
-  - [ ] Phoenix
+  - [x] Phoenix
 - [ ] Erlang
 - [ ] Fortran
 - [x] Go
