@@ -9,6 +9,7 @@ import Config
 # to bundle .js and .css sources.
 config :elixir_phoenix, ElixirPhoenixWeb.Endpoint,
   http: [ip: {0, 0, 0, 0}, port: 4000],
+  server: true,
   check_origin: false,
   debug_errors: true,
   secret_key_base: "3LZak7P1mEmrNfPXIDyG52O3P/n2nzsJr6EMqsaotR6TTyyyomETxKDm9ga1rIgx",
