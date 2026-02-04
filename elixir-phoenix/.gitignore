@@ -1,3 +1,4 @@
+# elixir_phoenix/.gitignore
 /_build
 /cover
 /deps
