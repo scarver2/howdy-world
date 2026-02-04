@@ -29,6 +29,13 @@ services:
       - PORT=4000
     expose:
       - "4000"
+  elixir-phoenix:
+    build:
+      context: ./elixir-phoenix
+    environment:
+      - PORT=4000
+    expose:
+      - "4000"
   go:
     build:
       context: ./go
