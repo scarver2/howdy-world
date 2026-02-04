@@ -18,7 +18,15 @@ services:
       - javascript_inertia
       - ruby
       - ruby-on-rails
+      - zig
 
+  go:
+    build:
+      context: ./go
+    environment:
+      - PORT=8080
+    expose:
+      - "8080"
   javascript_inertia:
     build:
       context: ./javascript-inertia
@@ -40,3 +48,12 @@ services:
     container_name: ruby-on-rails-app
     expose:
       - "3000" # Ruby on Rails HTTP server listens on 3000
+  zig:
+    build:
+      context: ./zig
+    expose:
+      - "3000"
+    restart: unless-stopped
+    # If your nginx is on a custom network, put zig on the same one:
+    # networks:
+    #   - corral
