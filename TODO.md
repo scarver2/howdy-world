@@ -50,6 +50,7 @@
 - [ ] COBOL
 - [ ] Dart
 - [ ] Elixir
+  - [x] Bandit
   - [ ] Phoenix
 - [ ] Erlang
 - [ ] Fortran
