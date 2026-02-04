@@ -20,6 +20,13 @@ services:
       - ruby-on-rails
       - zig
 
+  go:
+    build:
+      context: ./go
+    environment:
+      - PORT=8080
+    expose:
+      - "8080"
   javascript_inertia:
     build:
       context: ./javascript-inertia

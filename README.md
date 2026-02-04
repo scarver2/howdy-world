@@ -16,6 +16,7 @@ The page will open with a list of endpoints of the currently supported languages
 
 ### Supported Languages and Frameworks.
 
+* [Go](./go)
 * [JavaScript](./javascript)
     * [Inertia](./javascript-inertia)
     * [Stimulus](./javascript-stimulus)
