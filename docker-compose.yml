@@ -7,6 +7,7 @@ services:
     ports:
       - "80:80"
     volumes:
+      # FIXME: this is convoluted and likely unnecessary
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ./nginx/www:/usr/share/nginx/html:ro
@@ -18,14 +19,22 @@ services:
       - javascript_inertia
       - ruby
       - ruby-on-rails
+      - zig
 
   elixir-bandit:
     build:
-      context: ./srv/elixir-bandit
+      context: ./elixir-bandit
     environment:
       - PORT=4000
     expose:
       - "4000"
+  go:
+    build:
+      context: ./go
+    environment:
+      - PORT=8080
+    expose:
+      - "8080"
   javascript_inertia:
     build:
       context: ./javascript-inertia
@@ -47,3 +56,12 @@ services:
     container_name: ruby-on-rails-app
     expose:
       - "3000" # Ruby on Rails HTTP server listens on 3000
+  zig:
+    build:
+      context: ./zig
+    expose:
+      - "3000"
+    restart: unless-stopped
+    # If your nginx is on a custom network, put zig on the same one:
+    # networks:
+    #   - corral
