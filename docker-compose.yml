@@ -13,6 +13,7 @@ services:
       - ./nginx/www:/usr/share/nginx/html:ro
       - ./javascript:/srv/javascript:ro
       - ./nginx/conf.d/javascript-inertia.conf:/etc/nginx/conf.d/javascript-inertia.conf:ro
+      - ./javascript-jquery:/srv/javascript-jquery:ro
       - ./javascript-stimulus:/srv/javascript-stimulus:ro
       - ./javascript-vue:/srv/javascript-vue:ro
     depends_on:

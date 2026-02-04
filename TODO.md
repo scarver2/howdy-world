@@ -62,7 +62,7 @@
   - [ ] Angular
   - [ ] Ember
   - [x] Inertia
-  - [ ] jQuery
+  - [x] jQuery
   - [ ] Next
   - [ ] Nuxt
   - [ ] Node

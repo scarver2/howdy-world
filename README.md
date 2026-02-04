@@ -21,6 +21,7 @@ The page will open with a list of endpoints of the currently supported languages
 * [Go](./go)
 * [JavaScript](./javascript)
     * [Inertia](./javascript-inertia)
+    * [jQuery](./javascript-jquery)
     * [Stimulus](./javascript-stimulus)
     * [Vue](./javascript-vue)
 * [NGINX](./nginx) (static HTML file)
