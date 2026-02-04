@@ -1,3 +1,5 @@
+# elixir-bandit/lib/howdy_bandit/application.ex
+
 defmodule HowdyBandit.Application do
   use Application
 
@@ -9,11 +11,10 @@ defmodule HowdyBandit.Application do
       {Bandit,
        plug: HowdyBandit.Router,
        scheme: :http,
-       options: [port: port]}
+       port: port}
     ]
 
     opts = [strategy: :one_for_one, name: HowdyBandit.Supervisor]
     Supervisor.start_link(children, opts)
   end
 end
-

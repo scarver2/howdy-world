@@ -1,8 +1,21 @@
 # Howdy from the Elixir Bandit!
 
-TODO: prerequisites
+## Prerequisites
+```bash
+brew install elixir
+mix deps.get
+```
 
-TODO: how to run
+## How to run
+```bash
+mix run --no-halt
+```
+or
+```bash
+docker compose up --build
+```
+
+then visit http://localhost:4000
 
 &copy;2026 [Stan Carver II](http://stancarver.com)
 
