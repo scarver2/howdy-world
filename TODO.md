@@ -61,7 +61,7 @@
   - [ ] Angular
   - [ ] Ember
   - [x] Inertia
-  - [ ] jQuery
+  - [x] jQuery
   - [ ] Next
   - [ ] Nuxt
   - [ ] Node
@@ -152,3 +152,23 @@
 </body>
 </html>
 ```
+
+## The Howdy World Story
+
+Tell the Howdy World story at a glance:
+
+One README section called “Why these languages”
+
+3 bullets: what problem, why this tool, what outcome.
+
+A tiny “bench / profile” note (even if informal)
+
+“Zig image processing: X ms for N images on my machine”
+
+“Go QR: throughput / latency rough numbers”
+
+A “learning → shipped” changelog
+
+5–10 lines that show momentum without making people dig.
+
+Emphasis the birth to test multiple languages accomplishing the same task, not just for performance, but ease of use and implementation.
