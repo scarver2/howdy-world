@@ -1,0 +1,17 @@
+# javascript-react/Dockerfile.dev
+FROM oven/bun:1.1.34
+
+WORKDIR /app
+
+# Install deps first (better layer caching)
+COPY package.json bun.lockb* ./
+RUN bun install
+
+# Copy the rest of the app
+COPY . .
+
+EXPOSE 5173
+
+# Vite dev server (host 0.0.0.0 so it's reachable from outside the container)
+CMD ["bun", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
+

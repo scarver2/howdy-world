@@ -14,13 +14,16 @@ services:
       - ./javascript:/srv/javascript:ro
       - ./nginx/conf.d/javascript-inertia.conf:/etc/nginx/conf.d/javascript-inertia.conf:ro
       - ./javascript-jquery:/srv/javascript-jquery:ro
+      # - ./javascript-react/dist:/srv/javascript-react-dist:ro
       - ./javascript-stimulus:/srv/javascript-stimulus:ro
       - ./javascript-vue:/srv/javascript-vue:ro
     depends_on:
       - javascript_inertia
+      - javascript-react
       - ruby
       - ruby-on-rails
       - zig
+    restart: unless-stopped
 
   elixir-bandit:
     build:
@@ -52,6 +55,16 @@ services:
       - BASE_PATH=/javascript-inertia/
     expose:
       - "3000"
+  # Production build: generates dist into a named volume
+  javascript-react:
+    build:
+      context: ./javascript-react
+    container_name: javascript-react
+    command: [ "sh", "-lc", "bun install && bun run build" ]
+    volumes:
+      # Writes dist/ onto your host at ./javascript-react/dist
+      - ./javascript-react:/app
+    restart: "no"
   ruby:
     # e.g. http://localhost/ruby
     build: ./ruby
