@@ -16,13 +16,18 @@ The page will open with a list of endpoints of the currently supported languages
 
 ### Supported Languages and Frameworks.
 
+* [Elixir](./elixir)
+    * [Bandit](./elixir-bandit)
+* [Go](./go)
 * [JavaScript](./javascript)
     * [Inertia](./javascript-inertia)
+    * [jQuery](./javascript-jquery)
     * [Stimulus](./javascript-stimulus)
     * [Vue](./javascript-vue)
 * [NGINX](./nginx) (static HTML file)
 * [Ruby](./ruby)
     * [Ruby on Rails](./ruby-on-rails)
+* [Zig](./zig)
 
 &copy;2026 [Stan Carver II](http://stancarver.com)
 

@@ -1,0 +1,7 @@
+# elixir-phoenix/.dockerignore
+/_build
+/deps
+/.elixir_ls
+/.git
+.DS_Store
+erl_crash.dump

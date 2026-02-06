@@ -1,0 +1,30 @@
+# elixir-bandit/compose.yml
+
+services:
+  elixir-bandit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      MIX_ENV: dev
+      PORT: "4000"
+    ports:
+      - "4000:4000"
+    volumes:
+      # Mount local code for live-editing
+      - .:/app:delegated
+
+      # Keep deps/_build inside Docker for speed & not polluting host
+      - elixir_bandit_deps:/app/deps
+      - elixir_bandit_build:/app/_build
+    command: >
+      sh -lc "
+        mix deps.get &&
+        mix deps.compile &&
+        mix compile &&
+        watchexec -r -e ex,exs -- mix run --no-halt
+      "
+
+volumes:
+  elixir_bandit_deps:
+  elixir_bandit_build:
