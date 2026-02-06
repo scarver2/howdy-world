@@ -18,6 +18,7 @@ services:
       - ./javascript-stimulus:/srv/javascript-stimulus:ro
       - ./javascript-vue:/srv/javascript-vue:ro
     depends_on:
+      - java-spring
       - javascript_inertia
       - javascript-react
       - ruby
@@ -46,6 +47,17 @@ services:
       - PORT=8080
     expose:
       - "8080"
+  java-spring:
+    build:
+      context: ./java-spring
+    container_name: howdy-java-spring
+    environment:
+      - PORT=8080
+    expose:
+      - "8080"
+    restart: unless-stopped
+    # networks:
+    #   - corral
   javascript_inertia:
     build:
       context: ./javascript-inertia
@@ -85,4 +97,5 @@ services:
     restart: unless-stopped
     # If your nginx is on a custom network, put zig on the same one:
     # networks:
-    #   - corral
+    #   corral:
+    #     external: true

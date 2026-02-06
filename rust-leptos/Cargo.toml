@@ -1,0 +1,11 @@
+[package]
+name = "rust-leptos"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.8"
+tokio = { version = "1", features = ["full"] }
+
+# We only need Leptos SSR for this minimal endpoint.
+leptos = { version = "0.8", features = ["ssr"] }
