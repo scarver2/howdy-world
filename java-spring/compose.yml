@@ -1,0 +1,18 @@
+# java-spring/compose.yml
+
+services:
+  java-spring:
+    build:
+      context: .
+    container_name: howdy-java-spring
+    environment:
+      - SERVER_PORT=8080
+    ports:
+      - "8080:8080"
+    # networks:
+    #   - corral
+
+    # networks:
+    #   corral:
+    #     external: true
+    #     name: corral
