@@ -10,6 +10,7 @@ public class HowdyController {
 
   @GetMapping("/")
   public String howdy(Model model) {
+    model.addAttribute("page", new PageView("Howdy from Java Spring", "Howdy, World!", ""));
     return "index"; // renders src/main/resources/templates/index.html
   }
 

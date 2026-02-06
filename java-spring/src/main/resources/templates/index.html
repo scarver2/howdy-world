@@ -1,15 +1,7 @@
-<!-- java-spring/src/main/resources/templates/index.html -->
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Howdy from Java Spring</title>
-</head>
-
-<body>
-    <h1>Howdy, World!</h1>
-</body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(${page}, ~{::content})}">
+<th:block th:fragment="content">
+    <h1 th:text="${page.heading}">Howdy, World!</h1>
+</th:block>
 
 </html>
