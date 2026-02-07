@@ -1,0 +1,6 @@
+# rust-leptos/Trunk.toml
+
+[build]
+target = "index.html"
+dist = "dist"
+public_url = "/rust-leptos/"
