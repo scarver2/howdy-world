@@ -1,0 +1,13 @@
+# docker/compose.e2e.yml
+services:
+  e2e:
+    build:
+      context: ./e2e
+    container_name: howdy-e2e
+    depends_on:
+      - nginx
+    # networks:
+    #   - corral
+    volumes:
+      - ./e2e/artifacts:/app/artifacts
+    # If your nginx service is named differently, change baseUrl in endpoints.json accordingly.

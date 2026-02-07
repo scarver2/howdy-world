@@ -5,3 +5,6 @@
 
 # OS Files
 .DS_Store
+
+# test suite
+e2e/artifacts
