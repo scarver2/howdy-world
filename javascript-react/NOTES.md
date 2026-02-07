@@ -43,3 +43,18 @@ Run: bun run dev
 Build/serve: bun run build && bun run preview
 
 React version verification: bun pm ls react react-dom
+
+## Testing with vitest
+
+Installing testing suite
+```bash
+bun add -d vitest @vitest/ui @testing-library/react @testing-library/jest-dom jsdom
+```
+
+Running tests
+```bash
+bun run test
+bun run test --coverage
+bun run test:run
+bun run test:ui
+```
