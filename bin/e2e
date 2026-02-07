@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# bin/e2e
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+cd "$ROOT_DIR"
+
+# Bring up the prod stack (root compose) plus the e2e runner
+docker compose -f docker-compose.yml -f docker/compose.e2e.yml up -d --build
+
+# Run the E2E suite (fails the script if tests fail)
+docker compose -f docker-compose.yml -f docker/compose.e2e.yml run --rm e2e
+
+# Optional: keep stack running for inspection by commenting this out
+docker compose -f docker-compose.yml -f docker/compose.e2e.yml down --remove-orphans

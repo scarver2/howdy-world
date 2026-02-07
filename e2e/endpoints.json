@@ -1,0 +1,78 @@
+{
+    "baseUrl": "http://nginx",
+    "publicBaseUrl": "http://localhost",
+    "defaults": {
+        "expectStatus": 200,
+        "expectH1": true,
+        "expectHowdyText": "Howdy, World!",
+        "metadata": {
+            "enabled": false,
+            "selector": "#howdyworld-metadata",
+            "requiredKeys": [
+                "serviceId",
+                "metaVersion"
+            ]
+        },
+        "screenshot": false
+    },
+    "routes": [
+        {
+            "name": "root",
+            "path": "/",
+            "expectH1": true,
+            "screenshot": true
+        },
+        {
+            "name": "javascript-react",
+            "path": "/javascript-react/",
+            "expectH1": true,
+            "screenshot": true
+        },
+        {
+            "name": "jquery4",
+            "path": "/jquery4/",
+            "expectH1": true,
+            "screenshot": true
+        },
+        {
+            "name": "elixir-bandit",
+            "path": "/elixir-bandit/",
+            "expectH1": true
+        },
+        {
+            "name": "elixir-phoenix",
+            "path": "/elixir-phoenix/",
+            "expectH1": true,
+            "screenshot": true
+        },
+        {
+            "name": "go",
+            "path": "/go/",
+            "expectH1": true
+        },
+        {
+            "name": "rust-leptos",
+            "path": "/rust-leptos/",
+            "expectH1": true,
+            "screenshot": true
+        },
+        {
+            "name": "java-spring",
+            "path": "/java-spring/",
+            "expectH1": true,
+            "screenshot": true
+        },
+        {
+            "name": "metadata-contract-sample",
+            "path": "/javascript-react/",
+            "metadata": {
+                "enabled": true,
+                "selector": "#howdyworld-metadata",
+                "requiredKeys": [
+                    "serviceId",
+                    "metaVersion"
+                ]
+            }
+        }
+    ]
+}
