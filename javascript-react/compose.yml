@@ -9,7 +9,7 @@ services:
       CHOKIDAR_USEPOLLING: "true"
       WATCHPACK_POLLING: "true"
     volumes:
-      - .:/app:cached
+      - .:/app
       - javascript-react_node_modules:/app/node_modules
     ports:
       - "5173:5173"
