@@ -57,7 +57,7 @@
 - [x] Go
 - [ ] Haskell
 - [ ] Java
-  - [ ] Spring
+  - [x] Spring
 - [x] JavaScript
   - [ ] Angular
   - [ ] Ember
@@ -92,6 +92,8 @@
   - [ ] Sinatra
   - [x] WEBrick
 - [ ] Rust
+  - [ ] Axum
+  - [x] Leptos
 - [ ] Shell
   - [ ] Bash
 - [ ] Swift

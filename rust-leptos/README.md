@@ -28,6 +28,21 @@ TODO:
 ```
    
 then visit http://localhost:3000
+# Howdy from Rust [Leptos](https://www.leptos.dev)
+
+# To run
+
+'''bash
+trunk serve --open
+'''
+
+or
+
+'''bash
+docker compose up --build --remove-orphans
+'''
+
+then visit http://localhost:8080
 
 &copy;2026 [Stan Carver II](http://stancarver.com)
 

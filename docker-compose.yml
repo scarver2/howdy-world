@@ -56,8 +56,6 @@ services:
     expose:
       - "8080"
     restart: unless-stopped
-    # networks:
-    #   - corral
   javascript_inertia:
     build:
       context: ./javascript-inertia
@@ -89,13 +87,15 @@ services:
     container_name: ruby-on-rails-app
     expose:
       - "3000" # Ruby on Rails HTTP server listens on 3000
+  rust-leptos:
+    build:
+      context: ./rust-leptos
+    container_name: rust-leptos
+    expose:
+      - "3000"
   zig:
     build:
       context: ./zig
     expose:
       - "3000"
     restart: unless-stopped
-    # If your nginx is on a custom network, put zig on the same one:
-    # networks:
-    #   corral:
-    #     external: true

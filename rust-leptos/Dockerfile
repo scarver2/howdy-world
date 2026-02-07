@@ -1,23 +1,43 @@
-FROM rust:1.84-slim AS build
+# rust-leptos/Dockerfile
+
+# ---- build stage ----
+FROM rust:1.90-slim AS build
+
 WORKDIR /app
 
-# Cache dependencies
-COPY Cargo.toml ./
-RUN mkdir -p src && printf "fn main() {}\n" > src/main.rs
-RUN cargo build --release
-
-# Build app
-COPY src ./src
-RUN cargo build --release
-
-FROM debian:bookworm-slim
-WORKDIR /app
-
-# TLS roots (handy if you later call out to HTTPS APIs)
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    git \
+    pkg-config \
+    libssl-dev \
+    clang \
+    lld \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=build /app/target/release/rust-leptos /app/rust-leptos
+# Install wasm target for CSR
+RUN rustup target add wasm32-unknown-unknown
 
-EXPOSE 3000
-CMD ["/app/rust-leptos"]
+# Install tools
+RUN cargo install --locked trunk \
+    && cargo install --locked wasm-bindgen-cli
+
+# Copy the project into the image (THIS is what you're missing today)
+COPY Cargo.toml Cargo.lock* ./
+COPY Trunk.toml index.html ./
+COPY src ./src
+# If you have these, keep them; if not, remove the lines
+# COPY public ./public
+# COPY style ./style
+
+# Build release assets (Trunk.toml already sets public_url=/rust-leptos/)
+RUN trunk build --release --dist /dist
+
+# 🔒 Prove they exist at build time (this will FAIL the build if not installed where expected)
+# RUN /usr/local/cargo/bin/trunk --version \
+#     && /usr/local/cargo/bin/wasm-bindgen --version \
+#     && /usr/local/cargo/bin/cargo --version \
+#     && /usr/local/cargo/bin/rustc --version || true
+
+# Use absolute path so PATH/env/volumes can't break it
+CMD ["/usr/local/cargo/bin/trunk", "serve", "--address", "0.0.0.0", "--port", "3000"]
