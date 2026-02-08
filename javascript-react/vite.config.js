@@ -13,8 +13,23 @@ export default defineConfig(({ mode }) => ({
     strictPort: true,
   },
   test: {
-    environment: "jsdom",
-    setupFiles: "./src/setupTests.js",
-    globals: true
-  }
+    // Use happy-dom instead of jsdom to avoid the lru-cache issue
+    environment: "happy-dom",
+
+    // Setup file for @testing-library/jest-dom
+    setupFiles: ["./src/setupTests.js"],
+
+    // Enable globals (test, expect, describe, etc.)
+    globals: true,
+
+    // Coverage configuration (optional)
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json", "html"],
+      exclude: [
+        "node_modules/",
+        "src/setupTests.js",
+      ],
+    },
+  },
 }));
