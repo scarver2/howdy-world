@@ -175,3 +175,57 @@ A “learning → shipped” changelog
 5–10 lines that show momentum without making people dig.
 
 Emphasis the birth to test multiple languages accomplishing the same task, not just for performance, but ease of use and implementation.
+
+
+# Repo Health TODO
+
+## Root-level
+Documentation
+  - Add README.md with setup instructions
+  - Add how to run with Docker
+  - Add how to run locally
+  - Add development workflow notes
+General
+  - add .gitignore?
+Testing
+  - e2e
+Dockerfile
+  - add .dockerignore?
+
+## Service-level
+App
+  - Native Linter
+  - Native Test Suite
+  - AST testing
+  - CSS - /assets
+  - Version locking
+  - Purge extraneous comments and unused codeblocks
+  - HTML Templated for web apps
+  - consume `.env` and secrets?
+  - .gitignore present?
+  - Handle endpoints
+    - production: "/<service>/"
+    - development: "/"
+  - Documentation
+    - Add README.md with setup instructions
+    - Add how to run with Docker
+    - Add how to run locally
+    - Add development workflow notes
+Document how to run locally
+Add development workflow notes
+Dockerfile
+  - .dockerignore present?
+  - production profile
+  - dev profile or Dockerfile.dev
+  - version locked
+  - minimal container size
+  - howdy.localhost
+  - corral network
+  - security: add non-root user to Dockerfile
+    - Add user/group creation  e.g. `RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 bunuser`
+    - Add USER directive e.g. `USER bunuser`
+Docker Compose
+  - minimal and consistent formatting
+  - port mapping
+  - consistent file naming
+  - environment variables

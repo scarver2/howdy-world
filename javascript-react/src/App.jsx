@@ -1,13 +1,7 @@
-import { useState } from 'react'
-import './App.css'
-
+// javascript-react/src/App.jsx
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <h1>Howdy, World!</h1>
-    </>
+    <h1>Howdy, World!</h1>
   )
 }
 
