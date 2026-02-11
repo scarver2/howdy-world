@@ -26,6 +26,12 @@ services:
       - zig
     restart: unless-stopped
 
+  dotnet-aspnet:
+    build:
+      context: ./dotnet-aspnet
+    container_name: dotnet-aspnet
+    expose:
+      - "8080"
   elixir-bandit:
     build:
       context: ./elixir-bandit

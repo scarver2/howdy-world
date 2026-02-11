@@ -1,0 +1,42 @@
+# dotnet-aspnet/.dockerignore
+
+# Build output
+**/bin/
+**/obj/
+
+# User/IDE
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# OS / misc
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Test results / coverage
+**/TestResults/
+**/*.trx
+**/coverage/
+**/coverage.* 
+**/*.coverage
+**/*.coveragexml
+
+# Logs
+**/*.log
+
+# Node (if any tooling appears later)
+node_modules/
+
+# Docker / compose noise
+docker-compose*.yml
+
+# Docs
+*.md

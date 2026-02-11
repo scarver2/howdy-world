@@ -46,7 +46,7 @@
 - [ ] BASIC
 - [ ] C
 - [ ] C++
-- [ ] C# (.NET)
+- [x] C# (ASP.NET)
 - [ ] COBOL
 - [ ] Dart
 - [ ] Elixir
