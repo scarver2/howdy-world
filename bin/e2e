@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+# bin/e2e
+set -euo pipefail
+
+BASE_URL="http://howdy.localhost"
+
+# Green/Red (ANSI)
+GREEN="$(printf '\033[0;32m')"
+RED="$(printf '\033[0;31m')"
+RESET="$(printf '\033[0m')"
+
+# Curated endpoint list (edit as needed)
+# Note: include trailing slash for apps that redirect /foo -> /foo/
+ENDPOINTS=(
+  "/"
+  "/dotnet-aspnet/"
+  "/elixir-bandit/"
+  "/elixir-phoenix/"
+  "/go/"
+  "/java-spring/"
+  "/javascript-inertia/"
+  "/javascript-jquery/"
+  "/javascript-react/"
+  "/javascript-stimulus/"
+  "/javascript-vue/"
+  "/javascript/"
+  "/ruby-on-rails/"
+  "/ruby/"
+  "/rust-leptos/"
+  "/zig/"
+)
+
+# Curl settings:
+# -sS: silent but show errors
+# -L: follow redirects
+# --max-time: keep it snappy
+# -o /dev/null: we only care about status
+CURL_COMMON=(
+  -sS
+  -L
+  --max-time 8
+  -o /dev/null
+  -w "%{http_code}"
+)
+
+pad_dots() {
+  # Print dots so the status lines up nicely
+  # Args: label max_width
+  local label="$1"
+  local max="$2"
+  local len="${#label}"
+  local dots=$(( max - len ))
+  if (( dots < 3 )); then dots=3; fi
+  printf "%s" "$label"
+  printf '%*s' "$dots" '' | tr ' ' '.'
+}
+
+# Compute label width for pretty alignment
+MAX_LABEL=0
+for ep in "${ENDPOINTS[@]}"; do
+  label="${BASE_URL}${ep}"
+  (( ${#label} > MAX_LABEL )) && MAX_LABEL=${#label}
+done
+MAX_LABEL=$(( MAX_LABEL + 8 )) # room for dots
+
+fails=0
+
+echo "Howdy World E2E (HTTP smoke)"
+echo "Base: ${BASE_URL}"
+echo
+
+for ep in "${ENDPOINTS[@]}"; do
+  url="${BASE_URL}${ep}"
+
+  # shellcheck disable=SC2068
+  code="$(curl "${CURL_COMMON[@]}" "$url" 2>/dev/null || true)"
+
+  pad_dots "$url " "$MAX_LABEL"
+
+  if [[ "$code" =~ ^2[0-9][0-9]$ ]]; then
+    printf "%bPass%b\n" "$GREEN" "$RESET"
+  else
+    ((fails++))
+    # If curl failed entirely, code may be empty; show ???
+    [[ -n "$code" ]] || code="???"
+    printf "%bFail%b (HTTP %s)\n" "$RED" "$RESET" "$code"
+  fi
+done
+
+echo
+if (( fails == 0 )); then
+  printf "%bAll endpoints passing.%b\n" "$GREEN" "$RESET"
+  exit 0
+else
+  printf "%b%d endpoint(s) failing.%b\n" "$RED" "$fails" "$RESET"
+  exit 1
+fi
+
