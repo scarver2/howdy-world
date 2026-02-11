@@ -4,77 +4,59 @@
 <head>
   <meta charset="UTF-8">
   <title>Howdy World</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 40px;
-      background: #f7f7f7;
-    }
-
-    h1,
-    h2 {
-      color: #333;
-    }
-
-    ul {
-      list-style-type: none;
-    }
-
-    ul a {
-      display: block;
-      padding: 10px 0;
-      text-decoration: none;
-      font-size: 1.2em;
-      color: #0645AD;
-    }
-
-    ul a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/howdy-world.css" type="text/css" />
 </head>
 
 <body>
-  <img src="/howdy-world.png" alt="Howdy World Cowboy" />
-  <h1>Howdy World</h1>
-  <h2>It's Hello World, <em>Texas-style!</em></h2>
-  <h3>Languages and Frameworks</h3>
-  <p>Click on any of the links below to see a demo of that language or framework.</p>
-  <ul>
-    <li><a href="/dotnet-aspnet/">C# (ASP.NET)</a></li>
-    <li><a href="/elixir/">Elixir</a>
-      <ul>
-        <li><a href="/elixir-bandit/">Bandit</a></li>
-        <li><a href="/elixir-phoenix/">Phoenix</a></li>
-      </ul>
-    </li>
-    <li><a href="/go/">Go</a></li>
-    <li><a href="/java/">Java</a>
-      <ul>
-        <li><a href="/java-spring/">Spring</a></li>
-      </ul>
-    </li>
-    <li><a href="/javascript/">JavaScript</a>
-      <ul>
-        <li><a href="/javascript-inertia/">Inertia</a></li>
-        <li><a href="/javascript-jquery/">jQuery</a></li>
-        <li><a href="/javascript-react/">React</a></li>
-        <li><a href="/javascript-stimulus/">Stimulus</a></li>
-        <li><a href="/javascript-vue/">Vue</a></li>
-      </ul>
-    </li>
-    <li><a href="/ruby/">Ruby</a>
-      <ul>
-        <li><a href="/ruby-on-rails/">Ruby on Rails</a></li>
-      </ul>
-    </li>
-    <li><a href="/rust/">Rust</a>
-      <ul>
-        <li><a href="/rust-leptos/">Leptos</a></li>
-      </ul>
-    </li>
-    <li><a href="/zig/">Zig</a></li>
-  </ul>
+  <header>
+    <div>
+      <img src="/howdy-world.png" alt="Howdy World Cowboy" />
+    </div>
+    <div>
+      <h1>Howdy World</h1>
+      <h2>It's Hello World, <em>Texas-style!</em></h2>
+    </div>
+  </header>
+  <main>
+    <h3>SupportedLanguages and Frameworks</h3>
+    <p>Click on any of the links below to see a demo of that language or framework.</p>
+    <ul>
+      <li><a href="/dotnet-aspnet/">C# (ASP.NET)</a></li>
+      <li>Elixir
+        <ul>
+          <li><a href="/elixir-bandit/">Bandit</a></li>
+          <li><a href="/elixir-phoenix/">Phoenix</a></li>
+        </ul>
+      </li>
+      <li><a href="/go/">Go</a></li>
+      <li>Java
+        <ul>
+          <li><a href="/java-spring/">Spring</a></li>
+        </ul>
+      </li>
+      <li><a href="/javascript/">JavaScript</a>
+        <ul>
+          <li><a href="/javascript-inertia/">Inertia</a></li>
+          <li><a href="/javascript-jquery/">jQuery</a></li>
+          <li><a href="/javascript-react/">React</a></li>
+          <li><a href="/javascript-stimulus/">Stimulus</a></li>
+          <li><a href="/javascript-vue/">Vue</a></li>
+        </ul>
+      </li>
+      <li><a href="/ruby/">Ruby</a>
+        <ul>
+          <li><a href="/ruby-on-rails/">Ruby on Rails</a></li>
+        </ul>
+      </li>
+      <li>Rust
+        <ul>
+          <li><a href="/rust-leptos/">Leptos</a></li>
+        </ul>
+      </li>
+      <li><a href="/zig/">Zig</a></li>
+    </ul>
+  </main>
 
   <footer>
     <p>&copy;2026 <a href="http://stancarver.com" title="Stan Carver II's Portfolio Website">Stan Carver II</a></p>
