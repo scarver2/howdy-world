@@ -1,0 +1,26 @@
+# dotnet-aspnet/Dockerfile.dev
+
+FROM mcr.microsoft.com/dotnet/sdk:10.0
+
+WORKDIR /src
+
+# Speed up first run by caching restore layer
+COPY *.csproj ./
+RUN dotnet restore
+
+# Copy the rest (in compose, bind-mount will override for live edits)
+COPY . ./
+
+# Kestrel will listen on 8080 in-container
+# ENV ASPNETCORE_URLS=http://+:8080 \
+#     DOTNET_USE_POLLING_FILE_WATCHER=1 \
+#     DOTNET_WATCH_SUPPRESS_LAUNCH_BROWSER=1
+
+ENV DOTNET_USE_POLLING_FILE_WATCHER=1 \
+    DOTNET_WATCH_SUPPRESS_LAUNCH_BROWSER=1
+
+EXPOSE 5104
+
+CMD ["bash", "-lc", "dotnet watch run --non-interactive"]
+
+# CMD ["bash", "-lc", "dotnet watch run --non-interactive --no-launch-profile --urls http://0.0.0.0:8080"]

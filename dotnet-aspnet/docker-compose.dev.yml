@@ -1,0 +1,17 @@
+# dotnet-aspnet/docker-compose.dev.yml
+
+services:
+  dotnet-aspnet:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: howdy-dotnet-aspnet-dev
+    ports:
+      - "5104:5104"
+    # ports:
+    #   - "8080:8080"
+    volumes:
+      - .:/src
+    environment:
+      # - ASPNETCORE_URLS=http://+:8080
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
