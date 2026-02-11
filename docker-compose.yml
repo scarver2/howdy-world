@@ -29,7 +29,6 @@ services:
   dotnet-aspnet:
     build:
       context: ./dotnet-aspnet
-    container_name: dotnet-aspnet
     expose:
       - "8080"
   elixir-bandit:
@@ -56,7 +55,6 @@ services:
   java-spring:
     build:
       context: ./java-spring
-    container_name: howdy-java-spring
     environment:
       - PORT=8080
     expose:
@@ -71,24 +69,20 @@ services:
       - BASE_PATH=/javascript-inertia/
     expose:
       - "3000"
-  # Production build: generates dist into a named volume
   javascript-react:
     build:
       context: ./javascript-react
     container_name: javascript-react
     command: [ "sh", "-lc", "bun install && bun run build" ]
     volumes:
-      # Writes dist/ onto your host at ./javascript-react/dist
       - ./javascript-react:/app
     restart: "no"
   ruby:
-    # e.g. http://localhost/ruby
     build: ./ruby
     container_name: ruby-app
     expose:
       - "3000" # Ruby HTTP server listens on this port
   ruby-on-rails:
-    # e.g. http://localhost/ruby-on-rails
     build: ./ruby-on-rails
     container_name: ruby-on-rails-app
     expose:
