@@ -1,10 +1,10 @@
-# home-static/compose.dev.yml
+# _dashboard/compose.dev.yml
 services:
-  home-static:
+  dashboard:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    container_name: howdy-home-static-dev
+    container_name: dashboard-dev
     ports:
       - "8080:8080"
     volumes:

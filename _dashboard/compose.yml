@@ -1,9 +1,9 @@
-# home-static/compose.yml
+# _dashboard/compose.yml
 services:
-  home-static:
+  dashboard:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: howdy-home-static
+    container_name: dashboard
     expose:
       - "8080"

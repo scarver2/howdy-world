@@ -1,6 +1,6 @@
-# home-static
+# Howdy World Dashboard (Homepage) README
 
-HowdyWorld homepage endpoint.
+Howdy World homepage endpoint.
 
 - Serves `www/` (index.html + assets) via lighttpd on port 8080
 - Intended to be reverse-proxied from the root router (NGINX/Traefik/Angie)
@@ -15,7 +15,7 @@ The files below are placeholders in this generated bundle (0 bytes). Copy the re
 - made-in-texas.png
 
 ## Run (dev)
-From `home-static/`:
+From `_dashboard/`:
 
   docker compose -f compose.dev.yml up --build --remove-orphans
 
