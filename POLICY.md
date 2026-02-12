@@ -86,6 +86,14 @@ The front door is **not** responsible for:
 - Running build commands for endpoints
 - Mounting complicated endpoint internals beyond the standard artifact folder
 
+### Security
+
+- Internal endpoint containers SHALL communicate over HTTP only.
+- TLS termination occurs exclusively at the root front door.
+- No endpoint ports are ever exposed to the public.
+- No endpoint container manages certificates.
+- Endpoint containers run with USER policy, *NEVER* as root user
+
 ---
 
 ## Directory Conventions
@@ -174,9 +182,32 @@ When Howdy World Builder is implemented:
 
 ---
 
+## Dockerfile Conventions
+
+Opted-for clarity over cleverness, so Howdy World uses separate Dockerfiles for production and development instead of multi-stage build profiles in a monolithic Dockerfile.
+
+- Dockerfile = production only (build + runtime)
+- Dockerfile.dev = development only (dev server, hot-reloading, bind mounts, etc.)
+
+### Local Development:
+```bash
+cd <endpoint>
+docker compose -f compose.dev.yml up --build --remove-orphans
+```
+
+### Production:
+```bash
+cd <endpoint>
+docker compose up --build --remove-orphans
+```
+
+---
+
 ## Summary
 
 We optimize for:
+- teachability
+- reusability
 - repeatability
 - low coupling
 - minimal drift
