@@ -1,0 +1,9 @@
+# home-static/compose.yml
+services:
+  home-static:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: howdy-home-static
+    expose:
+      - "8080"

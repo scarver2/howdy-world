@@ -1,0 +1,11 @@
+# home-static/compose.dev.yml
+services:
+  home-static:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: howdy-home-static-dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./www:/srv/www:ro
