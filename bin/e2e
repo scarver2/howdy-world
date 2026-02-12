@@ -9,8 +9,18 @@ GREEN="$(printf '\033[0;32m')"
 RED="$(printf '\033[0;31m')"
 RESET="$(printf '\033[0m')"
 
+# Curated list of assets
+ASSETS=(
+  "/favicon.ico"
+  "/apple-touch-icon.png"
+  "/apple-touch-icon-precomposed.png"
+  "/manifest.json"
+  "/howdy.css"
+  "/howdy.js"
+)
+
 # Curated endpoint list (edit as needed)
-# Note: include trailing slash for apps that redirect /foo -> /foo/
+# Note: includes trailing slash because NGINX redirects /foo -> /foo/
 ENDPOINTS=(
   "/"
   "/dotnet-aspnet/"
@@ -56,18 +66,48 @@ pad_dots() {
 }
 
 # Compute label width for pretty alignment
-MAX_LABEL=0
+MAX_ASSETS_LABEL=0
+for ep in "${ASSETS[@]}"; do
+  label="${BASE_URL}${ep}"
+  (( ${#label} > MAX_ASSETS_LABEL )) && MAX_ASSETS_LABEL=${#label}
+done
+MAX_ASSETS_LABEL=$(( MAX_ASSETS_LABEL + 8 )) # room for dots
+
+MAX_ENDPOINTS_LABEL=0
 for ep in "${ENDPOINTS[@]}"; do
   label="${BASE_URL}${ep}"
-  (( ${#label} > MAX_LABEL )) && MAX_LABEL=${#label}
+  (( ${#label} > MAX_ENDPOINTS_LABEL )) && MAX_ENDPOINTS_LABEL=${#label}
 done
-MAX_LABEL=$(( MAX_LABEL + 8 )) # room for dots
+MAX_ENDPOINTS_LABEL=$(( MAX_ENDPOINTS_LABEL + 8 )) # room for dots
 
 fails=0
 
 echo "Howdy World E2E (HTTP smoke)"
 echo "Base: ${BASE_URL}"
+
 echo
+echo "Checking assets..."
+
+for asset in "${ASSETS[@]}"; do
+  url="${BASE_URL}${asset}"
+
+  # shellcheck disable=SC2068
+  code="$(curl "${CURL_COMMON[@]}" "$url" 2>/dev/null || true)"
+
+  pad_dots "$url " "$MAX_ASSETS_LABEL"
+
+  if [[ "$code" =~ ^2[0-9][0-9]$ ]]; then
+    printf "%bPass%b\n" "$GREEN" "$RESET"
+  else
+    ((fails++))
+    # If curl failed entirely, code may be empty; show ???
+    [[ -n "$code" ]] || code="???"
+    printf "%bFail%b (HTTP %s)\n" "$RED" "$RESET" "$code"
+  fi
+done
+
+echo
+echo "Checking endpoints..."
 
 for ep in "${ENDPOINTS[@]}"; do
   url="${BASE_URL}${ep}"
@@ -75,7 +115,7 @@ for ep in "${ENDPOINTS[@]}"; do
   # shellcheck disable=SC2068
   code="$(curl "${CURL_COMMON[@]}" "$url" 2>/dev/null || true)"
 
-  pad_dots "$url " "$MAX_LABEL"
+  pad_dots "$url " "$MAX_ENDPOINTS_LABEL"
 
   if [[ "$code" =~ ^2[0-9][0-9]$ ]]; then
     printf "%bPass%b\n" "$GREEN" "$RESET"
