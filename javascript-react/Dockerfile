@@ -1,14 +1,32 @@
-# javascript-react/Dockerfile
-FROM oven/bun:1.3.8
+# /javascript-react/Dockerfile
+
+# ---- build stage ----
+FROM oven/bun:1.3.8 AS build
 
 WORKDIR /app
 
-COPY package.json bun.lockb* ./
+COPY package.json bun.lock* ./
 RUN bun install
 
 COPY . .
+RUN bun run build
 
-EXPOSE 5173
+# ---- runtime stage ----
+FROM alpine:3.20 AS runtime
 
-# Default to dev; compose overrides this for the production build container
-CMD ["bun", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
+# lighttpd + basic certs for completeness
+RUN apk add --no-cache lighttpd ca-certificates \
+    && mkdir -p /run/lighttpd /var/log/lighttpd \
+    && chown -R lighttpd:lighttpd /run/lighttpd /var/log/lighttpd
+
+# Copy compiled static assets into a subfolder so alias.url can map /javascript-react
+RUN mkdir -p /var/www/localhost/htdocs/javascript-react
+COPY --from=build /app/dist /var/www/localhost/htdocs/javascript-react
+
+# Lighttpd config
+COPY lighttpd.conf /etc/lighttpd/lighttpd.conf
+
+# was EXPOSE 5173
+EXPOSE 8080
+
+CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]

@@ -1,0 +1,9 @@
+# _dashboard/compose.yml
+services:
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dashboard
+    expose:
+      - "8080"

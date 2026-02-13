@@ -1,0 +1,46 @@
+# javascript-react/.dockerignore
+
+# dependencies (installed in image)
+node_modules
+.pnp
+.pnp.js
+
+# build output
+dist
+coverage
+
+# caches
+.vite
+.eslintcache
+.npm
+.yarn
+.pnpm-store
+.bun
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+bun-debug.log*
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+
+# git / misc
+.git
+.gitignore
+
+# env files (never bake secrets)
+.env
+.env.*
+!.env.example
+
+# docker files that shouldn't bloat context (optional)
+docker-compose*.yml
+compose*.yml
+

@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# bin/logs
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+COMPOSE_FILE="${COMPOSE_FILE:-compose.yml}"
+
+usage() {
+  cat <<'USAGE'
+Usage:
+  bin/log                     # tail logs for all services
+  bin/log <service>           # tail logs for one service
+  bin/log <service> -f        # follow
+  bin/log -f                  # follow all
+  bin/log --list              # list services
+
+Examples:
+  bin/log nginx -f
+  bin/log rust-leptos
+  bin/log -f
+USAGE
+}
+
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  usage
+  exit 0
+fi
+
+if [[ "${1:-}" == "--list" ]]; then
+  docker compose -f "$COMPOSE_FILE" config --services
+  exit 0
+fi
+
+# If first arg looks like an option, no service specified.
+SERVICE=""
+if [[ $# -gt 0 && "${1:0:1}" != "-" ]]; then
+  SERVICE="$1"
+  shift
+fi
+
+# Default tail
+TAIL_LINES="${TAIL_LINES:-200}"
+
+# Validate service if provided
+if [[ -n "$SERVICE" ]]; then
+  if ! docker compose -f "$COMPOSE_FILE" config --services | grep -qx "$SERVICE"; then
+    echo "Unknown service: $SERVICE"
+    echo
+    echo "Available services:"
+    docker compose -f "$COMPOSE_FILE" config --services | sed 's/^/  - /'
+    exit 2
+  fi
+fi
+
+if [[ -n "$SERVICE" ]]; then
+  docker compose -f "$COMPOSE_FILE" logs --tail="$TAIL_LINES" "$@" "$SERVICE"
+else
+  docker compose -f "$COMPOSE_FILE" logs --tail="$TAIL_LINES" "$@"
+fi
+
