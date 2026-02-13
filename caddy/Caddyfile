@@ -1,0 +1,15 @@
+:8080 {
+
+  root * /srv
+  file_server
+
+  encode gzip zstd
+
+  header {
+    X-Howdy-World "Caddy Endpoint"
+    X-Technology "Caddy 2"
+  }
+
+  # SPA fallback (optional — remove if pure static)
+  try_files {path} /index.html
+}

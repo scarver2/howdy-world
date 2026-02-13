@@ -47,6 +47,7 @@
 - [ ] C
 - [ ] C++
 - [x] C# (ASP.NET)
+- [x] Caddy
 - [ ] COBOL
 - [ ] Dart
 - [ ] Elixir

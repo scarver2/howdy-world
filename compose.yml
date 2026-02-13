@@ -33,6 +33,12 @@ services:
     expose:
       - "8080"
 
+  caddy:
+    build:
+      context: ./caddy
+    container_name: caddy
+    expose:
+      - "8080"
   dotnet-aspnet:
     build:
       context: ./dotnet-aspnet
