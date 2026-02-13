@@ -1,25 +1,25 @@
 # docker-compose.yml
 services:
   nginx:
-    # e.g. http://localhost/
+    # e.g. http://howdy.localhost/
     image: nginx:alpine
     container_name: nginx
     ports:
       - "80:80"
     volumes:
       # FIXME: this is convoluted and likely unnecessary
+      # - ./javascript:/srv/javascript:ro
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ./nginx/www:/usr/share/nginx/html:ro
-      - ./javascript:/srv/javascript:ro
       - ./nginx/conf.d/javascript-inertia.conf:/etc/nginx/conf.d/javascript-inertia.conf:ro
       - ./javascript-jquery:/srv/javascript-jquery:ro
       - ./javascript-stimulus:/srv/javascript-stimulus:ro
       - ./javascript-vue:/srv/javascript-vue:ro
     depends_on:
       - java-spring
-      - javascript_inertia
-      - javascript-react
+      - javascript-inertia
+      # - javascript-react
       - ruby
       - ruby-on-rails
       - zig
@@ -67,7 +67,14 @@ services:
     expose:
       - "8080"
     restart: unless-stopped
-  javascript_inertia:
+  javascript:
+    build:
+      context: ./javascript
+      # dockerfile: Dockerfile
+    container_name: javascript
+    expose:
+      - "8080"
+  javascript-inertia:
     build:
       context: ./javascript-inertia
     environment:

@@ -1,0 +1,9 @@
+# javascript/compose.yml
+services:
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: javascript
+    expose:
+      - "8080"
