@@ -58,7 +58,7 @@
 - [x] Go
 - [ ] Haskell
 - [ ] Java
-  - [x] Spring
+  - [x] Spring Boot
 - [x] JavaScript
   - [ ] Angular
   - [ ] Ember

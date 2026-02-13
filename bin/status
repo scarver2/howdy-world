@@ -58,7 +58,7 @@ if (( DO_HTTP == 1 )); then
     "/go/"
     "/elixir-bandit/"
     "/elixir-phoenix/"
-    "/java-spring/"
+    "/java-spring-boot/"
     "/rust-leptos/"
     "/dotnet/"
   )

@@ -1,22 +1,45 @@
-FROM rust:1.84-slim
+# FROM rust:1.90-slim
 
-# (Optional but useful) build deps some crates need
+# # (Optional but useful) build deps some crates need
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     ca-certificates \
+#     pkg-config \
+#     libssl-dev \
+#     && rm -rf /var/lib/apt/lists/*
+
+# # Keep cargo caches in a predictable place (and mount it via compose)
+# ENV CARGO_HOME=/cargo
+# ENV PATH=/cargo/bin:/usr/local/cargo/bin:/usr/local/rustup/bin:$PATH
+
+# WORKDIR /app
+
+# # Install cargo-watch once into the image (or cache layer)
+# RUN cargo install cargo-watch --locked
+
+# EXPOSE 3000
+
+# # Watch only what matters; restart on change
+# # CMD ["bash", "-lc", "cargo watch -w src -w Cargo.toml -x run"]
+# CMD ["cargo", "watch", "-w", "src", "-w", "Cargo.toml", "-x", "run"]
+
+FROM rust:1.93.1-slim
+
+WORKDIR /app
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     pkg-config \
     libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Keep cargo caches in a predictable place (and mount it via compose)
-ENV CARGO_HOME=/cargo
-ENV PATH=/cargo/bin:/usr/local/cargo/bin:/usr/local/rustup/bin:$PATH
+# Add wasm target
+RUN rustup target add wasm32-unknown-unknown
+
+# Install trunk
+RUN cargo install trunk --locked
 
 WORKDIR /app
 
-# Install cargo-watch once into the image (or cache layer)
-RUN cargo install cargo-watch --locked
-
 EXPOSE 3000
 
-# Watch only what matters; restart on change
-CMD ["bash", "-lc", "cargo watch -w src -w Cargo.toml -x run"]
+CMD ["trunk", "serve", "--address", "0.0.0.0", "--port", "3000", "--public-url", "/"]

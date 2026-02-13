@@ -1,0 +1,11 @@
+# javascript-vue/compose.dev.yml
+services:
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: javascript-vue-dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/srv/javascript-vue:ro

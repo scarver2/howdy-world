@@ -1,0 +1,11 @@
+# javascript/Dockerfile.dev
+FROM alpine:3.20
+
+RUN apk add --no-cache lighttpd ca-certificates \
+  && mkdir -p /srv/javascript /var/cache/lighttpd/compress \
+  && chown -R lighttpd:lighttpd /srv/javascript /var/cache/lighttpd/compress
+
+COPY lighttpd.conf /etc/lighttpd/lighttpd.conf
+
+EXPOSE 8080
+CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
