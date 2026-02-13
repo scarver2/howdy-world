@@ -1,0 +1,7 @@
+# caddy/compose.yml
+
+services:
+  caddy:
+    build: .
+    expose:
+      - "8080"
