@@ -70,7 +70,6 @@ services:
   javascript:
     build:
       context: ./javascript
-      # dockerfile: Dockerfile
     container_name: javascript
     expose:
       - "8080"
@@ -83,6 +82,12 @@ services:
       - BASE_PATH=/javascript-inertia/
     expose:
       - "3000"
+  javascript-jquery:
+    build:
+      context: ./javascript-jquery
+    container_name: javascript-jquery
+    expose:
+      - "8080"
   javascript-react:
     build:
       context: ./javascript-react

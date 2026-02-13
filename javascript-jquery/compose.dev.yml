@@ -1,0 +1,11 @@
+# javascript-jquery/compose.dev.yml
+services:
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: javascript-jquery-dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/srv/javascript-jquery:ro
