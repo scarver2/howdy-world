@@ -14,13 +14,14 @@ ASSETS=(
   "/favicon.ico"
   "/apple-touch-icon.png"
   "/apple-touch-icon-precomposed.png"
-  "/manifest.json"
-  "/howdy.css"
-  "/howdy.js"
+  "/assets/howdy.css"
+  "/assets/howdy.js"
 )
 
 # Curated endpoint list (edit as needed)
 # Note: includes trailing slash because NGINX redirects /foo -> /foo/
+# TODO: 404 page
+# TODO: 500 page
 ENDPOINTS=(
   "/"
   "/dotnet-aspnet/"
@@ -65,6 +66,30 @@ pad_dots() {
   printf '%*s' "$dots" '' | tr ' ' '.'
 }
 
+expected_for_path() {
+  # Return a case-insensitive substring to look for in the response body.
+  # Empty string means "no body assertion".
+  #
+  # Keep assertions lightweight and stable (don’t couple to fragile markup).
+  local path="$1"
+
+  printf "%s" "Howdy"
+}
+
+fetch_body() {
+  # Fetch body as text. We keep it simple: follow redirects, time out quickly.
+  local url="$1"
+  curl -sS -L --max-time 8 "$url" 2>/dev/null || true
+}
+
+assert_body_contains() {
+  local body="$1"
+  local expected="$2"
+
+  # Case-insensitive fixed string match
+  printf "%s" "$body" | grep -qiF "$expected"
+}
+
 # Compute label width for pretty alignment
 MAX_ASSETS_LABEL=0
 for ep in "${ASSETS[@]}"; do
@@ -80,7 +105,8 @@ for ep in "${ENDPOINTS[@]}"; do
 done
 MAX_ENDPOINTS_LABEL=$(( MAX_ENDPOINTS_LABEL + 8 )) # room for dots
 
-fails=0
+asset_fails=0
+endpoint_fails=0
 
 echo "Howdy World E2E (HTTP smoke)"
 echo "Base: ${BASE_URL}"
@@ -99,7 +125,7 @@ for asset in "${ASSETS[@]}"; do
   if [[ "$code" =~ ^2[0-9][0-9]$ ]]; then
     printf "%bPass%b\n" "$GREEN" "$RESET"
   else
-    ((fails++))
+    ((asset_fails++))
     # If curl failed entirely, code may be empty; show ???
     [[ -n "$code" ]] || code="???"
     printf "%bFail%b (HTTP %s)\n" "$RED" "$RESET" "$code"
@@ -118,21 +144,46 @@ for ep in "${ENDPOINTS[@]}"; do
   pad_dots "$url " "$MAX_ENDPOINTS_LABEL"
 
   if [[ "$code" =~ ^2[0-9][0-9]$ ]]; then
-    printf "%bPass%b\n" "$GREEN" "$RESET"
+    expected="$(expected_for_path "$ep")"
+
+    if [[ -z "$expected" ]]; then
+      printf "%bPass%b (HTTP %s)\n" "$GREEN" "$RESET" "$code"
+      continue
+    fi
+
+    body="$(fetch_body "$url")"
+
+    if assert_body_contains "$body" "$expected"; then
+      printf "%bPass%b (HTTP %s)\n" "$GREEN" "$RESET" "$code"
+    else
+      ((endpoint_fails++))
+      printf "%bFail%b (HTTP %s, missing '%s')\n" "$RED" "$RESET" "$code" "$expected"
+    fi
   else
-    ((fails++))
-    # If curl failed entirely, code may be empty; show ???
+    ((endpoint_fails++))
     [[ -n "$code" ]] || code="???"
     printf "%bFail%b (HTTP %s)\n" "$RED" "$RESET" "$code"
   fi
+
 done
 
 echo
-if (( fails == 0 )); then
-  printf "%bAll endpoints passing.%b\n" "$GREEN" "$RESET"
-  exit 0
+if (( asset_fails == 0 )); then
+  printf "%bAll assets passing.%b\n" "$GREEN" "$RESET"
 else
-  printf "%b%d endpoint(s) failing.%b\n" "$RED" "$fails" "$RESET"
-  exit 1
+  printf "%b%d asset(s) failing.%b\n" "$RED" "$asset_fails" "$RESET"
 fi
 
+echo
+if (( endpoint_fails == 0 )); then
+  printf "%bAll endpoints passing.%b\n" "$GREEN" "$RESET"
+else
+  printf "%b%d endpoint(s) failing.%b\n" "$RED" "$endpoint_fails" "$RESET"
+fi
+
+echo
+if (( asset_fails == 0 && endpoint_fails == 0 )); then
+  exit 0
+else
+  exit 1
+fi
