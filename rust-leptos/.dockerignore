@@ -1,4 +1,10 @@
-/target
-**/*.rs.bk
 .DS_Store
-
+.git
+.gitignore
+*.log
+*.rs.bk
+build
+coverage
+dist
+node_modules
+target
