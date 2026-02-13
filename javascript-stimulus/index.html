@@ -21,7 +21,7 @@
 
         application.register("page", class extends Controller {
             connect() {
-                this.element.textContent = "Howdy, World!";
+                this.element.innerHTML = "<h1>Howdy, World!</h1>";
             }
         });
     </script>
