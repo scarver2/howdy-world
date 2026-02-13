@@ -8,18 +8,13 @@ services:
       - "80:80"
     volumes:
       # FIXME: this is convoluted and likely unnecessary
-      # - ./javascript:/srv/javascript:ro
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ./nginx/www:/usr/share/nginx/html:ro
       - ./nginx/conf.d/javascript-inertia.conf:/etc/nginx/conf.d/javascript-inertia.conf:ro
-      - ./javascript-jquery:/srv/javascript-jquery:ro
-      - ./javascript-stimulus:/srv/javascript-stimulus:ro
-      - ./javascript-vue:/srv/javascript-vue:ro
     depends_on:
       - java-spring
       - javascript-inertia
-      # - javascript-react
       - ruby
       - ruby-on-rails
       - zig
@@ -66,7 +61,6 @@ services:
       - PORT=8080
     expose:
       - "8080"
-    restart: unless-stopped
   javascript:
     build:
       context: ./javascript
@@ -93,6 +87,18 @@ services:
       context: ./javascript-react
     environment:
       - PORT=8080
+  javascript-stimulus:
+    build:
+      context: ./javascript-stimulus
+    container_name: javascript-stimulus
+    expose:
+      - "8080"
+  javascript-vue:
+    build:
+      context: ./javascript-vue
+    container_name: javascript-vue
+    expose:
+      - "8080"
   ruby:
     build: ./ruby
     container_name: ruby-app
