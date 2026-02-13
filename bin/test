@@ -28,7 +28,7 @@ ENDPOINTS=(
   "/elixir-bandit/"
   "/elixir-phoenix/"
   "/go/"
-  "/java-spring/"
+  "/java-spring-boot/"
   "/javascript-inertia/"
   "/javascript-jquery/"
   "/javascript-react/"

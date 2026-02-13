@@ -1,28 +1,13 @@
-# docker-compose.yml
+# compose.yml
 services:
   nginx:
-    # e.g. http://localhost/
     image: nginx:alpine
     container_name: nginx
     ports:
       - "80:80"
     volumes:
-      # FIXME: this is convoluted and likely unnecessary
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./nginx/www:/usr/share/nginx/html:ro
-      - ./javascript:/srv/javascript:ro
-      - ./nginx/conf.d/javascript-inertia.conf:/etc/nginx/conf.d/javascript-inertia.conf:ro
-      - ./javascript-jquery:/srv/javascript-jquery:ro
-      - ./javascript-stimulus:/srv/javascript-stimulus:ro
-      - ./javascript-vue:/srv/javascript-vue:ro
-    depends_on:
-      - java-spring
-      - javascript_inertia
-      - javascript-react
-      - ruby
-      - ruby-on-rails
-      - zig
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro # overrides default
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro # include endpoints
     restart: unless-stopped
 
   dashboard:
@@ -36,11 +21,13 @@ services:
   dotnet-aspnet:
     build:
       context: ./dotnet-aspnet
+    container_name: dotnet-aspnet
     expose:
       - "8080"
   elixir-bandit:
     build:
       context: ./elixir-bandit
+    container_name: elixir-bandit
     environment:
       - PORT=4000
     expose:
@@ -48,6 +35,7 @@ services:
   elixir-phoenix:
     build:
       context: ./elixir-phoenix
+    container_name: elixir-phoenix
     environment:
       - PORT=4000
     expose:
@@ -55,40 +43,62 @@ services:
   go:
     build:
       context: ./go
+    container_name: go
     environment:
       - PORT=8080
     expose:
       - "8080"
-  java-spring:
+  java-spring-boot:
     build:
-      context: ./java-spring
+      context: ./java-spring-boot
+    container_name: java-spring-boot
     environment:
       - PORT=8080
     expose:
       - "8080"
-    restart: unless-stopped
-  javascript_inertia:
+  javascript:
+    build:
+      context: ./javascript
+    container_name: javascript
+    expose:
+      - "8080"
+  javascript-inertia:
     build:
       context: ./javascript-inertia
-    environment:
-      - PORT=3000
-      - NODE_ENV=production
-      - BASE_PATH=/javascript-inertia/
     expose:
       - "3000"
+  javascript-jquery:
+    build:
+      context: ./javascript-jquery
+    container_name: javascript-jquery
+    expose:
+      - "8080"
   javascript-react:
     build:
       context: ./javascript-react
+    container_name: javascript-react
     environment:
       - PORT=8080
+  javascript-stimulus:
+    build:
+      context: ./javascript-stimulus
+    container_name: javascript-stimulus
+    expose:
+      - "8080"
+  javascript-vue:
+    build:
+      context: ./javascript-vue
+    container_name: javascript-vue
+    expose:
+      - "8080"
   ruby:
     build: ./ruby
-    container_name: ruby-app
+    container_name: ruby
     expose:
       - "3000" # Ruby HTTP server listens on this port
   ruby-on-rails:
     build: ./ruby-on-rails
-    container_name: ruby-on-rails-app
+    container_name: ruby-on-rails
     expose:
       - "3000" # Ruby on Rails HTTP server listens on 3000
   rust-leptos:
@@ -100,5 +110,6 @@ services:
   zig:
     build:
       context: ./zig
+    container_name: zig
     expose:
       - "3000"

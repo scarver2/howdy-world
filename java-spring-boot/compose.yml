@@ -1,10 +1,9 @@
-# java-spring/compose.yml
+# java-spring-boot/compose.yml
 
 services:
-  java-spring:
+  java-spring-boot:
     build:
       context: .
-    container_name: howdy-java-spring
     environment:
       - SERVER_PORT=8080
     ports:

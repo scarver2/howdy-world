@@ -1,0 +1,9 @@
+# javascript-vue/compose.yml
+services:
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: javascript-vue
+    expose:
+      - "8080"

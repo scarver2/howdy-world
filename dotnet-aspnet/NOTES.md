@@ -251,7 +251,7 @@ You now have:
 * Go
 * Rust (Leptos)
 * Elixir (Bandit + Phoenix)
-* Java (Spring)
+* Java (Spring Boot)
 * Node (Express / Next)
 * React (Vite)
 * And now…
