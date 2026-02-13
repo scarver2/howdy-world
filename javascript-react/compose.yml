@@ -1,20 +1,10 @@
-# /javascript-react/compose.yml
+# javascript-react/compose.yml
 services:
   javascript-react:
     build:
       context: .
-    container_name: javascript-react-dev
-    command: [ "sh", "-lc", "bun install && bun run dev -- --host 0.0.0.0 --port 5173" ]
-    environment:
-      # Helps file watching work reliably with bind mounts (Docker Desktop/macOS especially)
-      CHOKIDAR_USEPOLLING: "true"
-    volumes:
-      - .:/app
-      # Keep container dependencies from being shadowed by the bind mount
-      - javascript-react_node_modules:/app/node_modules
-    ports:
-      - "5173:5173"
+      dockerfile: Dockerfile
+    container_name: javascript-react
+    expose:
+      - "8080"
     restart: unless-stopped
-
-volumes:
-  javascript-react_node_modules:
