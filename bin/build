@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# bin/build
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+COMPOSE_FILE="${COMPOSE_FILE:-compose.yml}"
+
+usage() {
+  cat <<'USAGE'
+Usage:
+  bin/build                 # build all services in compose.yml
+  bin/build <service>       # build one service
+  bin/build --list          # list services
+  bin/build --no-cache      # build all, no cache
+  bin/build <service> --no-cache
+
+Examples:
+  bin/build
+  bin/build nginx
+  bin/build --no-cache
+  bin/build rust-leptos --no-cache
+
+Notes:
+- Pass-through args are supported after the optional <service>.
+USAGE
+}
+
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  usage
+  exit 0
+fi
+
+if [[ "${1:-}" == "--list" ]]; then
+  docker compose -f "$COMPOSE_FILE" config --services
+  exit 0
+fi
+
+SERVICE=""
+if [[ $# -gt 0 && "${1:0:1}" != "-" ]]; then
+  SERVICE="$1"
+  shift
+fi
+
+# Validate service if provided
+if [[ -n "$SERVICE" ]]; then
+  if ! docker compose -f "$COMPOSE_FILE" config --services | grep -qx "$SERVICE"; then
+    echo "Unknown service: $SERVICE"
+    echo
+    echo "Available services:"
+    docker compose -f "$COMPOSE_FILE" config --services | sed 's/^/  - /'
+    exit 2
+  fi
+fi
+
+if [[ -n "$SERVICE" ]]; then
+  docker compose -f "$COMPOSE_FILE" build "$@" "$SERVICE"
+else
+  docker compose -f "$COMPOSE_FILE" build "$@"
+fi
+

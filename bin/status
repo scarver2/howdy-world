@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+# bin/status
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+COMPOSE_FILE="${COMPOSE_FILE:-compose.yml}"
+
+usage() {
+  cat <<'USAGE'
+Usage:
+  bin/status                 # docker compose ps
+  bin/status --all           # ps + images
+  bin/status --http          # ps + quick HTTP smoke check to howdy.localhost
+  bin/status --http --base http://howdy.localhost
+
+Notes:
+- Root stack is production-only; this is just a friendly wrapper.
+USAGE
+}
+
+BASE_URL="http://howdy.localhost"
+DO_ALL=0
+DO_HTTP=0
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help) usage; exit 0 ;;
+    --all) DO_ALL=1; shift ;;
+    --http) DO_HTTP=1; shift ;;
+    --base) BASE_URL="${2:-}"; shift 2 ;;
+    *) echo "Unknown option: $1"; echo; usage; exit 2 ;;
+  esac
+done
+
+echo "Howdy World Status"
+echo "Compose: ${COMPOSE_FILE}"
+echo
+
+docker compose -f "$COMPOSE_FILE" ps
+
+if (( DO_ALL == 1 )); then
+  echo
+  echo "Images"
+  docker compose -f "$COMPOSE_FILE" images
+fi
+
+if (( DO_HTTP == 1 )); then
+  echo
+  echo "HTTP smoke (2xx = OK): ${BASE_URL}"
+
+  # Minimal curated list; edit to match your root routing.
+  ENDPOINTS=(
+    "/"
+    "/javascript-react/"
+    "/jquery4/"
+    "/go/"
+    "/elixir-bandit/"
+    "/elixir-phoenix/"
+    "/java-spring/"
+    "/rust-leptos/"
+    "/dotnet/"
+  )
+
+  GREEN="$(printf '\033[0;32m')"
+  RED="$(printf '\033[0;31m')"
+  RESET="$(printf '\033[0m')"
+
+  CURL_COMMON=(-sS -L --max-time 5 -o /dev/null -w "%{http_code}")
+
+  fails=0
+  for ep in "${ENDPOINTS[@]}"; do
+    url="${BASE_URL}${ep}"
+    code="$(curl "${CURL_COMMON[@]}" "$url" 2>/dev/null || true)"
+    [[ -n "$code" ]] || code="???"
+
+    printf "%-40s " "$ep"
+    if [[ "$code" =~ ^2[0-9][0-9]$ ]]; then
+      printf "%bOK%b (HTTP %s)\n" "$GREEN" "$RESET" "$code"
+    else
+      ((fails++))
+      printf "%bFAIL%b (HTTP %s)\n" "$RED" "$RESET" "$code"
+    fi
+  done
+
+  echo
+  if (( fails == 0 )); then
+    printf "%bAll HTTP checks OK%b\n" "$GREEN" "$RESET"
+  else
+    printf "%b%d HTTP check(s) failing%b\n" "$RED" "$fails" "$RESET"
+    exit 1
+  fi
+fi
+

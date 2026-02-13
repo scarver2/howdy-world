@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+# bin/doctor
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+COMPOSE_FILE="${COMPOSE_FILE:-compose.yml}"
+BASE_URL="${BASE_URL:-http://howdy.localhost}"
+
+GREEN="$(printf '\033[0;32m')"
+YELLOW="$(printf '\033[0;33m')"
+RED="$(printf '\033[0;31m')"
+RESET="$(printf '\033[0m')"
+
+ok()   { printf "%bOK%b   %s\n"   "$GREEN" "$RESET" "$1"; }
+warn() { printf "%bWARN%b %s\n" "$YELLOW" "$RESET" "$1"; }
+fail() { printf "%bFAIL%b %s\n"  "$RED" "$RESET" "$1"; }
+
+have() { command -v "$1" >/dev/null 2>&1; }
+
+echo "Howdy World Doctor"
+echo "Root:   $ROOT_DIR"
+echo "Compose: $COMPOSE_FILE"
+echo "Base:   $BASE_URL"
+echo
+
+# 1) Docker CLI
+if have docker; then
+  ok "docker CLI found ($(docker --version 2>/dev/null || true))"
+else
+  fail "docker not found in PATH"
+  exit 1
+fi
+
+# 2) Docker daemon
+if docker info >/dev/null 2>&1; then
+  ok "docker daemon reachable"
+else
+  fail "docker daemon not reachable (is Docker Desktop / dockerd running?)"
+  exit 1
+fi
+
+# 3) Compose plugin
+if docker compose version >/dev/null 2>&1; then
+  ok "docker compose available ($(docker compose version 2>/dev/null | head -n1))"
+else
+  fail "docker compose not available (need Docker Compose v2 plugin)"
+  exit 1
+fi
+
+# 4) Repo sanity
+if [[ -f "$COMPOSE_FILE" ]]; then
+  ok "compose file exists: $COMPOSE_FILE"
+else
+  fail "compose file missing: $COMPOSE_FILE"
+  exit 1
+fi
+
+# 5) Compose parses + service list
+if services="$(docker compose -f "$COMPOSE_FILE" config --services 2>/dev/null)"; then
+  count="$(printf "%s\n" "$services" | sed '/^\s*$/d' | wc -l | tr -d ' ')"
+  ok "compose parses; services: $count"
+else
+  fail "compose config failed to render (syntax/env issue)"
+  exit 1
+fi
+
+# 6) DNS check for howdy.localhost
+host_name="$(printf "%s" "$BASE_URL" | sed -E 's#^https?://##' | sed -E 's#/.*$##')"
+
+dns_ok=0
+if have getent; then
+  if getent hosts "$host_name" >/dev/null 2>&1; then dns_ok=1; fi
+elif have dscacheutil; then
+  # macOS
+  if dscacheutil -q host -a name "$host_name" 2>/dev/null | grep -qi "ip_address"; then dns_ok=1; fi
+elif have ping; then
+  if ping -c 1 -t 1 "$host_name" >/dev/null 2>&1; then dns_ok=1; fi
+fi
+
+if (( dns_ok == 1 )); then
+  ok "hostname resolves: $host_name"
+else
+  warn "could not confirm hostname resolves: $host_name (may still work if browser/stack handles it)"
+fi
+
+# 7) HTTP check (root)
+http_code=""
+if have curl; then
+  http_code="$(curl -sS -L --max-time 4 -o /dev/null -w "%{http_code}" "${BASE_URL}/" 2>/dev/null || true)"
+  [[ -n "$http_code" ]] || http_code="???"
+
+  if [[ "$http_code" =~ ^2[0-9][0-9]$ ]]; then
+    ok "HTTP reachable: ${BASE_URL}/ (HTTP $http_code)"
+  else
+    warn "HTTP not healthy yet: ${BASE_URL}/ (HTTP $http_code) — is the stack up?"
+    echo "     Try: bin/up  (or: docker compose -f $COMPOSE_FILE up -d)"
+  fi
+else
+  warn "curl not found; skipping HTTP check"
+fi
+
+# 8) Quick hints: are containers running?
+running="$(docker compose -f "$COMPOSE_FILE" ps --status running --quiet 2>/dev/null | wc -l | tr -d ' ' || true)"
+if [[ "$running" =~ ^[0-9]+$ ]] && (( running > 0 )); then
+  ok "containers running: $running"
+else
+  warn "no running containers detected for this compose file"
+fi
+
+# 9) Best-effort port listening hint (no hard dependency)
+if have lsof; then
+  # Look for listeners on 80/443/8080/3000/etc (just a hint; not authoritative)
+  listeners="$(lsof -nP -iTCP -sTCP:LISTEN 2>/dev/null | egrep ':(80|443|8080|3000|4000|5000|5104|5173)\b' || true)"
+  if [[ -n "$listeners" ]]; then
+    ok "found common HTTP listeners (hint):"
+    printf "%s\n" "$listeners" | sed 's/^/     /'
+  else
+    warn "no common HTTP listeners found (lsof) — may be fine if Docker is proxying"
+  fi
+fi
+
+echo
+ok "doctor complete"
+

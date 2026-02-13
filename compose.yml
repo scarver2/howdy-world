@@ -14,7 +14,6 @@ services:
       - ./javascript:/srv/javascript:ro
       - ./nginx/conf.d/javascript-inertia.conf:/etc/nginx/conf.d/javascript-inertia.conf:ro
       - ./javascript-jquery:/srv/javascript-jquery:ro
-      # - ./javascript-react/dist:/srv/javascript-react-dist:ro
       - ./javascript-stimulus:/srv/javascript-stimulus:ro
       - ./javascript-vue:/srv/javascript-vue:ro
     depends_on:
@@ -25,6 +24,14 @@ services:
       - ruby-on-rails
       - zig
     restart: unless-stopped
+
+  dashboard:
+    build:
+      context: ./_dashboard
+      dockerfile: Dockerfile
+    container_name: dashboard
+    expose:
+      - "8080"
 
   dotnet-aspnet:
     build:
@@ -72,11 +79,8 @@ services:
   javascript-react:
     build:
       context: ./javascript-react
-    container_name: javascript-react
-    command: [ "sh", "-lc", "bun install && bun run build" ]
-    volumes:
-      - ./javascript-react:/app
-    restart: "no"
+    environment:
+      - PORT=8080
   ruby:
     build: ./ruby
     container_name: ruby-app
@@ -98,4 +102,3 @@ services:
       context: ./zig
     expose:
       - "3000"
-    restart: unless-stopped

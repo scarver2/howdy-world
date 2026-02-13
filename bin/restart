@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# bin/restart
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+COMPOSE_FILE="${COMPOSE_FILE:-compose.yml}"
+
+# Default: restart and rebuild (cached deltas)
+# Override by passing args, e.g.:
+#   bin/restart --no-build
+#   bin/restart --build --remove-orphans
+NO_BUILD=0
+if [[ "${1:-}" == "--no-build" ]]; then
+  NO_BUILD=1
+  shift
+fi
+
+docker compose -f "$COMPOSE_FILE" down --remove-orphans
+
+if (( NO_BUILD == 1 )); then
+  if [[ $# -eq 0 ]]; then
+    docker compose -f "$COMPOSE_FILE" up -d
+  else
+    docker compose -f "$COMPOSE_FILE" up "$@"
+  fi
+else
+  if [[ $# -eq 0 ]]; then
+    docker compose -f "$COMPOSE_FILE" up -d --build
+  else
+    docker compose -f "$COMPOSE_FILE" up --build "$@"
+  fi
+fi
+
