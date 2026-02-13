@@ -1,4 +1,4 @@
-// java-spring/src/main/java/com/howdyworld/HowdyWorldApplication.java
+// java-spring-boot/src/main/java/com/howdyworld/HowdyWorldApplication.java
 package com.howdyworld.java;
 
 import org.springframework.boot.SpringApplication;

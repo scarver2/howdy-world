@@ -1,4 +1,4 @@
-// java-spring/src/main/java/com/howdyworld/java/PageView.java
+// java-spring-boot/src/main/java/com/howdyworld/java/PageView.java
 package com.howdyworld.java;
 
 public class PageView {
@@ -15,7 +15,7 @@ public class PageView {
 
     // Convenience constructor with defaults
     public PageView() {
-        this("Howdy from Java Spring!", "Howdy, World!", "");
+        this("Howdy from Java Spring Boot!", "Howdy, World!", "");
     }
 
     public String getTitle() {

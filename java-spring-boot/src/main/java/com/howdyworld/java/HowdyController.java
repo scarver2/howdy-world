@@ -1,4 +1,4 @@
-// java-spring/src/main/java/com/howdyworld/java/HowdyController.java
+// java-spring-boot/src/main/java/com/howdyworld/java/HowdyController.java
 package com.howdyworld.java;
 
 import org.springframework.stereotype.Controller;

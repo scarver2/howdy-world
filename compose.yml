@@ -48,10 +48,10 @@ services:
       - PORT=8080
     expose:
       - "8080"
-  java-spring:
+  java-spring-boot:
     build:
-      context: ./java-spring
-    container_name: java-spring
+      context: ./java-spring-boot
+    container_name: java-spring-boot
     environment:
       - PORT=8080
     expose:

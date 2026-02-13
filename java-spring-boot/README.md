@@ -1,10 +1,10 @@
-# Howdy from Java [Spring](https://spring.io)
+# Howdy from Java [Spring Boot](https://spring.io)
 
 # To run
 
-'''bash
+```bash
 docker compose up --build --remove-orphans
-'''
+```
 
 then visit http://localhost:8080
 
