@@ -10,7 +10,7 @@ From the root of this repository, launch the Dockerized containers, then visit h
 
 ```bash
 docker-compose up --build
-open http://localhost
+open http://howdy.localhost
 ```
 The page will open with a list of endpoints of the currently supported languages, each clickable to demonstrate NGINX' reverse proxy functionality.
 
@@ -27,7 +27,10 @@ The page will open with a list of endpoints of the currently supported languages
     * [Vue](./javascript-vue)
 * [NGINX](./nginx) (static HTML file)
 * [Ruby](./ruby)
+    * [Falcon](./ruby-falcon)
     * [Ruby on Rails](./ruby-on-rails)
+    * [Sinatra](./ruby-sinatra)
+    * [WEBrick](./ruby-webrick)
 * [Zig](./zig)
 
 &copy;2026 [Stan Carver II](http://stancarver.com)

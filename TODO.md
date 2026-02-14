@@ -75,6 +75,7 @@
   - [x] Vue
 - [ ] Lisp
 - [ ] Lua
+- [ ] NGINX
 - [ ] Oberon
 - [ ] Odin
 - [ ] Perl
@@ -84,8 +85,9 @@
 - [ ] Python
   - [ ] Django
   - [ ] Flask
-- [x] Ruby
+- [ ] Ruby
   - [ ] Cuba
+  - [ ] Falcon
   - [ ] Jekyll
   - [ ] Middleman
   - [ ] Rack

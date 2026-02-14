@@ -97,9 +97,9 @@ services:
     container_name: javascript-vue
     expose:
       - "8080"
-  ruby:
-    build: ./ruby
-    container_name: ruby
+  ruby-falcon:
+    build: ./ruby-falcon
+    container_name: ruby-falcon
     expose:
       - "3000" # Ruby HTTP server listens on this port
   ruby-on-rails:
@@ -107,6 +107,11 @@ services:
     container_name: ruby-on-rails
     expose:
       - "3000" # Ruby on Rails HTTP server listens on 3000
+  ruby-webrick:
+    build: ./ruby-webrick
+    container_name: ruby-webrick
+    expose:
+      - "3000" # Ruby HTTP server listens on this port
   rust-leptos:
     build:
       context: ./rust-leptos

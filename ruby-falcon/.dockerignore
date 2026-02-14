@@ -1,0 +1,6 @@
+# ruby-falcon/.dockerignore
+
+.dockerignore
+*.md
+compose.yml
+Dockerfile
