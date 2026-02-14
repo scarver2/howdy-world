@@ -6,21 +6,23 @@
 brew install ruby
 ```
 
-## Docker
+## Run locally
 
 ```bash
-# docker build --no-cache -t howdy-ruby .
-# docker run --rm -p 3000:80 howdy-ruby
+bundle install
+bundle exec falcon serve
 ```
 
-## Execution
+then visit https://localhost:9292 (accept the self-signed certificate)
+
+## Run in Docker
 
 ```bash
-bundle exec falcon serve --port 3000
+docker compose up --build --remove-orphans
 ```
 
-then visit https://localhost:3000 (accept the self-signed certificate)
+then visit https://localhost:3000
 
-&copy;2025 Stan Carver II
+&copy;2026 Stan Carver II
 
 ![Made in Texas](https://raw.githubusercontent.com/scarver2/howdy-world/main/nginx/www/made-in-texas.png)
