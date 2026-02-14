@@ -227,8 +227,21 @@ Dockerfile
   - security: add non-root user to Dockerfile
     - Add user/group creation  e.g. `RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 bunuser`
     - Add USER directive e.g. `USER bunuser`
-Docker Compose
+### Docker Compose
   - minimal and consistent formatting
   - port mapping
   - consistent file naming
   - environment variables
+
+#### Networks
+  - corral network
+  - howdy.localhost
+
+```yml
+    networks:
+      - corral
+
+networks:
+  corral:
+    external: true
+```
