@@ -1,0 +1,17 @@
+# php/compose.dev.yml
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+    ports:
+      - "8080:8080"
+    networks:
+      - corral
+
+networks:
+  corral:
+    external: true
+

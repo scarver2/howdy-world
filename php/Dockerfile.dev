@@ -1,0 +1,11 @@
+# php/Dockerfile.dev
+FROM php:8.3-cli-alpine
+
+WORKDIR /app
+
+ENV PORT=8080
+EXPOSE 8080
+
+# In dev we bind-mount the folder, so no COPY needed
+CMD ["sh", "-lc", "php -S 0.0.0.0:${PORT} -t /app /app/index.php"]
+

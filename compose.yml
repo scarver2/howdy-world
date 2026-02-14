@@ -97,6 +97,12 @@ services:
     container_name: javascript-vue
     expose:
       - "8080"
+  php:
+    build:
+      context: ./php
+    container_name: php
+    expose:
+      - "8080"
   ruby-falcon:
     build: ./ruby-falcon
     container_name: ruby-falcon

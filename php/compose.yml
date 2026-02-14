@@ -1,0 +1,15 @@
+# php/compose.yml
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - "8080"
+    networks:
+      - corral
+
+networks:
+  corral:
+    external: true
+
