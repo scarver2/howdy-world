@@ -1,0 +1,6 @@
+# ruby-falcon/compose.yml
+services:
+  ruby-falcon:
+    build: .
+    ports:
+      - "3000:3000"
