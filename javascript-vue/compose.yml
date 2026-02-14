@@ -4,6 +4,5 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: javascript-vue
     expose:
       - "8080"
