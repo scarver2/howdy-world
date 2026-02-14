@@ -14,10 +14,8 @@ WEBPAGE = <<~HTML
 </html>
 HTML
 
-class FalconApp
+class App
   def call(env)
-    request = Rack::Request.new(env)
-
-    [200, { "content-type" => "text/html" }, [WEBPAGE]]
+    [200, { "content-type" => "text/html; charset=utf-8" }, [WEBPAGE]]
   end
 end

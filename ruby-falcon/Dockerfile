@@ -1,16 +1,12 @@
 # ruby-falcon/Dockerfile
-FROM ruby:4.0.1-alpine AS builder
+FROM ruby:4.0.1-alpine
 
 WORKDIR /app
 
-# RUN apk add --no-cache build-base
 RUN apk add --no-cache \
     build-base \
     openssl-dev \
-    pkgconfig \
-    && gem install json openssl falcon \
-    && apk del build-base \
-    && rm -rf /var/cache/apk/* 
+    pkgconfig
 
 COPY Gemfile Gemfile.lock ./
 

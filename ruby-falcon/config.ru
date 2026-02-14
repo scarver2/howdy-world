@@ -3,4 +3,4 @@
 
 require_relative 'app'
 
-run FalconApp.new
+run App.new
