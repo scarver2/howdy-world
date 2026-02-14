@@ -36,8 +36,10 @@ ENDPOINTS=(
   "/javascript-stimulus/"
   "/javascript-vue/"
   "/javascript/"
+  "/ruby-falcon/"
   "/ruby-on-rails/"
-  "/ruby/"
+  "/ruby-sinatra/"
+  "/ruby-webrick/"
   "/rust-leptos/"
   "/zig/"
 )
