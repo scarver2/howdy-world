@@ -27,25 +27,24 @@ if ($path === '/' || $path === '') {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Howdy World — PHP</title>
+  <title>Howdy from PHP</title>
 </head>
 <body>
-  <h1>Howdy, World! (PHP)</h1>
-  <p>Served from <code>/php/</code> using PHP’s built-in server.</p>
-  <p><a href="/php/health">/php/health</a></p>
+  <h1>Howdy, World!</h1>
 </body>
 </html>
 HTML;
   exit;
 }
 
-if ($path === '/health') {
-  header('Content-Type: text/plain; charset=utf-8');
-  echo "ok\n";
-  exit;
-}
+// FUTURE: Add health check
+// if ($path === '/health') {
+//   header('Content-Type: text/plain; charset=utf-8');
+//   echo "ok\n";
+//   exit;
+// }
 
-http_response_code(404);
-header('Content-Type: text/plain; charset=utf-8');
-echo "Not Found\n";
-
+// FUTURE: Add 404 handler
+// http_response_code(404);
+// header('Content-Type: text/plain; charset=utf-8');
+// echo "Not Found\n";

@@ -6,10 +6,3 @@ services:
       dockerfile: Dockerfile
     expose:
       - "8080"
-    networks:
-      - corral
-
-networks:
-  corral:
-    external: true
-
