@@ -10,6 +10,7 @@ endpoint_root() { cd "$(bin_dir)/.." && pwd; }
 # --- output helpers ---
 hr() { printf '%s\n' "------------------------------------------------------------"; }
 log() { printf '%s\n' "$*"; }
+success() { printf 'SUCCESS: %s\n' "$*"; }
 info() { printf 'INFO: %s\n' "$*"; }
 warn() { printf 'WARN: %s\n' "$*" >&2; }
 die() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
@@ -62,4 +63,8 @@ print_tool_versions() {
   else
     warn "llvm-config: not found"
   fi
+}
+
+odin_with_deps() {
+  odin "$@" -collection:deps=./deps
 }

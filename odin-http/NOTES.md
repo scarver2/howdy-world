@@ -27,20 +27,20 @@ git submodule update --init --recursive
 **Update the dependency to latest (or a branch) explicitly:**
 
 ```bash
-cd vendor/odin-http
+cd deps/odin-http
 git fetch
 git checkout main   # or whatever branch you want to track
 git pull
 cd ../..
-git add vendor/odin-http
+git add deps/odin-http
 git commit -m "Bump odin-http submodule"
 ```
 
 Or one-liner-ish:
 
 ```bash
-git submodule update --remote --merge vendor/odin-http
-git add vendor/odin-http
+git submodule update --remote --merge deps/odin-http
+git add deps/odin-http
 git commit -m "Bump odin-http submodule"
 ```
 
@@ -57,7 +57,7 @@ Even if `odin-http` moves forward upstream, your repo **stays on the exact commi
 
 If you want the simplest possible life for contributors/CI, the alternative is **vendor the code** (copy it in), but then you lose the clean “independent repo” relationship.
 
-If you want, I can suggest a Howdy World convention: `vendor/` as submodules + a root `bin/bootstrap` step that runs `git submodule update --init --recursive` so nobody forgets.
+If you want, I can suggest a Howdy World convention: `deps/` as submodules + a root `bin/bootstrap` step that runs `git submodule update --init --recursive` so nobody forgets.
 
 ## Endpoint 
 

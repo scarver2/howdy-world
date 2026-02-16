@@ -17,7 +17,7 @@ log
 submodules_init "$ROOT"
 
 # Dependency presence check
-[ -d "$ROOT/vendor/odin-http" ] || die "Missing vendor/odin-http (expected $ROOT/vendor/odin-http)"
+[ -d "$ROOT/deps/odin-http" ] || die "Missing deps/odin-http (expected $ROOT/deps/odin-http)"
 
 hr
 info "Toolchain (best effort)"

@@ -23,7 +23,6 @@ info "Validating compile..."
 
 # Compile using same flags as build, but discard output
 odin_with_deps build main.odin -file \
-  -collection:vendor=./vendor \
   -out:/dev/null
 
 success "Lint passed"

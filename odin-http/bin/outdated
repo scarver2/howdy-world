@@ -11,8 +11,8 @@ info "Local versions"
 hr
 print_tool_versions
 
-if [ -d "$ROOT/vendor/odin-http" ] && is_git_repo "$ROOT/vendor/odin-http"; then
-  log "odin-http: $(git -C "$ROOT/vendor/odin-http" rev-parse --short HEAD) (branch: $(git -C "$ROOT/vendor/odin-http" branch --show-current 2>/dev/null || true))"
+if [ -d "$ROOT/deps/odin-http" ] && is_git_repo "$ROOT/deps/odin-http"; then
+  log "odin-http: $(git -C "$ROOT/deps/odin-http" rev-parse --short HEAD) (branch: $(git -C "$ROOT/deps/odin-http" branch --show-current 2>/dev/null || true))"
 else
   warn "odin-http: not a git worktree or missing"
 fi
@@ -37,10 +37,10 @@ if command -v odin >/dev/null 2>&1 && command -v git >/dev/null 2>&1; then
 fi
 
 # odin-http upstream vs local (requires network)
-if [ -d "$ROOT/vendor/odin-http" ] && is_git_repo "$ROOT/vendor/odin-http"; then
-  URL="$(git -C "$ROOT/vendor/odin-http" remote get-url origin 2>/dev/null || true)"
+if [ -d "$ROOT/deps/odin-http" ] && is_git_repo "$ROOT/deps/odin-http"; then
+  URL="$(git -C "$ROOT/deps/odin-http" remote get-url origin 2>/dev/null || true)"
   if [ -n "${URL:-}" ]; then
-    LOCAL="$(git -C "$ROOT/vendor/odin-http" rev-parse HEAD 2>/dev/null || true)"
+    LOCAL="$(git -C "$ROOT/deps/odin-http" rev-parse HEAD 2>/dev/null || true)"
     REMOTE="$(git ls-remote "$URL" HEAD 2>/dev/null | awk '{print $1}' || true)"
     if [ -n "${LOCAL:-}" ] && [ -n "${REMOTE:-}" ]; then
       [ "$LOCAL" = "$REMOTE" ] && info "odin-http: up to date" || info "odin-http: origin has newer commits"

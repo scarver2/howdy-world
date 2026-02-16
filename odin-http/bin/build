@@ -9,8 +9,7 @@ cd "$ROOT"
 require_brew
 require_cmd odin
 
-odin build main.odin -file \
-  -collection:deps=./vendor \
+odin_with_deps build main.odin -file \
   -o:speed \
   -out:howdy-odin-http \
   "$@"
