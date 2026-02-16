@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# odin-http/bin/setup
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+ROOT="$(endpoint_root)"
+cd "$ROOT"
+
+info "Howdy World / Odin endpoint setup"
+log "Path: $ROOT"
+log
+
+require_brew
+info "Homebrew OK: $(brew --version | head -n 1)"
+log
+
+submodules_init "$ROOT"
+
+# Dependency presence check
+[ -d "$ROOT/vendor/odin-http" ] || die "Missing vendor/odin-http (expected $ROOT/vendor/odin-http)"
+
+hr
+info "Toolchain (best effort)"
+print_tool_versions
+hr
+
+log "Next:"
+log "  bin/build"
+log "  ./server"

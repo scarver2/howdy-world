@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# odin-http/bin/update
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+ROOT="$(endpoint_root)"
+cd "$ROOT"
+
+require_brew
+require_cmd git
+
+hr
+info "Updating dependency: vendor/odin-http"
+hr
+
+[ -d "$ROOT/vendor/odin-http" ] || die "Missing vendor/odin-http"
+
+if is_submodule "$ROOT/vendor/odin-http"; then
+  is_git_repo "$ROOT" || die "Submodule detected but endpoint root is not a git repo"
+  info "Submodule detected. Updating via superproject..."
+  git -C "$ROOT" submodule update --remote --merge vendor/odin-http
+  git -C "$ROOT/vendor/odin-http" status -sb || true
+else
+  if is_git_repo "$ROOT/vendor/odin-http"; then
+    info "Git worktree detected. Pulling latest..."
+    git -C "$ROOT/vendor/odin-http" fetch --prune
+    git -C "$ROOT/vendor/odin-http" pull --ff-only
+    git -C "$ROOT/vendor/odin-http" status -sb || true
+  else
+    warn "vendor/odin-http is not a git repo. Update manually by replacing contents."
+  fi
+fi
+
+hr
+info "Updating toolchain via Homebrew"
+hr
+
+brew update
+brew upgrade odin || true
+brew upgrade llvm || true
+brew upgrade llvm@21 || true
+brew upgrade llvm@20 || true
+
+info "Done."
