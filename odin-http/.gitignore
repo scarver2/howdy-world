@@ -11,6 +11,7 @@
 /.cache/
 /.odin-cache/
 /.odin_cache/
+howdy-odin-http
 
 # --- editor/OS noise ---
 .DS_Store
