@@ -97,10 +97,10 @@ services:
     container_name: javascript-vue
     expose:
       - "8080"
-  odin-http:
+  odin:
     build:
-      context: ./odin-http
-    container_name: odin-http
+      context: ./odin
+    container_name: odin
     expose:
       - "6969"
   ruby-falcon:
