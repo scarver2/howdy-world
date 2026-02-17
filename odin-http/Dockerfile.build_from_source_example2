@@ -1,0 +1,124 @@
+# odin-http/Dockerfile
+#  FROM linux base
+#   → install build tools
+#   → install LLVM 21
+#   → build Odin
+#   → compile your app
+#   → produce Linux ELF binary
+# FROM lean runtime
+#   → copy binary
+#   → run
+
+# -------------------------
+# Builder
+# -------------------------
+FROM debian:bookworm AS build
+
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     ca-certificates \
+#     curl \
+#     wget \
+#     gnupg \
+#     lsb-release \
+#     git \
+#     build-essential \
+#     && rm -rf /var/lib/apt/lists/*
+
+# RUN curl -fsSL https://apt.llvm.org/llvm.sh -o /tmp/llvm.sh \
+#     && chmod +x /tmp/llvm.sh \
+#     && /tmp/llvm.sh 21 \
+#     && rm -f /tmp/llvm.sh
+
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     build-essential \
+#     git \
+#     ca-certificates \
+#     clang \
+#     lld \
+#     llvm-dev \
+#     && rm -rf /var/lib/apt/lists/*
+
+# # Build Odin
+# # b942f72cb
+# WORKDIR /opt
+# RUN git clone https://github.com/odin-lang/Odin.git \
+#     && cd Odin \
+#     && git checkout b942f72cb \
+#     && ./build_odin.sh release
+
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    git \
+    curl \
+    gnupg \
+    ca-certificates
+
+# Install LLVM 21
+RUN apt-get install -y lsb-release software-properties-common \
+    && curl -fsSL https://apt.llvm.org/llvm.sh -o /tmp/llvm.sh \
+    && chmod +x /tmp/llvm.sh \
+    && /tmp/llvm.sh 21 \
+    && rm -f /tmp/llvm.sh
+
+# Ensure correct llvm-config is used
+ENV LLVM_CONFIG=llvm-config-21
+
+# Build Odin
+WORKDIR /opt
+
+RUN git clone https://github.com/odin-lang/Odin.git
+
+WORKDIR /opt/Odin
+
+RUN git checkout b942f72cb
+
+RUN LLVM_CONFIG=llvm-config-21 ./build_odin.sh release
+
+RUN ls -la /opt/Odin
+
+
+# mv /opt/Odin/odin /usr/local/bin/odin
+
+ENV ODIN_ROOT=/opt/Odin
+ENV PATH="/opt/Odin:${PATH}"
+
+RUN /opt/Odin/odin version
+
+# Copy your endpoint
+WORKDIR /app
+COPY . .
+
+# Verify Odin version
+RUN odin version
+# RUN llvm-config --version
+RUN llvm-config-21 --version
+
+# Build your binary
+# -target:linux_amd64 \
+
+RUN apt-get install -y clang
+
+RUN odin build main.odin -file \
+    -collection:deps=./deps \
+    -o:speed \
+    -out:howdy-odin-http
+
+# -target:linux_amd64
+
+# # -------------------------
+# # Runtime
+# # -------------------------
+# FROM debian:bookworm-slim
+
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     ca-certificates \
+#     libstdc++6 \
+#     && rm -rf /var/lib/apt/lists/*
+
+# WORKDIR /app
+
+# COPY --from=build /app/howdy-odin-http .
+
+# EXPOSE 6969
+
+# CMD ["./howdy-odin-http"]

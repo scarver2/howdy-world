@@ -9,7 +9,10 @@ endpoint_root() { cd "$(bin_dir)/.." && pwd; }
 
 # --- output helpers ---
 hr() { printf '%s\n' "------------------------------------------------------------"; }
+
+# FIXME: meh. need better descriptors and less duplication.
 log() { printf '%s\n' "$*"; }
+status() { printf '%s' "$*"; }
 success() { printf 'SUCCESS: %s\n' "$*"; }
 info() { printf 'INFO: %s\n' "$*"; }
 warn() { printf 'WARN: %s\n' "$*" >&2; }

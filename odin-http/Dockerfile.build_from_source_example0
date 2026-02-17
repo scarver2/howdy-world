@@ -1,0 +1,63 @@
+# If interested in building Odin in the Dockerfile, this is an example of how to do it:
+# https://github.com/odin-lang/Odin/blob/main/README.md#building-from-source
+
+# ============================
+# Stage 1: Builder
+# ============================
+FROM debian:bookworm AS build
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    wget \
+    git \
+    build-essential \
+    clang \
+    lld \
+    llvm \
+    llvm-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# --- Install Odin (pinned to your version) ---
+WORKDIR /opt
+
+RUN git clone https://github.com/odin-lang/Odin.git \
+    && cd Odin \
+    && git checkout b942f72cb \
+    && ./build_odin.sh release
+
+ENV PATH="/opt/Odin:${PATH}"
+
+# --- Copy project ---
+WORKDIR /app
+COPY . .
+
+# --- Ensure submodules ---
+RUN if [ -f .gitmodules ]; then \
+    git submodule update --init --recursive || true; \
+    fi
+
+# --- Use YOUR build script (single source of truth) ---
+RUN chmod +x bin/build \
+    && bin/build
+
+# ============================
+# Stage 2: Runtime (lean)
+# ============================
+FROM debian:bookworm-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    libstdc++6 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY --from=build /app/howdy-odin-http ./howdy-odin-http
+COPY templates ./templates
+
+EXPOSE 6969
+
+CMD ["./howdy-odin-http"]

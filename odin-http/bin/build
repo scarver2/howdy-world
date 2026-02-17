@@ -1,10 +1,56 @@
 #!/usr/bin/env bash
 # odin-http/bin/build
+
 set -euo pipefail
 source "$(dirname "$0")/_lib.sh"
 
 ROOT="$(endpoint_root)"
 cd "$ROOT"
+
+APP="howdy-odin-http"
+
+require_cmd odin
+
+if ! command -v llvm-config >/dev/null 2>&1; then
+  if command -v llvm-config-21 >/dev/null 2>&1; then
+    export PATH="$(dirname "$(command -v llvm-config-21)"):$PATH"
+  elif command -v llvm-config-20 >/dev/null 2>&1; then
+    export PATH="$(dirname "$(command -v llvm-config-20)"):$PATH"
+  fi
+fi
+
+submodules_init "$ROOT"
+
+# status "Building howdy-odin-http"
+# odin_with_deps build main.odin -file -o:speed -out:howdy-odin-http
+# success "Built: $ROOT/howdy-odin-http"
+
+status "Building macOS ARM64..."
+mkdir -p dist/darwin_arm64
+odin_with_deps build main.odin -file \
+  -target:darwin_arm64 \
+  -o:speed \
+  -out:dist/darwin_arm64/$APP
+log "Done"
+
+# FUTURE: Linux build
+# status "Building Linux AMD64..."
+# mkdir -p dist/linux_amd64
+# odin_with_deps build main.odin -file \
+#   -target:linux_amd64 \
+#   -o:speed \
+  -out:dist/linux_amd64/$APP
+log "Done"
+
+# FUTURE: Windows build
+# status "Building Windows AMD64..."
+# mkdir -p dist/windows_amd64
+# odin_with_deps build main.odin -file \
+#   -cc:x86_64-w64-mingw32-gcc \
+#   -target:windows_amd64 \
+#   -o:speed \
+#   -out:dist/windows_amd64/$APP.exe
+# log "Done"
 
 require_brew
 require_cmd odin
