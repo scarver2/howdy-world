@@ -97,6 +97,12 @@ services:
     container_name: javascript-vue
     expose:
       - "8080"
+  odin:
+    build:
+      context: ./odin
+    container_name: odin
+    expose:
+      - "6969"
   php:
     build:
       context: ./php

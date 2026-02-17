@@ -26,6 +26,8 @@ The page will open with a list of endpoints of the currently supported languages
     * [Stimulus](./javascript-stimulus)
     * [Vue](./javascript-vue)
 * [NGINX](./nginx) (static HTML file)
+* [Odin](./odin)
+    * [Odin HTTP](./odin-http)
 * [PHP](./php)
 * [Ruby](./ruby)
     * [Falcon](./ruby-falcon)

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+source "$SCRIPT_DIR/_lib.sh"
+
+cd "$ROOT_DIR"
+
+if [ ! -f "howdy-odin-http" ]; then
+  warn "Binary not found. Building first..."
+  "$SCRIPT_DIR/build"
+fi
+
+info "Running howdy-odin-http"
+
+exec ./howdy-odin-http
