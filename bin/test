@@ -62,6 +62,7 @@ ENDPOINTS=(
   "/nginx/"
   "/oberon/"
   "/odin/"
+  "/odin-http/"
   "/perl/"
   "/php/"
   "/php-laravel/"

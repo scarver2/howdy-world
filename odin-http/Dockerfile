@@ -1,0 +1,70 @@
+# ---------------------------
+# Stage 1 — Build Odin + App
+# ---------------------------
+FROM debian:bookworm AS build
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    wget \
+    gnupg \
+    lsb-release \
+    software-properties-common \
+    git \
+    build-essential \
+    libstdc++6 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install LLVM 20 (stable for Debian 12)
+RUN curl -fsSL https://apt.llvm.org/llvm.sh -o /tmp/llvm.sh \
+    && chmod +x /tmp/llvm.sh \
+    && /tmp/llvm.sh 20 \
+    && rm -f /tmp/llvm.sh
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    llvm-20 \
+    llvm-20-dev \
+    clang-20 \
+    lld-20 \
+    libllvm20 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Build Odin from pinned commit
+WORKDIR /opt
+RUN git clone https://github.com/odin-lang/Odin.git
+WORKDIR /opt/Odin
+RUN git checkout b942f72cb
+RUN ./build_odin.sh release
+
+ENV PATH="/opt/Odin:${PATH}"
+
+# Build app
+WORKDIR /app
+COPY . .
+
+RUN odin version \
+    && odin build main.odin \
+    -file \
+    -o:speed \
+    -out:howdy-odin-http
+
+# ---------------------------
+# Stage 2 — Lean Runtime
+# ---------------------------
+FROM debian:bookworm-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    libstdc++6 \
+    libllvm20 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY --from=build /app/howdy-odin-http .
+
+EXPOSE 6969
+
+CMD ["./howdy-odin-http"]

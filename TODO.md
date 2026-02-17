@@ -78,6 +78,7 @@
 - [ ] NGINX
 - [ ] Oberon
 - [ ] Odin
+  - [x] Odin HTTP
 - [ ] Perl
 - [ ] PHP
   - [ ] Laravel

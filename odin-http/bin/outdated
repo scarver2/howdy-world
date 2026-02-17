@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# odin-http/bin/outdated
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+ROOT="$(endpoint_root)"
+cd "$ROOT"
+
+hr
+info "Local versions"
+hr
+print_tool_versions
+
+if [ -d "$ROOT/deps/odin-http" ] && is_git_repo "$ROOT/deps/odin-http"; then
+  log "odin-http: $(git -C "$ROOT/deps/odin-http" rev-parse --short HEAD) (branch: $(git -C "$ROOT/deps/odin-http" branch --show-current 2>/dev/null || true))"
+else
+  warn "odin-http: not a git worktree or missing"
+fi
+
+hr
+info "Available updates (best effort)"
+hr
+
+# Odin upstream vs local (requires network)
+if command -v odin >/dev/null 2>&1 && command -v git >/dev/null 2>&1; then
+  ODIN_SHA="$(odin version 2>/dev/null | awk -F: '{print $NF}' | tr -d '[:space:]' || true)"
+  if [ -n "${ODIN_SHA:-}" ]; then
+    log "Odin local sha: $ODIN_SHA"
+    UPSTREAM_SHA="$(git ls-remote https://github.com/odin-lang/Odin.git HEAD 2>/dev/null | awk '{print $1}' || true)"
+    if [ -n "${UPSTREAM_SHA:-}" ]; then
+      log "Odin upstream:  ${UPSTREAM_SHA:0:12}"
+      [ "$UPSTREAM_SHA" = "$ODIN_SHA" ] && info "Odin: up to date" || info "Odin: upstream has newer commits"
+    else
+      warn "Odin: could not reach GitHub to check"
+    fi
+  fi
+fi
+
+# odin-http upstream vs local (requires network)
+if [ -d "$ROOT/deps/odin-http" ] && is_git_repo "$ROOT/deps/odin-http"; then
+  URL="$(git -C "$ROOT/deps/odin-http" remote get-url origin 2>/dev/null || true)"
+  if [ -n "${URL:-}" ]; then
+    LOCAL="$(git -C "$ROOT/deps/odin-http" rev-parse HEAD 2>/dev/null || true)"
+    REMOTE="$(git ls-remote "$URL" HEAD 2>/dev/null | awk '{print $1}' || true)"
+    if [ -n "${LOCAL:-}" ] && [ -n "${REMOTE:-}" ]; then
+      [ "$LOCAL" = "$REMOTE" ] && info "odin-http: up to date" || info "odin-http: origin has newer commits"
+    else
+      warn "odin-http: could not resolve local/remote HEAD"
+    fi
+  else
+    warn "odin-http: no origin remote"
+  fi
+fi
+
+# Homebrew view
+if command -v brew >/dev/null 2>&1; then
+  hr
+  info "Homebrew outdated (filtered)"
+  hr
+  brew outdated 2>/dev/null | egrep '^(odin|llvm|llvm@|clang|lld)$' || log "(none)"
+fi

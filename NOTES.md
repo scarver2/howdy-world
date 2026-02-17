@@ -95,3 +95,44 @@ This is the checklist I’d use to declare the branding/theme effort done (v1):
  Documentation updated (README + endpoint notes)
 
  One screenshot (or short GIF) added to README showing the branded panel (optional but nice)
+
+
+
+## Standardization endpoints scripts
+- bin/setup: fetch deps / submodules, verify prerequisites, print “Next steps”
+- bin/build: build artifact(s)
+- bin/run (when applicable): run dev server
+- bin/clean: delete build artifacts
+- bin/outdated: show version drift / upstream availability (best-effort)
+- bin/update: update deps (submodules or vendored repos)
+
+    endpoint/
+    bin/
+        _lib.sh
+        setup
+        build
+        run
+        clean
+        outdated
+        update
+
+```bash
+chmod +x bin/setup bin/build bin/run bin/clean bin/outdated bin/update
+```
+
+🧠 Keeping Architecturally Clean
+
+### File Naming Conventions
+
+> "There are only two hard things in Computer Science: cache invalidation and naming things"
+> — Phil Karlton, Netscape Developer
+> https://www.karlton.org/2017/12/naming-things-hard/
+
+Example of good naming conventions:
+    Layer	Name
+    Folder	odin-http
+    Binary	howdy-odin-http
+    Docker service	odin-http
+    NGINX location	/odin-http/
+    Compose service	odin-http
+

@@ -1,0 +1,6 @@
+services:
+  odin:
+    build:
+      context: .
+    expose:
+      - "6969"

@@ -1,0 +1,27 @@
+# --- build artifacts ---
+/server
+/server.exe
+/server.dSYM/
+
+# --- local build/cache dirs ---
+/build/
+/dist/
+/out/
+/tmp/
+/.cache/
+/.odin-cache/
+/.odin_cache/
+howdy-odin-http
+
+# --- editor/OS noise ---
+.DS_Store
+Thumbs.db
+
+# --- logs ---
+*.log
+
+# --- misc ---
+*.swp
+*.swo
+*~
+

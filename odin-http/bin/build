@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# odin-http/bin/build
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+ROOT="$(endpoint_root)"
+cd "$ROOT"
+
+require_brew
+require_cmd odin
+
+odin_with_deps build main.odin -file \
+  -o:speed \
+  -out:howdy-odin-http \
+  "$@"
+
+info "Built: $ROOT/howdy-odin-http"

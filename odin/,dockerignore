@@ -1,0 +1,41 @@
+# odin-http/.dockerignore
+
+compose.yml
+Dockerfile
+.dockerignore
+
+# VCS
+.git
+.gitmodules
+**/.git
+**/.gitignore
+
+# Build artifacts
+server
+server.exe
+server.dSYM
+build
+dist
+out
+tmp
+.cache
+.odin-cache
+.odin_cache
+
+# OS/editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Not needed inside Docker build context
+NOTES.md
+README.md
+
+# If you keep this legacy helper around locally, don't send it to Docker
+build.sh
+
