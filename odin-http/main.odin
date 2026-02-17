@@ -26,16 +26,13 @@ main :: proc() {
 
 	log.infof("Listening on http://0.0.0.0:%d", PORT)
 
-	// err := http.listen_and_serve(&s, routed, net.Endpoint{address = net.IP4_Any, port = PORT})
-	// fmt.assertf(err == nil, "server stopped with error: %v", err)
-
 	err := http.listen_and_serve(&s, routed, net.Endpoint{
       address = net.IP4_Any,
       port = PORT,
     })
 
     if err != nil {
-        fmt.println("Server error:", err)
+        fmt.println("Server stopped. error: ", err)
         os.exit(1)
 	}
 }

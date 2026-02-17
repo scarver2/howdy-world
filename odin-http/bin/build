@@ -51,3 +51,13 @@ log "Done"
 #   -o:speed \
 #   -out:dist/windows_amd64/$APP.exe
 # log "Done"
+
+require_brew
+require_cmd odin
+
+odin_with_deps build main.odin -file \
+  -o:speed \
+  -out:howdy-odin-http \
+  "$@"
+
+info "Built: $ROOT/howdy-odin-http"

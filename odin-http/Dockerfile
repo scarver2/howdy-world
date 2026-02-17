@@ -27,4 +27,5 @@ RUN odin build main.odin -file \
     -out:howdy-odin-http
 
 EXPOSE 6969
+
 CMD ["./howdy-odin-http"]

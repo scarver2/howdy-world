@@ -28,6 +28,7 @@ The page will open with a list of endpoints of the currently supported languages
 * [NGINX](./nginx) (static HTML file)
 * [Odin](./odin)
     * [Odin HTTP](./odin-http)
+* [PHP](./php)
 * [Ruby](./ruby)
     * [Falcon](./ruby-falcon)
     * [Ruby on Rails](./ruby-on-rails)
