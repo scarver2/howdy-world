@@ -1,0 +1,8 @@
+# php/compose.yml
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - "8080"

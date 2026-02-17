@@ -228,8 +228,35 @@ Dockerfile
   - security: add non-root user to Dockerfile
     - Add user/group creation  e.g. `RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 bunuser`
     - Add USER directive e.g. `USER bunuser`
-Docker Compose
+### Docker Compose
   - minimal and consistent formatting
   - port mapping
   - consistent file naming
   - environment variables
+
+#### Networks
+  - corral network
+  - howdy.localhost
+
+```yml
+    networks:
+      - corral
+
+networks:
+  corral:
+    external: true
+```
+
+## Testing
+- Smoke Tests
+  - [ ] Confirm root / endpoint (dashboard)is available
+  - [ ] Confirm  endpoint is 200 OK
+  - [ ] Confirm /<service>/ endpoint is 200
+  - [ ] Confirm "Howdy World" in the response body
+  - [ ] Confirm /<service>/healthz endpoint is 200 OK
+- Negative Tests
+  - [ ] Confirm no port leakage to public (e.g. 3000, 8080, 9292)
+  - [ ] Confirm global 404 page for non-existent endpoints
+  - [ ] Confirm global 404 page for non-existent pages in endpoints
+  - [ ] Confirm global 500 page for endpoints
+  
