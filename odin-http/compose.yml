@@ -2,5 +2,5 @@ services:
   odin:
     build:
       context: .
-    expose:
-      - "6969"
+    ports:
+      - "6969:6969"

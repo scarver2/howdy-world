@@ -1,0 +1,16 @@
+FROM alpine:3.20
+
+RUN apk add --no-cache \
+    ca-certificates \
+    libstdc++
+
+WORKDIR /app
+
+# Fail fast if binary missing
+COPY howdy-odin-http .
+
+RUN test -f howdy-odin-http || (echo "Binary missing. Run bin/build first." && exit 1)
+
+EXPOSE 6969
+
+CMD ["./howdy-odin-http"]
