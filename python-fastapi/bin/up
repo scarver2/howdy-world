@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# python-fastapi/bin/up
+
+set -euo pipefail
+
+source "$(dirname "${BASH_SOURCE[0]}")/_lib.sh"
+
+ROOT="$(howdy_root)"
+cd "$ROOT"
+
+howdy_require_brew_if_macos
+howdy_require_docker
+
+COMPOSE="$(howdy_compose)"
+FILE="$(howdy_compose_file)"
+
+howdy_echo "Starting production stack (compose.yml)"
+$COMPOSE -f "$FILE" up -d --build --remove-orphans

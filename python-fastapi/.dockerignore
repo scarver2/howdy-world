@@ -1,0 +1,27 @@
+# python-fastapi/.dockerignore
+
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+.DS_Store
+.env
+.env.*
+*.log
+
+.git/
+.gitignore
+
+dist/
+build/
+*.egg-info/
+
+node_modules/
+

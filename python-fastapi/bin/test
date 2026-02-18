@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# python-fastapi/bin/test
+
+set -euo pipefail
+
+source "$(dirname "${BASH_SOURCE[0]}")/_lib.sh"
+
+ROOT="$(howdy_root)"
+cd "$ROOT"
+
+howdy_require_brew_if_macos
+
+# Ensure python3 exists (system / pyenv / brew)
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "ERROR: python3 not found on PATH." >&2
+  echo "On macOS: brew install python" >&2
+  exit 1
+fi
+
+# venv bootstrap
+if [[ ! -d ".venv" ]]; then
+  howdy_echo "Creating venv (.venv)"
+  python3 -m venv .venv
+fi
+
+PY=".venv/bin/python"
+MARKER=".venv/howdy_deps_installed"
+
+# deps (first run)
+if [[ ! -f "$MARKER" ]]; then
+  howdy_echo "Upgrading pip"
+  "$PY" -m pip install -U pip
+
+  howdy_echo "Installing dependencies (editable + dev)"
+  "$PY" -m pip install -e ".[dev]"
+
+  touch "$MARKER"
+fi
+
+howdy_echo "Running tests"
+exec "$PY" -m pytest
+

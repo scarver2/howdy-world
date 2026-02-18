@@ -109,6 +109,12 @@ services:
     container_name: php
     expose:
       - "8080"
+  python-fastapi:
+    build:
+      context: ./python-fastapi
+    container_name: python-fastapi
+    expose:
+      - "8000"
   ruby-falcon:
     build: ./ruby-falcon
     container_name: ruby-falcon
