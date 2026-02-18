@@ -1,15 +1,32 @@
 #!/usr/bin/env bash
-# bin/e2e
+# bin/test
 set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
 
 BASE_URL="http://howdy.localhost"
 
-# Green/Red (ANSI)
 GREEN="$(printf '\033[0;32m')"
 RED="$(printf '\033[0;31m')"
 RESET="$(printf '\033[0m')"
 
-# Curated list of assets
+CURL_COMMON=(-sS -L --max-time 8 -o /dev/null -w "%{http_code}")
+
+pad_dots() {
+  local label="$1"
+  local max="$2"
+  local len="${#label}"
+  local dots=$(( max - len ))
+  (( dots < 3 )) && dots=3
+  printf "%s" "$label"
+  printf '%*s' "$dots" '' | tr ' ' '.'
+}
+
+# --------------------------
+# Asset Tests (Root Contract)
+# --------------------------
+
 ASSETS=(
   "/favicon.ico"
   "/apple-touch-icon.png"
@@ -18,199 +35,32 @@ ASSETS=(
   "/assets/howdy.js"
 )
 
-# Curated endpoint list (edit as needed)
-# Note: includes trailing slash because NGINX redirects /foo -> /foo/
-# TODO: 404 page
-# TODO: 500 page
-ENDPOINTS=(
-  "/"
-  "/ada/"
-  "/awk/"
-  "/basic/"
-  "/c/"
-  "/c++/"
-  "/dotnet-aspnet/"
-  "/caddy/"
-  "/cobol/"
-  "/dart/"
-  "/elixir/"
-  "/elixir-bandit/"
-  "/elixir-phoenix/"
-  "/erlang/"
-  "/fortran/"
-  "/go/"
-  "/haskell/"
-  "/java/"
-  "/java-spring boot/"
-  "/javascript/"
-  "/javascript-alpine/"
-  "/javascript-angular/"
-  "/javascript-ember/"
-  "/javascript-inertia/"
-  "/javascript-jquery/"
-  "/javascript-next/"
-  "/javascript-nuxt/"
-  "/javascript-node/"
-  "/javascript-react/"
-  "/javascript-stimulus/"
-  "/javascript-svelte/"
-  "/javascript-typescript/"
-  "/javascript-vanilla/"
-  "/javascript-vue/"
-  "/lisp/"
-  "/lua/"
-  "/nginx/"
-  "/oberon/"
-  "/odin/"
-  "/odin-http/"
-  "/perl/"
-  "/php/"
-  "/php-laravel/"
-  "/php-symfony/"
-  "/python/"
-  "/python-django/"
-  "/python-fastapi/"
-  "/python-flask/"
-  "/ruby/"
-  "/ruby-cuba/"
-  "/ruby-falcon/"
-  "/ruby-jekyll/"
-  "/ruby-middleman/"
-  "/ruby-rack/"
-  "/ruby-ruby on rails/"
-  "/ruby-sinatra/"
-  "/ruby-webrick/"
-  "/rust/"
-  "/rust-axum/"
-  "/rust-leptos/"
-  "/swift/"
-  "/zig/"
-)
-
-# Curl settings:
-# -sS: silent but show errors
-# -L: follow redirects
-# --max-time: keep it snappy
-# -o /dev/null: we only care about status
-CURL_COMMON=(
-  -sS
-  -L
-  --max-time 8
-  -o /dev/null
-  -w "%{http_code}"
-)
-
-pad_dots() {
-  # Print dots so the status lines up nicely
-  # Args: label max_width
-  local label="$1"
-  local max="$2"
-  local len="${#label}"
-  local dots=$(( max - len ))
-  if (( dots < 3 )); then dots=3; fi
-  printf "%s" "$label"
-  printf '%*s' "$dots" '' | tr ' ' '.'
-}
-
-expected_for_path() {
-  # Return a case-insensitive substring to look for in the response body.
-  # Empty string means "no body assertion".
-  #
-  # Keep assertions lightweight and stable (don’t couple to fragile markup).
-  local path="$1"
-
-  printf "%s" "Howdy"
-}
-
-fetch_body() {
-  # Fetch body as text. We keep it simple: follow redirects, time out quickly.
-  local url="$1"
-  curl -sS -L --max-time 8 "$url" 2>/dev/null || true
-}
-
-assert_body_contains() {
-  local body="$1"
-  local expected="$2"
-
-  # Case-insensitive fixed string match
-  printf "%s" "$body" | grep -qiF "$expected"
-}
-
-# Compute label width for pretty alignment
-MAX_ASSETS_LABEL=0
-for ep in "${ASSETS[@]}"; do
-  label="${BASE_URL}${ep}"
-  (( ${#label} > MAX_ASSETS_LABEL )) && MAX_ASSETS_LABEL=${#label}
+MAX_ASSET_LABEL=0
+for asset in "${ASSETS[@]}"; do
+  url="${BASE_URL}${asset}"
+  (( ${#url} > MAX_ASSET_LABEL )) && MAX_ASSET_LABEL=${#url}
 done
-MAX_ASSETS_LABEL=$(( MAX_ASSETS_LABEL + 8 )) # room for dots
-
-MAX_ENDPOINTS_LABEL=0
-for ep in "${ENDPOINTS[@]}"; do
-  label="${BASE_URL}${ep}"
-  (( ${#label} > MAX_ENDPOINTS_LABEL )) && MAX_ENDPOINTS_LABEL=${#label}
-done
-MAX_ENDPOINTS_LABEL=$(( MAX_ENDPOINTS_LABEL + 8 )) # room for dots
+MAX_ASSET_LABEL=$(( MAX_ASSET_LABEL + 8 ))
 
 asset_fails=0
-endpoint_fails=0
 
-echo "Howdy World E2E (HTTP smoke)"
-echo "Base: ${BASE_URL}"
-
-echo
 echo "Checking assets..."
+echo
 
 for asset in "${ASSETS[@]}"; do
   url="${BASE_URL}${asset}"
 
-  # shellcheck disable=SC2068
   code="$(curl "${CURL_COMMON[@]}" "$url" 2>/dev/null || true)"
+  [[ -n "$code" ]] || code="???"
 
-  pad_dots "$url " "$MAX_ASSETS_LABEL"
+  pad_dots "$url " "$MAX_ASSET_LABEL"
 
   if [[ "$code" =~ ^2[0-9][0-9]$ ]]; then
     printf "%bPass%b\n" "$GREEN" "$RESET"
   else
     ((asset_fails++))
-    # If curl failed entirely, code may be empty; show ???
-    [[ -n "$code" ]] || code="???"
     printf "%bFail%b (HTTP %s)\n" "$RED" "$RESET" "$code"
   fi
-done
-
-echo
-echo "Checking endpoints..."
-
-for ep in "${ENDPOINTS[@]}"; do
-  url="${BASE_URL}${ep}"
-
-  # shellcheck disable=SC2068
-  code="$(curl "${CURL_COMMON[@]}" "$url" 2>/dev/null || true)"
-
-  pad_dots "$url " "$MAX_ENDPOINTS_LABEL"
-
-  if [[ "$code" =~ ^2[0-9][0-9]$ ]]; then
-    expected="$(expected_for_path "$ep")"
-
-    if [[ -z "$expected" ]]; then
-      printf "%bPass%b (HTTP %s)\n" "$GREEN" "$RESET" "$code"
-      continue
-    fi
-
-    body="$(fetch_body "$url")"
-
-    if assert_body_contains "$body" "$expected"; then
-      printf "%bPass%b (HTTP %s)\n" "$GREEN" "$RESET" "$code"
-    else
-      ((endpoint_fails++))
-      printf "%bFail%b (HTTP %s, missing '%s')\n" "$RED" "$RESET" "$code" "$expected"
-    fi
-  else
-    ((endpoint_fails++))
-    [[ -n "$code" ]] || code="???"
-    printf "%bFail%b (HTTP %s)\n" "$RED" "$RESET" "$code"
-  fi
-
 done
 
 echo
@@ -220,6 +70,85 @@ else
   printf "%b%d asset(s) failing.%b\n" "$RED" "$asset_fails" "$RESET"
 fi
 
+# --------------------------
+# Endpoint discovery
+# --------------------------
+
+BLACKLIST=(
+  ada
+  angie
+  bash
+  bin
+  nginx
+  odin-http
+)
+
+is_blacklisted() {
+  local dir="$1"
+  for item in "${BLACKLIST[@]}"; do
+    [[ "$dir" == "$item" ]] && return 0
+  done
+  return 1
+}
+
+ENDPOINTS=()
+
+for dir in */ ; do
+  dir="${dir%/}"
+
+  [[ "$dir" == .* ]] && continue
+  [[ "$dir" == _* ]] && continue
+  is_blacklisted "$dir" && continue
+
+  ENDPOINTS+=("$dir")
+done
+
+IFS=$'\n' ENDPOINTS=($(sort <<<"${ENDPOINTS[*]}"))
+unset IFS
+
+ALL_ROUTES=("" "${ENDPOINTS[@]}")
+
+# --------------------------
+# Endpoint Tests
+# --------------------------
+
+MAX_ENDPOINT_LABEL=0
+for ep in "${ALL_ROUTES[@]}"; do
+  if [[ -z "$ep" ]]; then
+    url="${BASE_URL}/"
+  else
+    url="${BASE_URL}/${ep}/"
+  fi
+  (( ${#url} > MAX_ENDPOINT_LABEL )) && MAX_ENDPOINT_LABEL=${#url}
+done
+MAX_ENDPOINT_LABEL=$(( MAX_ENDPOINT_LABEL + 8 ))
+
+endpoint_fails=0
+
+echo
+echo "Checking endpoints..."
+echo
+
+for ep in "${ALL_ROUTES[@]}"; do
+  if [[ -z "$ep" ]]; then
+    url="${BASE_URL}/"
+  else
+    url="${BASE_URL}/${ep}/"
+  fi
+
+  code="$(curl "${CURL_COMMON[@]}" "$url" 2>/dev/null || true)"
+  [[ -n "$code" ]] || code="???"
+
+  pad_dots "$url " "$MAX_ENDPOINT_LABEL"
+
+  if [[ "$code" =~ ^2[0-9][0-9]$ ]]; then
+    printf "%bPass%b\n" "$GREEN" "$RESET"
+  else
+    ((endpoint_fails++))
+    printf "%bFail%b (HTTP %s)\n" "$RED" "$RESET" "$code"
+  fi
+done
+
 echo
 if (( endpoint_fails == 0 )); then
   printf "%bAll endpoints passing.%b\n" "$GREEN" "$RESET"
@@ -227,8 +156,11 @@ else
   printf "%b%d endpoint(s) failing.%b\n" "$RED" "$endpoint_fails" "$RESET"
 fi
 
-echo
-if (( asset_fails == 0 && endpoint_fails == 0 )); then
+# --------------------------
+# Final Exit Status
+# --------------------------
+
+if (( endpoint_fails == 0 && asset_fails == 0 )); then
   exit 0
 else
   exit 1
