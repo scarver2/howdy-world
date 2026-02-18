@@ -14,26 +14,34 @@ open http://howdy.localhost
 ```
 The page will open with a list of endpoints of the currently supported languages, each clickable to demonstrate NGINX' reverse proxy functionality.
 
-### Supported Languages and Frameworks.
+### Supported Servers, Languages and Frameworks.
 
-* [ASP.NET](./dotnet-aspnet)
+* [.NET](./dotnet)
+    * [ASP.NET](./dotnet-aspnet)
+* [Caddy](./caddy)
+* [Clojure](./clojure)
 * [Elixir](./elixir)
     * [Bandit](./elixir-bandit)
 * [Go](./go)
 * [JavaScript](./javascript)
     * [Inertia](./javascript-inertia)
     * [jQuery](./javascript-jquery)
+    * [React](./javascript-react)
     * [Stimulus](./javascript-stimulus)
     * [Vue](./javascript-vue)
 * [NGINX](./nginx) (static HTML file)
 * [Odin](./odin)
-    * [Odin HTTP](./odin-http)
+    * [Odin HTTP](./odin-http) (not working)
 * [PHP](./php)
+* [Python](./python)
+    * [FastAPI](./python-fastapi)
 * [Ruby](./ruby)
     * [Falcon](./ruby-falcon)
     * [Ruby on Rails](./ruby-on-rails)
     * [Sinatra](./ruby-sinatra)
     * [WEBrick](./ruby-webrick)
+* [Rust](./rust)
+    * [Leptos](./rust-leptos)
 * [Zig](./zig)
 
 &copy;2026 [Stan Carver II](http://stancarver.com)
