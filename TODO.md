@@ -48,6 +48,7 @@
 - [ ] C++
 - [x] C# (ASP.NET)
 - [x] Caddy
+- [x] Clojure
 - [ ] COBOL
 - [ ] Dart
 - [ ] Elixir
@@ -256,15 +257,18 @@ networks:
 ```
 
 ## Testing
-- Smoke Tests
+### Smoke Tests
   - [ ] Confirm root / endpoint (dashboard)is available
   - [ ] Confirm  endpoint is 200 OK
   - [ ] Confirm /<service>/ endpoint is 200
   - [ ] Confirm "Howdy World" in the response body
   - [ ] Confirm /<service>/healthz endpoint is 200 OK
-- Negative Tests
+
+### Negative Tests
   - [ ] Confirm no port leakage to public (e.g. 3000, 8080, 9292)
   - [ ] Confirm global 404 page for non-existent endpoints
   - [ ] Confirm global 404 page for non-existent pages in endpoints
   - [ ] Confirm global 500 page for endpoints
-  
+
+### Performance
+- [ ] Benchmark endpoints

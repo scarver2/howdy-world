@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# clojure/bin/start
+
+./bin/up

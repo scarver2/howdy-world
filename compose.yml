@@ -24,6 +24,12 @@ services:
     container_name: caddy
     expose:
       - "8080"
+  clojure:
+    build:
+      context: ./clojure
+    container_name: clojure
+    expose:
+      - "3000"
   dotnet-aspnet:
     build:
       context: ./dotnet-aspnet
