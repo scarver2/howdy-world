@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# python-fastapi/bin/clean
+
+set -euo pipefail
+
+source "$(dirname "${BASH_SOURCE[0]}")/_lib.sh"
+
+ROOT="$(howdy_root)"
+cd "$ROOT"
+
+howdy_require_brew_if_macos
+
+howdy_echo "Cleaning Python artifacts"
+
+rm -rf .venv \
+  .pytest_cache \
+  __pycache__
+
+# Recursively remove common Python cache/bytecode dirs/files
+find . -type d -name "__pycache__" -prune -exec rm -rf {} + 2>/dev/null || true
+find . -type f -name "*.pyc" -delete 2>/dev/null || true
+find . -type f -name "*.pyo" -delete 2>/dev/null || true
+
+# Packaging/build artifacts (safe even if unused)
+rm -rf build dist *.egg-info
+
+howdy_echo "Done"
+
