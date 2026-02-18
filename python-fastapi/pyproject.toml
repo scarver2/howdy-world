@@ -1,0 +1,18 @@
+[project]
+name = "howdy-python-fastapi"
+version = "0.1.0"
+description = "Howdy World endpoint for Python FastAPI"
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi>=0.110",
+  "uvicorn[standard]>=0.27",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "httpx>=0.27",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# python-fastapi/bin/down
+
+set -euo pipefail
+
+source "$(dirname "${BASH_SOURCE[0]}")/_lib.sh"
+
+ROOT="$(howdy_root)"
+cd "$ROOT"
+
+howdy_require_brew_if_macos
+howdy_require_docker
+
+COMPOSE="$(howdy_compose)"
+FILE="$(howdy_compose_file)"
+
+howdy_echo "Stopping and removing production stack (compose.yml)"
+$COMPOSE -f "$FILE" down --remove-orphans

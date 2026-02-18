@@ -85,7 +85,15 @@
   - [ ] Symfony
 - [ ] Python
   - [ ] Django
+  - [x] FastAPI
   - [ ] Flask
+  - [ ] Typer
+  - [ ] Uvicorn
+  - [ ] Werkzeug
+  - [ ] Ython
+  - [ ] Zappa
+  - [ ] Zoo
+  - [ ] Zulip
 - [ ] Ruby
   - [ ] Cuba
   - [ ] Falcon

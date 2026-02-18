@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# python-fastapi/bin/run
+
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+# --- OS / package manager guardrails (Howdy World convention) ---
+OS="$(uname -s)"
+if [[ "$OS" == "Darwin" ]]; then
+  if ! command -v brew >/dev/null 2>&1; then
+    echo "ERROR: Homebrew is required on macOS. Install it from https://brew.sh/ and try again." >&2
+    exit 1
+  fi
+else
+  echo "NOTE: Non-macOS support is planned. Proceeding without Homebrew checks on $OS." >&2
+fi
+
+# --- Python check ---
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "ERROR: python3 not found on PATH." >&2
+  echo "On macOS: brew install python" >&2
+  exit 1
+fi
+
+# --- venv bootstrap ---
+if [[ ! -d ".venv" ]]; then
+  echo "==> Creating venv (.venv)"
+  python3 -m venv .venv
+fi
+
+PY=".venv/bin/python"
+PIP=".venv/bin/pip"
+MARKER=".venv/.howdy_deps_installed"
+
+# --- dependency install (first run) ---
+if [[ ! -f "$MARKER" ]]; then
+  echo "==> Upgrading pip"
+  "$PY" -m pip install -U pip
+
+  echo "==> Installing dependencies (editable + dev)"
+  "$PY" -m pip install -e ".[dev]"
+
+  touch "$MARKER"
+fi
+
+# --- run ---
+PORT="${PORT:-8000}"
+HOST="${HOST:-127.0.0.1}"
+
+echo "==> Running FastAPI (reload) on http://${HOST}:${PORT}/howdy"
+exec "$PY" -m uvicorn app.main:app --reload --host "$HOST" --port "$PORT"
