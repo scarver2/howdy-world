@@ -1,3 +1,5 @@
+# clojure/.dockerignore
+
 # Git
 .git
 .gitignore

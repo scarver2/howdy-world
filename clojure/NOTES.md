@@ -1,4 +1,4 @@
-# Clojure Endpoint — Howdy World
+# Clojure Notes
 
 This endpoint demonstrates a minimal Clojure web application using:
 

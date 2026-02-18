@@ -1,3 +1,4 @@
+;; clojure/project.clj
 (defproject clojure-app "0.1.0"
   :description "Howdy World Clojure endpoint"
   :dependencies [[org.clojure/clojure "1.11.1"]
