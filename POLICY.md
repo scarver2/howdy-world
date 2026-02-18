@@ -314,3 +314,17 @@ Keep Docker Compose files focused on environment-specific configuration.
 
 # <endpoint>/compose.yml
 # <endpoint>/compose.dev.yml
+---
+
+## Endpoint Testing
+
+### Unit Tests
+
+Unit tests should be run inside the container.
+Any public function/method should have reasonable unit tests, if supported.
+
+### Integration Tests
+
+Integration tests should be run inside the container.
+- For plain/text responses, contract tests should verify the response contain "Howdy, World" text.
+- For HTML responses, contract tests should verify the response contain the "<h1>Howdy, World</h1>" text.
