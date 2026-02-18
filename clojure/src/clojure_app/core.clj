@@ -1,4 +1,4 @@
-;; clojure/sr
+;; clojure/src/clojure_app/core.clj
 (ns clojure-app.core
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
