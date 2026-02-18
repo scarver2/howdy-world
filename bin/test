@@ -69,6 +69,7 @@ ENDPOINTS=(
   "/php-symfony/"
   "/python/"
   "/python-django/"
+  "/python-fastapi/"
   "/python-flask/"
   "/ruby/"
   "/ruby-cuba/"
