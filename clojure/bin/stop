@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# clojure/bin/stop
+
+./bin/down

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# clojure/bin/up
+
+set -e
+
+echo "Starting Clojure endpoint (production mode)..."
+
+docker compose -f compose.yml up --build -d

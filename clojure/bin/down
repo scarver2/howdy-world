@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# clojure/bin/down
+
+set -e
+
+echo "Stopping Clojure endpoint..."
+
+docker compose -f compose.yml down
+docker compose -f compose.dev.yml down 2>/dev/null || true

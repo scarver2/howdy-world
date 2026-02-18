@@ -1,0 +1,12 @@
+# clojure/Dockerfile.dev
+
+FROM clojure:temurin-21-lein
+
+WORKDIR /app
+COPY . .
+
+RUN lein deps
+
+EXPOSE 3000
+
+CMD ["lein", "ring", "server"]

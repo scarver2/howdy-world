@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# clojure/bin/restart
+
+set -e
+
+echo "Restarting Clojure endpoint..."
+
+./bin/down
+./bin/up
