@@ -1,4 +1,5 @@
 # compose.yml
+name: howdy-world
 services:
   nginx:
     image: nginx:alpine
