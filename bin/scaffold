@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# bin/scaffold
+source "$(dirname "$0")/_lib.sh"
+cd "$ROOT_DIR"
+
+usage() {
+  echo "Usage: bin/scaffold <endpoint-name>"
+  exit 1
+}
+
+NAME="${1:-}"
+[[ -z "$NAME" ]] && usage
+
+# Enforce lowercase kebab-case starting with alpha
+if ! [[ "$NAME" =~ ^[a-z][a-z0-9-]*$ ]]; then
+  echo "Invalid endpoint name."
+  echo "Must be lowercase kebab-case and start with a letter."
+  exit 1
+fi
+
+TEMPLATE_DIR="$ROOT_DIR/bin/templates/generic"
+
+if [[ ! -d "$TEMPLATE_DIR" ]]; then
+  echo "Template directory not found: $TEMPLATE_DIR"
+  exit 1
+fi
+
+if [[ -d "$NAME" ]]; then
+  echo "Endpoint '$NAME' already exists."
+  echo "Ensuring template files are present..."
+else
+  mkdir -p "$NAME"
+fi
+
+echo "Scaffolding endpoint: $NAME"
+echo
+
+# Copy template files
+rsync -a --ignore-existing "$TEMPLATE_DIR/" "$NAME/"
+
+# Replace placeholder tokens
+find "$NAME" -type f -print0 | while IFS= read -r -d '' file; do
+  sed -i '' "s/__ENDPOINT__/$NAME/g" "$file" 2>/dev/null || \
+  sed -i "s/__ENDPOINT__/$NAME/g" "$file"
+done
+
+# Ensure bin scripts executable
+if [[ -d "$NAME/bin" ]]; then
+  chmod +x "$NAME/bin/"* 2>/dev/null || true
+fi
+
+# TODO: insert snippet into compose.yml
+# TODO: insert snippet into nginx/conf.d/$NAME.conf
+
+echo
+echo "Endpoint '$NAME' scaffolded successfully."

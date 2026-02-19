@@ -1,0 +1,21 @@
+# __ENDPOINT__/.dockerignore
+
+# Docker-related files
+compose.dev.yml
+Dockerfile.dev
+
+# Git-related files
+.git
+.gitignore
+
+# OS files
+.DS_Store
+
+# compilation artifacts
+build
+dist
+node_modules
+target
+
+# extraneous files
+*.log

@@ -1,0 +1,9 @@
+# __ENDPOINT__/compose.yml
+services:
+  __ENDPOINT__:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    restart: unless-stopped

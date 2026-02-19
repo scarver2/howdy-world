@@ -1,0 +1,8 @@
+# __ENDPOINT__/Dockerfile.dev
+# Two Options: Static or Framework Specific (DIY)
+# Static Files
+FROM alpine:3.20
+RUN apk add --no-cache lighttpd
+COPY . /var/www/localhost/htdocs
+EXPOSE 3000
+CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
