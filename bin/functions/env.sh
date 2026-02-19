@@ -9,12 +9,12 @@ HW_STRICT="${HW_STRICT:-0}"
 HW_QUIET="${HW_QUIET:-0}"
 
 BLACKLIST=(
-  bin
   _infrastructure
-  docker
   ada
   angie
   bash
+  bin
+  docker
   nginx
   odin-http
 )
