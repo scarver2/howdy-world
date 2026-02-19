@@ -1,18 +1,13 @@
 #!/usr/bin/env bash
 # bin/down
-set -euo pipefail
-
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-cd "$ROOT_DIR"
-
-COMPOSE_FILE="${COMPOSE_FILE:-compose.yml}"
+source "$(dirname "$0")/_lib.sh"
 
 # Default behavior: down --remove-orphans
 # You can override/extend by passing args, e.g.:
 #   bin/down --volumes
 #   bin/down --remove-orphans --volumes
 if [[ $# -eq 0 ]]; then
-  docker compose -f "$COMPOSE_FILE" down --remove-orphans
+  compose down --remove-orphans
 else
-  docker compose -f "$COMPOSE_FILE" down "$@"
+  compose down "$@"
 fi
