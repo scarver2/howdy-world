@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # bin/up
 source "$(dirname "$0")/_lib.sh"
+# cd "$ROOT_DIR"
 
 # Default behavior: up -d
 # You can override/extend by passing args, e.g.:

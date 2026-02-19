@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 # bin/logs
-set -euo pipefail
-
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$(dirname "$0")/_lib.sh"
 cd "$ROOT_DIR"
-
-COMPOSE_FILE="${COMPOSE_FILE:-compose.yml}"
 
 usage() {
   cat <<'USAGE'
