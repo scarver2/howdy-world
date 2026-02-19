@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+# bin/health
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+GREEN="$(printf '\033[0;32m')"
+RED="$(printf '\033[0;31m')"
+YELLOW="$(printf '\033[0;33m')"
+RESET="$(printf '\033[0m')"
+
+STRICT=0
+[[ "${1:-}" == "--strict" ]] && STRICT=1
+
+BLACKLIST=(bin nginx docker)
+
+is_blacklisted() {
+  local dir="$1"
+  for item in "${BLACKLIST[@]}"; do
+    [[ "$dir" == "$item" ]] && return 0
+  done
+  return 1
+}
+
+REQUIRED=(
+  Dockerfile
+  compose.yml
+  .dockerignore
+  .gitignore
+  README.md
+)
+
+OPTIONAL=(
+  Dockerfile.dev
+  compose.dev.yml
+  TODO.md
+  NOTES.md
+)
+
+fail_count=0
+warn_count=0
+
+echo "Howdy World Endpoint Health"
+echo
+
+for dir in */ ; do
+  dir="${dir%/}"
+
+  [[ "$dir" == .* ]] && continue
+  [[ "$dir" == _* ]] && continue
+  is_blacklisted "$dir" && continue
+
+  echo "$dir"
+
+  for file in "${REQUIRED[@]}"; do
+    if [[ -f "$dir/$file" ]]; then
+      printf "  %-18s %b✔%b\n" "$file" "$GREEN" "$RESET"
+    else
+      printf "  %-18s %b✖%b\n" "$file" "$RED" "$RESET"
+      ((fail_count++))
+    fi
+  done
+
+  for file in "${OPTIONAL[@]}"; do
+    if [[ -f "$dir/$file" ]]; then
+      printf "  %-18s %b✔%b\n" "$file" "$GREEN" "$RESET"
+    else
+      printf "  %-18s %b~%b\n" "$file" "$YELLOW" "$RESET"
+      ((warn_count++))
+    fi
+  done
+
+  echo
+done
+
+echo "Summary:"
+printf "  %bFailures:%b %d\n" "$RED" "$RESET" "$fail_count"
+printf "  %bWarnings:%b %d\n" "$YELLOW" "$RESET" "$warn_count"
+echo
+
+if (( fail_count > 0 )); then
+  exit 1
+fi
+
+if (( STRICT == 1 && warn_count > 0 )); then
+  exit 1
+fi
+
+exit 0
+
