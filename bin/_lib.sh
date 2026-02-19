@@ -21,6 +21,15 @@ source "$BIN_DIR/functions/banner.sh"
 
 HW_VERSION="$(git_version)"
 
+print_available_commands() {
+  for file in "$ROOT_DIR/bin/"*; do
+    name="$(basename "$file")"
+    [[ "$name" == _* ]] && continue
+    [[ "$name" == "templates" ]] && continue
+    [[ -d "$file" ]] && continue
+    printf "  %-15s\n" "$name"
+  done
+}
 
 require_endpoint_contract() {
   local endpoint_dir
