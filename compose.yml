@@ -2,14 +2,13 @@
 name: howdy-world
 services:
   nginx:
-    image: nginx:alpine
+    build:
+      context: ./_infrastructure/proxy/nginx
+      dockerfile: Dockerfile
     container_name: nginx
     ports:
       - "80:80"
-    volumes:
-      - ./_infrastructure/proxy/nginx:/etc/nginx:ro
     restart: unless-stopped
-
   dashboard:
     build:
       context: ./_dashboard
