@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # clojure/bin/up
 
-set -e
+source "$(dirname "$0")/_lib.sh"
 
-echo "Starting Clojure endpoint (production mode)..."
+banner "clojure:up"
 
-docker compose -f compose.yml up --build -d
+docker compose -f compose.yml up -d clojure

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # clojure/bin/down
 
-set -e
+source "$(dirname "$0")/_lib.sh"
 
-echo "Stopping Clojure endpoint..."
+banner "clojure:down"
 
 docker compose -f compose.yml down
 docker compose -f compose.dev.yml down 2>/dev/null || true
