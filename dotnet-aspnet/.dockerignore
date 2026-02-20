@@ -35,8 +35,8 @@ Thumbs.db
 # Node (if any tooling appears later)
 node_modules/
 
-# Docker / compose noise
-docker-compose*.yml
+# Docker & Compose
+compose*.yml
 
 # Docs
 *.md

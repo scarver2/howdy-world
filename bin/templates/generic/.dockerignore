@@ -1,21 +1,47 @@
 # __ENDPOINT__/.dockerignore
 
-# Docker-related files
-compose.dev.yml
-Dockerfile.dev
+# Build & compilation artifacts
+**/bin/
+**/obj/
+build
+dist
+target
 
-# Git-related files
+# Docs
+*.md
+
+# Logs
+**/*.log
+
+# Test results & coverage
+**/*.coverage
+**/*.coveragexml
+**/*.trx
+**/coverage.*
+**/coverage/
+**/TestResults/
+
+# Docker & Compose
+compose*.yml
+Dockerfile*
+
+# Git
 .git
 .gitignore
 
-# OS files
-.DS_Store
-
-# compilation artifacts
-build
-dist
+# NodeJS
 node_modules
-target
 
-# extraneous files
-*.log
+# OS
+.DS_Store
+.localized
+Thumbs.db
+
+# IDE
+.idea
+.vs
+.vscode
+*.sln.docstates
+*.suo
+*.user
+*.userosscache

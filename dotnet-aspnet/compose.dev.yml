@@ -1,4 +1,4 @@
-# dotnet-aspnet/docker-compose.dev.yml
+# dotnet-aspnet/compose.dev.yml
 
 services:
   dotnet-aspnet:

@@ -3,8 +3,8 @@
 ### Master Control Builder
 
 - [ ] Build files and folders from CSV data
-  - [ ] docker-compose.yml
-  - [ ] nginx/conf.d/<language>.conf
+  - [ ] compose.yml
+  - [ ] _infrastructure/proxy/nginx/conf.d/<language>.conf
   - [ ] Languages section of README of supported languages and frameworks
 - [ ] Add Dockerfile for each language
 - [ ] Add compose.yml for each language
@@ -76,7 +76,7 @@
   - [x] Vue
 - [ ] Lisp
 - [ ] Lua
-- [ ] NGINX
+- [x] NGINX
 - [ ] Oberon
 - [ ] Odin
   - [x] Odin HTTP

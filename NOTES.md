@@ -2,7 +2,7 @@
 
 ## Version 2 Prototype
 
-I've come to the conclusion that NGINX as the reverse proxy and a master docker-compose file is cumbersome. I'm also considering using Angie (an NGINX OSS replacement) to run the root index page and assets.
+I've come to the conclusion that NGINX as the reverse proxy and a master Docker Compose file is cumbersome. I'm also considering using Angie (an NGINX OSS replacement) to run the root index page and assets.
 I am also reviewing Caddy since it serves static assets and can access docker images too.
 
 infra/compose.yml (Traefik)

@@ -41,6 +41,5 @@ Thumbs.db
 !.env.example
 
 # docker files that shouldn't bloat context (optional)
-docker-compose*.yml
 compose*.yml
 
