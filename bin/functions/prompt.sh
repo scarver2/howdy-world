@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 # bin/functions/prompt.sh
 
-# does not appear to be used
 # --------------------------------------------------
 # Padding
+# FIXEME: does not appear to be used
 # --------------------------------------------------
-
 pad_dots() {
   local label="$1"
   local max="$2"

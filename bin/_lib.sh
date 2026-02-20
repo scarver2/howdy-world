@@ -13,13 +13,13 @@ export ROOT_DIR
 # Load concerns relative to bin in this order.
 source "$BIN_DIR/functions/env.sh"
 source "$BIN_DIR/functions/colors.sh"
+source "$BIN_DIR/functions/contracts.sh"
 source "$BIN_DIR/functions/git.sh"
 source "$BIN_DIR/functions/compose.sh"
 source "$BIN_DIR/functions/endpoints.sh"
 source "$BIN_DIR/functions/http.sh"
 source "$BIN_DIR/functions/banner.sh"
-
-HW_VERSION="$(git_version)"
+source "$BIN_DIR/functions/prompt.sh"
 
 print_available_commands() {
   for file in "$ROOT_DIR/bin/"*; do
@@ -31,34 +31,17 @@ print_available_commands() {
   done
 }
 
-require_endpoint_contract() {
-  local endpoint_dir
-  endpoint_dir="$(pwd)"
+ensure_root_context() {
+  if [[ "$PWD" != "$ROOT_DIR" ]]; then
+    cd "$ROOT_DIR"
+  fi
+}
 
-  local required=(
-    Dockerfile
-    compose.yml
-    .dockerignore
-    .gitignore
-    README.md
-    bin/setup
-    bin/outdated
-  )
-
-  local missing=0
-
-  for file in "${required[@]}"; do
-    if [[ ! -e "$endpoint_dir/$file" ]]; then
-      echo "Endpoint contract violation: missing $file"
-      missing=1
-    fi
-  done
-
-  if (( missing == 1 )); then
-    echo
-    echo "This directory does not satisfy the Howdy World endpoint contract."
+ensure_endpoint_context() {
+  if [[ ! -f "compose.yml" || ! -f "Dockerfile" ]]; then
+    echo "Not in a valid endpoint directory."
     exit 1
   fi
 }
 
-banner
+HW_VERSION="$(git_version)"
