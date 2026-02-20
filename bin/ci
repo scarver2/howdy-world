@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# bin/ci
+
+source "$(dirname "$0")/_lib.sh"
+
+banner "ci"
+
+ensure_root_context
+
+# Load contracts
+for c in "$ROOT_DIR/bin/contracts/"*.sh; do
+  source "$c"
+done
+
+require_proxy_contract
+require_file_headers
+
+# Disabled. That would block PRs from being submitted.
+# current_branch="$(git rev-parse --abbrev-ref HEAD)"
+# if [[ "$current_branch" == "master" ]]; then
+#   echo "CI cannot run on master branch."
+#   exit 1
+# fi
+
+if [[ -n "$(git status --porcelain)" ]]; then
+  echo "Working tree not clean."
+  exit 1
+fi
+
+echo
+echo "Running health (strict)..."
+bin/health --strict
+
+# Disabled until I confirm this can run on GitHub Actions
+# echo
+# echo "Running tests..."
+# bin/test
+
+echo
+echo "CI checks passed."
