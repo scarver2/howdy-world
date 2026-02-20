@@ -1,17 +1,49 @@
 # __ENDPOINT__/.dockerignore
 
 # Build & compilation artifacts
-**/bin/
-**/obj/
+*.dll
+*.dylib
+*.exe
+*.out
+*.so
+**/bin
+**/obj
 build
 dist
 target
+*.swp
+*.tmp
+*.bak
+*~
+
+# Databases
+*.sqlite
+*.sqlite3
+*.db
 
 # Docs
 *.md
 
+# Env
+.env
+.env.*
+
+# IDE
+.idea
+.vs
+.vscode
+*.sln.docstates
+*.suo
+*.user
+*.userosscache
+
 # Logs
 **/*.log
+
+# OS
+.DS_Store
+.localized
+Thumbs.db
 
 # Test results & coverage
 **/*.coverage
@@ -23,25 +55,45 @@ target
 
 # Docker & Compose
 compose*.yml
-Dockerfile*
+# Dockerfile* 
 
 # Git
 .git
 .gitignore
 
+# Go
+*.test
+
+# Java
+.gradle
+.mvn
+*.class
+*.jar
+*.war
+*.ear
+
 # NodeJS
+.bun
+.npm
+.pnpm-store
+.yarn
 node_modules
 
-# OS
-.DS_Store
-.localized
-Thumbs.db
+# Python
+__pycache__
+.coverage
+.mypy_cache
+.pytest_cache
+.ruff_cache
+.venv
+*.egg-info
+*.pyc
+*.pyd
+*.pyo
+htmlcov
 
-# IDE
-.idea
-.vs
-.vscode
-*.sln.docstates
-*.suo
-*.user
-*.userosscache
+# Ruby
+.bundle
+*.gem
+coverage
+vendor/bundle

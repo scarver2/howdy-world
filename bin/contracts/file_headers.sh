@@ -4,14 +4,15 @@
 # ----------------------------
 # Configuration
 # ----------------------------
+# FIXME: Add json and php files
+# "*.json"
+# "*.php"
 
 HEADER_POSITIVE_PATTERNS=(
   "*.clj"
   "*.conf"
   "*.go"
   "*.js"
-  "*.json"
-  "*.php"
   "*.py"
   "*.rb"
   "*.sh"
@@ -22,9 +23,10 @@ HEADER_POSITIVE_PATTERNS=(
 )
 
 HEADER_NEGATIVE_PATTERNS=(
-  "*-lock.json"
   "*.html"
+  "*.json"
   "*.md"
+  "*.php"
 )
 
 HEADER_NEGATIVE_DIRS=(
