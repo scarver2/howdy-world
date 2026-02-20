@@ -4,7 +4,6 @@ services:
   dotnet-aspnet:
     build:
       context: .
-    container_name: howdy-dotnet-aspnet
     ports:
       - "5010:8080"
     # volumes:
