@@ -1,4 +1,4 @@
-# elixir_phoenix/config/prod.exs
+# elixir-phoenix/config/prod.exs
 import Config
 
 # Do not print debug messages in production

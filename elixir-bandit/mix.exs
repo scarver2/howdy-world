@@ -1,3 +1,4 @@
+# elixir-bandit/mix.exs
 defmodule HowdyBandit.MixProject do
   use Mix.Project
 

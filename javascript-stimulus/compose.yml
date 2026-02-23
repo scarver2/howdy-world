@@ -1,4 +1,4 @@
-# javascript-jquery/compose.yml
+# javascript-stimulus/compose.yml
 services:
   dashboard:
     build:

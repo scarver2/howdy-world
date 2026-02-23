@@ -1,3 +1,4 @@
+// ruby-on-rails/app/views/pwa/service-worker.js
 // Add a service worker for processing Web Push notifications:
 //
 // self.addEventListener("push", async (event) => {

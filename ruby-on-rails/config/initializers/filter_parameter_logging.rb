@@ -1,3 +1,4 @@
+# ruby-on-rails/config/initializers/filter_parameter_logging.rb
 # Be sure to restart your server when you modify this file.
 
 # Configure parameters to be partially matched (e.g. passw matches password) and filtered from the log file.

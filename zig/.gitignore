@@ -1,2 +1,3 @@
+# zig/.gitignore
 .zig-cache/
 howdy

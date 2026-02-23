@@ -1,4 +1,4 @@
-# elixir_phoenix/config/dev.exs
+# elixir-phoenix/config/dev.exs
 import Config
 
 # For development, we disable any cache and enable

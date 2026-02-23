@@ -1,3 +1,5 @@
+# java-spring-boot/.dockerignore
+
 target
 .git
 .idea

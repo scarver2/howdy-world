@@ -1,3 +1,4 @@
+# javascript-stimulus/.dockerignore
 .dockerignore
 compose.dev.yml
 compose.yml

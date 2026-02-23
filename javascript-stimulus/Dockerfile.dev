@@ -1,4 +1,4 @@
-# javascript-jquery/Dockerfile.dev
+# javascript-stimulus/Dockerfile.dev
 FROM alpine:3.20
 
 RUN apk add --no-cache lighttpd ca-certificates \

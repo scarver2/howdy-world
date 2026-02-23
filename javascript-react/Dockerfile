@@ -1,4 +1,4 @@
-# /javascript-react/Dockerfile
+# javascript-react/Dockerfile
 
 # ---- build stage ----
 FROM oven/bun:1.3.8 AS build
