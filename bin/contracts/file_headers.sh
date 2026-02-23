@@ -1,77 +1,12 @@
 #!/usr/bin/env bash
 # bin/contracts/file_headers.sh
 
-# ----------------------------
-# Configuration
-# ----------------------------
-# FIXME: Add detection for these files
-# "*.css"
-# "*.php"
-# "*.xml"
-
-HEADER_POSITIVE_PATTERNS=(
-  ".dockerignore"
-  ".gitignore"
-  "*.clj"
-  "*.conf"
-  "*.exs"
-  "*.go"
-  "*.js"
-  "*.py"
-  "*.rb"
-  "*.sh"
-  "*.toml"
-  "*.ts"
-  "*.yaml"
-  "*.yml"
-  "Dockerfile*"
-  "Gemfile"
-)
-
-HEADER_NEGATIVE_PATTERNS=(
-  "*.css"
-  "*.exe"
-  "*.gif"
-  "*.html"
-  "*.jpeg"
-  "*.jpg"
-  "*.json"
-  "*.md"
-  "*.mp3"
-  "*.mp4"
-  "*.pdf"
-  "*.php"
-  "*.png"
-  "*.svg"
-  "*.tar.gz"
-  "*.tar"
-  "*.wav"
-  "*.webm"
-  "*.zip"
-)
-
-HEADER_NEGATIVE_DIRS=(
-  ".git"
-  ".idea"
-  ".vscode"
-  "bin/templates"
-  "build"
-  "coverage"
-  "debug"
-  "Debug"
-  "deps"
-  "dist"
-  "Properties"
-  "node_modules"
-  "obj"
-  "priv"
-  "public"
-  "target"
-  "vendor"
-)
-
-DOUBLE_SEMICOLON_PATTERNS=("*.clj")
-DOUBLE_SLASH_PATTERNS=("*.go" "*.js" "*.ts")
+# Maintenance instructions
+# 1. To include: Update the matches_positive function to include new file extensions
+# 2. To exclude: Update the matches_negative_pattern function to include new file extensions
+# 3. To use double semicolon comment style: Update the matches_double_semicolon function to include new file extensions
+# 4. To use double slash comment style: Update the matches_double_slash function to include new file extensions
+# 5. To use XML comment style: Update the matches_xml_comment_style function to include new file extensions
 
 # ----------------------------------
 # Enforcement of filepath in headers
@@ -89,7 +24,7 @@ require_file_headers() {
 
   matches_positive() {
     case "$1" in
-      .dockerignore|.gitignore|*.clj|*.conf|*.exs|*.go|*.js|*.py|*.rb|*.sh|*.toml|*.ts|*.yaml|*.yml|Dockerfile*|Gemfile)
+      .dockerignore|.gitignore|*.clj|*.conf|*.css|*.exs|*.go|*.js|*.php|*.py|*.rb|*.sh|*.toml|*.ts|*.xml|*.yaml|*.yml|Dockerfile*|Gemfile)
         return 0
         ;;
     esac
@@ -98,7 +33,7 @@ require_file_headers() {
 
   matches_negative_pattern() {
     case "$1" in
-      *.css|*.exe|*.gif|*.html|*.jpeg|*.jpg|*.json|*.md|*.mp3|*.mp4|*.pdf|*.php|*.png|*.svg|*.tar.gz|*.tar|*.wav|*.webm|*.zip)
+      *.exe|*.gif|*.html|*.jpeg|*.jpg|*.json|*.md|*.mp3|*.mp4|*.pdf|*.png|*.svg|*.tar.gz|*.tar|*.wav|*.webm|*.zip)
         return 0
         ;;
     esac
@@ -115,6 +50,13 @@ require_file_headers() {
   matches_double_slash() {
     case "$1" in
       *.go|*.js|*.ts) return 0 ;;
+    esac
+    return 1
+  }
+
+  matches_xml_comment_style() {
+    case "$1" in
+      *.xml) return 0 ;;
     esac
     return 1
   }
@@ -192,6 +134,23 @@ require_file_headers() {
     if [[ "$base" == *.css ]]; then
       if [[ "$first_line" != "/* $rel"* ]]; then
         echo "Missing filepath header (CSS): $rel"
+        ((failures++))
+      fi
+      continue
+    fi
+
+    # ----------------------------
+    # XML use case
+    # ----------------------------
+
+    if matches_xml_comment_style "$base"; then
+      {
+        IFS= read -r _
+        IFS= read -r xml_comment
+      } < "$file"
+
+      if [[ "$xml_comment" != "<!-- $rel -->" ]]; then
+        echo "Missing filepath header (XML): $rel"
         ((failures++))
       fi
       continue
