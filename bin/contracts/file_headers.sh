@@ -83,127 +83,151 @@ require_file_headers() {
   local root="$ROOT_DIR"
   local failures=0
 
-  file_exists() {
-    local f="$1"
-    [[ -f "$f" ]]
-  }
+  # ----------------------------
+  # Fast matchers using case
+  # ----------------------------
 
   matches_positive() {
-    local base="$1"
-    local pattern
-    for pattern in "${HEADER_POSITIVE_PATTERNS[@]}"; do
-      [[ "$base" == $pattern ]] && return 0
-    done
+    case "$1" in
+      .dockerignore|.gitignore|*.clj|*.conf|*.exs|*.go|*.js|*.py|*.rb|*.sh|*.toml|*.ts|*.yaml|*.yml|Dockerfile*|Gemfile)
+        return 0
+        ;;
+    esac
     return 1
   }
 
   matches_negative_pattern() {
-    local base="$1"
-    local pattern
-    for pattern in "${HEADER_NEGATIVE_PATTERNS[@]}"; do
-      [[ "$base" == $pattern ]] && return 0
-    done
+    case "$1" in
+      *.css|*.exe|*.gif|*.html|*.jpeg|*.jpg|*.json|*.md|*.mp3|*.mp4|*.pdf|*.php|*.png|*.svg|*.tar.gz|*.tar|*.wav|*.webm|*.zip)
+        return 0
+        ;;
+    esac
     return 1
-  }
-
-  matches_negative_dir() {
-    local path="$1"
-    local dir
-    for dir in "${HEADER_NEGATIVE_DIRS[@]}"; do
-      [[ "$path" == *"/$dir/"* ]] && return 0
-    done
-    return 1
-  }
-
-  matches_binary() {
-    local f="$1"
-
-    # -I : treat binary files as non-matching
-    # -q : quiet
-    # .  : match any character
-    grep -Iq . "$f"
-    [[ $? -ne 0 ]]
   }
 
   matches_double_semicolon() {
-    local file="$1"
-    for pattern in "${DOUBLE_SEMICOLON_PATTERNS[@]}"; do
-      [[ "$file" == $pattern ]] && return 0
-    done
+    case "$1" in
+      *.clj) return 0 ;;
+    esac
     return 1
   }
 
   matches_double_slash() {
-    local file="$1"
-    for pattern in "${DOUBLE_SLASH_PATTERNS[@]}"; do
-      [[ "$file" == $pattern ]] && return 0
-    done
+    case "$1" in
+      *.go|*.js|*.ts) return 0 ;;
+    esac
     return 1
   }
 
-  while IFS= read -r -d '' file; do
-    local rel="${file#$root/}"
-    local base
-    base="$(basename "$file")"
+  # ----------------------------
+  # Pruned find (huge speed win)
+  # ----------------------------
 
-    file_exists "$file" || continue
-    matches_negative_dir "$file" && continue
+  while IFS= read -r -d '' file; do
+    rel="${file#$root/}"
+    base="${file##*/}"
+
     matches_positive "$base" || continue
     matches_negative_pattern "$base" && continue
-    # Enable? matches_binary "$file" && continue
 
-    local first_line
-    first_line="$(sed -n '1p' "$file")"
+    # ----------------------------
+    # Read first line (no sed)
+    # ----------------------------
+
+    IFS= read -r first_line < "$file" || true
 
     # Allow shebang
     if [[ "$first_line" == "#!"* ]]; then
-      first_line="$(sed -n '2p' "$file")"
+      {
+        IFS= read -r _
+        IFS= read -r first_line
+      } < "$file"
     fi
 
-    # Special case: PHP (only if you later move it into positive)
+    # ----------------------------
+    # PHP special case
+    # ----------------------------
+
     if [[ "$base" == *.php ]]; then
-      local line1 line2
-      line1="$(sed -n '1p' "$file")"
-      line2="$(sed -n '2p' "$file")"
+      {
+        IFS= read -r line1
+        IFS= read -r line2
+      } < "$file"
+
       if [[ "$line1" != "<?php"* ]] || [[ "$line2" != "// $rel" ]]; then
         echo "Missing filepath header (PHP): $rel"
-        failures=$((failures + 1))
+        ((failures++))
       fi
       continue
     fi
 
-    # Special case: Clojure
+    # ----------------------------
+    # Clojure
+    # ----------------------------
+
     if matches_double_semicolon "$base"; then
       if [[ "$first_line" != ";; $rel" ]]; then
         echo "Missing filepath header: $rel"
-        failures=$((failures + 1))
+        ((failures++))
       fi
       continue
     fi
 
+    # ----------------------------
     # Slasher files
+    # ----------------------------
+
     if matches_double_slash "$base"; then
       if [[ "$first_line" != "// $rel" ]]; then
         echo "Missing filepath header: $rel"
-        failures=$((failures + 1))
+        ((failures++))
       fi
       continue
     fi
 
-  if [[ "$base" == *.css ]]; then
-    if [[ "$first_line" != "/* $rel"* ]]; then
-      echo "Missing filepath header (CSS): $rel"
-      failures=$((failures + 1))
-    fi
-  fi
+    # ----------------------------
+    # CSS special case
+    # ----------------------------
 
-    # Default enforcement for everything else
+    if [[ "$base" == *.css ]]; then
+      if [[ "$first_line" != "/* $rel"* ]]; then
+        echo "Missing filepath header (CSS): $rel"
+        ((failures++))
+      fi
+      continue
+    fi
+
+    # ----------------------------
+    # Default enforcement
+    # ----------------------------
+
     if [[ "$first_line" != "# $rel" ]]; then
       echo "Missing filepath header: $rel"
-      failures=$((failures + 1))
+      ((failures++))
     fi
 
-  done < <(find "$root" -type f -print0)
+  done < <(
+    find "$root" \
+      \( -path "*/.git/*" \
+         -o -path "*/.idea/*" \
+         -o -path "*/.vscode/*" \
+         -o -path "*/bin/templates/*" \
+         -o -path "*/build/*" \
+         -o -path "*/coverage/*" \
+         -o -path "*/debug/*" \
+         -o -path "*/Debug/*" \
+         -o -path "*/deps/*" \
+         -o -path "*/dist/*" \
+         -o -path "*/Properties/*" \
+         -o -path "*/node_modules/*" \
+         -o -path "*/obj/*" \
+         -o -path "*/priv/*" \
+         -o -path "*/public/*" \
+         -o -path "*/target/*" \
+         -o -path "*/vendor/*" \
+      \) -prune \
+      -o -type f -print0
+  )
 
   if (( failures > 0 )); then
     fail "$failures file(s) missing filepath header."
