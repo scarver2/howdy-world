@@ -1,0 +1,21 @@
+# .github/workflows/ci.yml
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Make bin scripts executable
+        run: chmod +x bin/* || true
+
+      - name: Run CI
+        run: ./bin/ci

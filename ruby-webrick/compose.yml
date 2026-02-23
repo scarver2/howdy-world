@@ -1,0 +1,6 @@
+# ruby-webrick/compose.yml
+services:
+  ruby-webrick:
+    build: .
+    ports:
+      - "3000:3000"
