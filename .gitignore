@@ -6,3 +6,6 @@
 
 # OS Files
 .DS_Store
+
+# AI
+.claude
