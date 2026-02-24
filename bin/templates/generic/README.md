@@ -1,4 +1,4 @@
-# __ENDPOINT__
+# Howdy __ENDPOINT__
 
 Describe this endpoint.
 

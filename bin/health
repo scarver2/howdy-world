@@ -137,7 +137,7 @@ for dir in */ ; do
   echo
 done
 
-require_file_headers
+require_file_headers fail_count
 
 echo "Summary:"
 printf "  %bFailures:%b %d\n" "$RED" "$RESET" "$fail_count"
