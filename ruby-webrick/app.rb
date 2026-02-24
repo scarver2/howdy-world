@@ -4,7 +4,7 @@ require 'webrick'
 PORT=ENV['PORT'] || 3000 # Let Docker set the port
 
 WEBPAGE = <<~HTML
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="utf-8">

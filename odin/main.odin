@@ -1,3 +1,5 @@
+// odin/main.odin
+
 package main
 
 import "core:fmt"
@@ -27,7 +29,7 @@ main :: proc() {
             continue
         }
 
-body := `<!DOCTYPE html>
+body := `<!doctype html>
 <html>
 <head>
     <meta charset="utf-8">

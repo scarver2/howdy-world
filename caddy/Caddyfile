@@ -1,3 +1,5 @@
+// caddy/Caddyfile
+
 :8080 {
 
   root * /srv

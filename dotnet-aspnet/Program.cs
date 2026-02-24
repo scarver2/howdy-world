@@ -1,4 +1,5 @@
-// dotnet/Program.cs
+// dotnet-aspnet/Program.cs
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
@@ -7,7 +8,7 @@ app.MapGet("/", async context =>
     context.Response.ContentType = "text/html; charset=utf-8";
 
     await context.Response.WriteAsync("""
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />

@@ -1,5 +1,5 @@
-// php/index.php
 <?php
+// php/index.php
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
 $base = '/php';
