@@ -4,12 +4,20 @@
 contract_run() {
   : "${ROOT_DIR:?ROOT_DIR must be set}"
 
+  # FUTURE: detect bin scripts
+  #   bin/down
+  #   bin/outdated
+  #   bin/restart
+  #   bin/setup
+  #   bin/start
+  #   bin/stop
+  #   bin/up
+  #   bin/upgrade
+  #   bin/version
+
   local required=(
     .dockerignore
     .gitignore
-    # FUTURE: bin/outdated
-    # FUTURE: bin/setup
-    # FUTURE: bin/up, down, restart, etc.
     compose.yml
     Dockerfile
     README.md
