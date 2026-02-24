@@ -1,4 +1,5 @@
-# elixir_phoenix/lib/elixir_phoenix_web.ex
+# elixir-phoenix/lib/elixir_phoenix_web.ex
+
 defmodule ElixirPhoenixWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such

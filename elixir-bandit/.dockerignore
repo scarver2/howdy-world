@@ -1,3 +1,5 @@
+# elixir-bandit/.dockerignore
+
 /_build
 /deps
 /.elixir_ls

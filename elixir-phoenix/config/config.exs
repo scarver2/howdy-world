@@ -1,4 +1,4 @@
-# elixir_phoenix/config/config.exs
+# elixir-phoenix/config/config.exs
 # This file is responsible for configuring your application
 # and its dependencies with the aid of the Config module.
 #

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# __ENDPOINT__/bin/clean
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENDPOINT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+if [[ -f "$ENDPOINT_DIR/../bin/_lib.sh" ]]; then
+  source "$ENDPOINT_DIR/../bin/_lib.sh"
+  require_endpoint_contract
+fi
+
+cd "$ENDPOINT_DIR"
+
+rm -rf dist build target node_modules 2>/dev/null || true

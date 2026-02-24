@@ -1,4 +1,4 @@
-# elixir_phoenix/config/runtime.exs
+# elixir-phoenix/config/runtime.exs
 import Config
 
 # config/runtime.exs is executed for all environments, including

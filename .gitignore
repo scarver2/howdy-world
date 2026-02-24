@@ -1,3 +1,4 @@
+# .gitignore
 # compiled applications
 /**/howdy
 
@@ -5,3 +6,6 @@
 
 # OS Files
 .DS_Store
+
+# AI
+.claude

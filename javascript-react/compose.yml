@@ -4,7 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: javascript-react
     expose:
       - "8080"
     restart: unless-stopped

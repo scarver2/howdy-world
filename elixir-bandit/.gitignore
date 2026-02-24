@@ -1,3 +1,5 @@
+# elixir-bandit/.gitignore
+
 /_build
 /cover
 /deps

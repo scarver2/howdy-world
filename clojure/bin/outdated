@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# clojure/bin/outdated
+
+source "$(dirname "$0")/_lib.sh"
+
+banner "clojure:outdated"
+
+docker compose pull clojure

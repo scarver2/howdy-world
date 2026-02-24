@@ -1,2 +1,4 @@
-.zig-cache/
+# zig/.gitignore
+.zig-cache
+.zig-out
 howdy

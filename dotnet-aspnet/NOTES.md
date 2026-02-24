@@ -100,7 +100,7 @@ app.MapGet("/", async context =>
     context.Response.ContentType = "text/html; charset=utf-8";
 
     await context.Response.WriteAsync("""
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -131,10 +131,10 @@ This is:
 
 # 4️⃣ Development Compose (endpoint-level)
 
-`dotnet-aspnet/docker-compose.yml`
+`dotnet-aspnet/compose.yml`
 
 ```yaml
-# dotnet-aspnet/docker-compose.yml
+# dotnet-aspnet/compose.yml
 
 services:
   dotnet-aspnet:

@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+# bin/scaffold
+source "$(dirname "$0")/_lib.sh"
+cd "$ROOT_DIR"
+
+usage() {
+  echo "Usage: bin/scaffold <endpoint-name>"
+  exit 1
+}
+
+NAME="${1:-}"
+[[ -z "$NAME" ]] && usage
+
+if ! [[ "$NAME" =~ ^[a-z][a-z0-9-]*$ ]]; then
+  echo "Invalid endpoint name."
+  echo "Must be lowercase kebab-case and start with a letter."
+  exit 1
+fi
+
+TEMPLATE_DIR="$ROOT_DIR/bin/templates/generic"
+
+if [[ ! -d "$TEMPLATE_DIR" ]]; then
+  echo "Template directory not found: $TEMPLATE_DIR"
+  exit 1
+fi
+
+mkdir -p "$NAME"
+
+echo "Scaffolding endpoint: $NAME"
+echo
+
+OVERWRITE_ALL=0
+
+prompt_overwrite() {
+  local target="$1"
+
+  if (( OVERWRITE_ALL == 1 )); then
+    return 0
+  fi
+
+  while true; do
+    echo "File exists: $target"
+    read -rp "[o]verwrite [s]kip [d]iff [a]ll overwrite [q]uit: " choice
+    case "$choice" in
+      o|O) return 0 ;;
+      s|S) return 1 ;;
+      d|D)
+        diff -u "$target" "$2" || true
+        ;;
+      a|A)
+        OVERWRITE_ALL=1
+        return 0
+        ;;
+      q|Q) exit 1 ;;
+      *) echo "Invalid option." ;;
+    esac
+  done
+}
+
+copy_file() {
+  local src="$1"
+  local dest="$2"
+
+  if [[ -f "$dest" ]]; then
+    if prompt_overwrite "$dest" "$src"; then
+      cp "$src" "$dest"
+    else
+      return
+    fi
+  else
+    mkdir -p "$(dirname "$dest")"
+    cp "$src" "$dest"
+  fi
+}
+
+# Copy templates with collision handling
+while IFS= read -r -d '' file; do
+  rel="${file#$TEMPLATE_DIR/}"
+  target="$NAME/$rel"
+  copy_file "$file" "$target"
+done < <(find "$TEMPLATE_DIR" -type f -print0)
+
+# Replace placeholders
+find "$NAME" -type f -print0 | while IFS= read -r -d '' file; do
+  sed -i '' "s/__ENDPOINT__/$NAME/g" "$file" 2>/dev/null || \
+  sed -i "s/__ENDPOINT__/$NAME/g" "$file"
+done
+
+# Ensure bin scripts executable
+if [[ -d "$NAME/bin" ]]; then
+  chmod +x "$NAME/bin/"* 2>/dev/null || true
+fi
+
+# TODO: insert snippet into compose.yml
+# TODO: insert snippet into nginx/conf.d/$NAME.conf
+
+echo
+echo "Endpoint '$NAME' scaffolded successfully."

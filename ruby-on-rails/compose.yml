@@ -1,0 +1,6 @@
+# ruby-on-rails/compose.yml
+services:
+  ruby-on-rails:
+    build: .
+    ports:
+      - "3000:3000"

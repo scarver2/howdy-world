@@ -1,4 +1,4 @@
-# elixir_phoenix/lib/elixir_phoenix.ex
+# elixir-phoenix/lib/elixir_phoenix.ex
 defmodule ElixirPhoenix do
   @moduledoc """
   ElixirPhoenix keeps the contexts that define your domain

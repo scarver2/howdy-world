@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # clojure/bin/restart
 
-set -e
+source "$(dirname "$0")/_lib.sh"
 
-echo "Restarting Clojure endpoint..."
+banner "clojure:restart"
 
 ./bin/down
 ./bin/up

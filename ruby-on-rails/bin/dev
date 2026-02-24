@@ -1,2 +1,4 @@
 #!/usr/bin/env ruby
+# ruby-on-rails/bin/dev
+
 exec "./bin/rails", "server", *ARGV

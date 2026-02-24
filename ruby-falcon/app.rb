@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 WEBPAGE = <<~HTML
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="utf-8">

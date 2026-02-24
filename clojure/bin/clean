@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# clojure/bin/clean
+
+source "$(dirname "$0")/_lib.sh"
+
+banner "clojure:clean"
+
+docker compose down -v clojure
+
+# TODO: remove build artifacts
+# rm -rf dist build target node_modules 2>/dev/null || true

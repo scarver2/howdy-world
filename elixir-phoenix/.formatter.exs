@@ -1,3 +1,4 @@
+# elixir-phoenix/.formatter.exs
 [
   import_deps: [:phoenix],
   plugins: [],

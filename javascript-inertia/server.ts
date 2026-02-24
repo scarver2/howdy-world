@@ -1,3 +1,4 @@
+// javascript-inertia/server.ts
 import express, { type Request, type Response } from "express";
 import { type InertiaPage, type InertiaProps } from "./types.js";
 

@@ -1,31 +1,10 @@
 #!/usr/bin/env bash
 # bin/test
-set -euo pipefail
-
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$(dirname "$0")/_lib.sh"
 cd "$ROOT_DIR"
 
-BASE_URL="http://howdy.localhost"
-
-GREEN="$(printf '\033[0;32m')"
-RED="$(printf '\033[0;31m')"
-RESET="$(printf '\033[0m')"
-
-CURL_COMMON=(-sS -L --max-time 8 -o /dev/null -w "%{http_code}")
-
-pad_dots() {
-  local label="$1"
-  local max="$2"
-  local len="${#label}"
-  local dots=$(( max - len ))
-  (( dots < 3 )) && dots=3
-  printf "%s" "$label"
-  printf '%*s' "$dots" '' | tr ' ' '.'
-}
-
-# --------------------------
-# Asset Tests (Root Contract)
-# --------------------------
+echo "Checking assets..."
+echo
 
 ASSETS=(
   "/favicon.ico"
@@ -35,130 +14,48 @@ ASSETS=(
   "/assets/howdy.js"
 )
 
-MAX_ASSET_LABEL=0
-for asset in "${ASSETS[@]}"; do
-  url="${BASE_URL}${asset}"
-  (( ${#url} > MAX_ASSET_LABEL )) && MAX_ASSET_LABEL=${#url}
-done
-MAX_ASSET_LABEL=$(( MAX_ASSET_LABEL + 8 ))
-
 asset_fails=0
-
-echo "Checking assets..."
-echo
-
 for asset in "${ASSETS[@]}"; do
   url="${BASE_URL}${asset}"
-
-  code="$(curl "${CURL_COMMON[@]}" "$url" 2>/dev/null || true)"
+  code="$(http_code "$url")"
   [[ -n "$code" ]] || code="???"
 
-  pad_dots "$url " "$MAX_ASSET_LABEL"
-
+  printf "%-45s " "$asset"
   if [[ "$code" =~ ^2[0-9][0-9]$ ]]; then
-    printf "%bPass%b\n" "$GREEN" "$RESET"
+    ok "Pass"
   else
     ((asset_fails++))
-    printf "%bFail%b (HTTP %s)\n" "$RED" "$RESET" "$code"
+    fail "Fail (HTTP $code)"
   fi
 done
-
-echo
-if (( asset_fails == 0 )); then
-  printf "%bAll assets passing.%b\n" "$GREEN" "$RESET"
-else
-  printf "%b%d asset(s) failing.%b\n" "$RED" "$asset_fails" "$RESET"
-fi
-
-# --------------------------
-# Endpoint discovery
-# --------------------------
-
-BLACKLIST=(
-  ada
-  angie
-  bash
-  bin
-  nginx
-  odin-http
-)
-
-is_blacklisted() {
-  local dir="$1"
-  for item in "${BLACKLIST[@]}"; do
-    [[ "$dir" == "$item" ]] && return 0
-  done
-  return 1
-}
-
-ENDPOINTS=()
-
-for dir in */ ; do
-  dir="${dir%/}"
-
-  [[ "$dir" == .* ]] && continue
-  [[ "$dir" == _* ]] && continue
-  is_blacklisted "$dir" && continue
-
-  ENDPOINTS+=("$dir")
-done
-
-IFS=$'\n' ENDPOINTS=($(sort <<<"${ENDPOINTS[*]}"))
-unset IFS
-
-ALL_ROUTES=("" "${ENDPOINTS[@]}")
-
-# --------------------------
-# Endpoint Tests
-# --------------------------
-
-MAX_ENDPOINT_LABEL=0
-for ep in "${ALL_ROUTES[@]}"; do
-  if [[ -z "$ep" ]]; then
-    url="${BASE_URL}/"
-  else
-    url="${BASE_URL}/${ep}/"
-  fi
-  (( ${#url} > MAX_ENDPOINT_LABEL )) && MAX_ENDPOINT_LABEL=${#url}
-done
-MAX_ENDPOINT_LABEL=$(( MAX_ENDPOINT_LABEL + 8 ))
-
-endpoint_fails=0
 
 echo
 echo "Checking endpoints..."
 echo
 
-for ep in "${ALL_ROUTES[@]}"; do
+endpoint_fails=0
+for ep in "" $(discover_endpoints); do
   if [[ -z "$ep" ]]; then
     url="${BASE_URL}/"
+    label="/"
   else
     url="${BASE_URL}/${ep}/"
+    label="/${ep}/"
   fi
 
-  code="$(curl "${CURL_COMMON[@]}" "$url" 2>/dev/null || true)"
+  code="$(http_code "$url")"
   [[ -n "$code" ]] || code="???"
 
-  pad_dots "$url " "$MAX_ENDPOINT_LABEL"
-
+  printf "%-45s " "$label"
   if [[ "$code" =~ ^2[0-9][0-9]$ ]]; then
-    printf "%bPass%b\n" "$GREEN" "$RESET"
+    ok "Pass"
   else
     ((endpoint_fails++))
-    printf "%bFail%b (HTTP %s)\n" "$RED" "$RESET" "$code"
+    fail "Fail (HTTP $code)"
   fi
 done
 
 echo
-if (( endpoint_fails == 0 )); then
-  printf "%bAll endpoints passing.%b\n" "$GREEN" "$RESET"
-else
-  printf "%b%d endpoint(s) failing.%b\n" "$RED" "$endpoint_fails" "$RESET"
-fi
-
-# --------------------------
-# Final Exit Status
-# --------------------------
 
 if (( endpoint_fails == 0 && asset_fails == 0 )); then
   exit 0

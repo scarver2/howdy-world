@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# bin/health
+
+ROOT_DIR="$(git rev-parse --show-toplevel)"
+
+source "$ROOT_DIR/bin/functions/contracts.sh"
+
+echo "Running Howdy World Health Check"
+echo
+
+run_all_contracts
+contracts_exit_if_failed

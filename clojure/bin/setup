@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # clojure/bin/setup
 
-set -e
+source "$(dirname "$0")/_lib.sh"
 
-echo "Clojure Endpoint Setup"
+banner "clojure:setup"
 
 if [[ "$OSTYPE" != "darwin"* ]]; then
   echo "Unsupported OS. Homebrew required."

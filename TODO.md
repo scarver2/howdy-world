@@ -3,8 +3,8 @@
 ### Master Control Builder
 
 - [ ] Build files and folders from CSV data
-  - [ ] docker-compose.yml
-  - [ ] nginx/conf.d/<language>.conf
+  - [ ] compose.yml
+  - [ ] _infrastructure/proxy/nginx/conf.d/<language>.conf
   - [ ] Languages section of README of supported languages and frameworks
 - [ ] Add Dockerfile for each language
 - [ ] Add compose.yml for each language
@@ -76,7 +76,7 @@
   - [x] Vue
 - [ ] Lisp
 - [ ] Lua
-- [ ] NGINX
+- [x] NGINX
 - [ ] Oberon
 - [ ] Odin
   - [x] Odin HTTP
@@ -272,3 +272,266 @@ networks:
 
 ### Performance
 - [ ] Benchmark endpoints
+
+
+--- 2026-02-22 ---
+
+# 🤠 Howdy World — Unified Master Task List
+TODO: conform and merge this list below into the above
+---
+
+# 🧱 Master Control Builder
+
+- [ ] Build files and folders from CSV data
+  - [ ] compose.yml
+  - [ ] _infrastructure/proxy/nginx/conf.d/<language>.conf
+  - [ ] Languages section of README of supported languages and frameworks
+- [x] Add Dockerfile for each implemented language
+- [x] Add compose.yml for each implemented language
+- [x] Add README.md for each implemented language
+- [x] Add TODO.md for each implemented language
+- [x] Add .gitignore for each implemented language
+- [x] Add .dockerignore for each implemented language
+- [ ] Add healthz endpoint for each language (intentionally not standardized globally)
+- [ ] Add common CSS/JS libraries (shared `/assets/`)
+- [ ] Add GitHub Actions for:
+  - [ ] `docker compose config` lint/validate
+  - [ ] building images (partial)
+  - [ ] smoke testing endpoints
+- [ ] Create Docker Compose profiles (e.g., `--profile ruby`)
+- [x] Verify compiled languages produce binary in `/out`
+- [x] Verify Dockerfile recompiles live changes (dev variants)
+- [ ] Verify service README.md contains consistent structure
+- [ ] Verify HTML Structure consistency checklist
+
+---
+
+# 🌐 Reverse Proxy Layer
+
+- [x] NGINX Reverse Proxy
+- [x] index catalog of endpoints
+- [x] conf.d per-endpoint config
+- [ ] Global 404 branded page
+- [ ] Global 500 branded page
+- [ ] Proxy config linting in CI
+- [ ] SPA fallback standardization
+- [ ] Gzip / Brotli tuning
+- [ ] Cache headers optimization
+
+---
+
+# 🐳 Docker & Compose Architecture
+
+- [x] Separate Dockerfile and Dockerfile.dev (Option B lock-in)
+- [x] Minimal compose formatting
+- [x] corral network
+- [x] howdy.localhost support
+- [ ] Add non-root user to all Dockerfiles (planned hardening)
+- [ ] Add healthchecks to containers
+- [ ] Multi-stage builds standardized everywhere
+- [ ] Image size audit
+- [ ] Reproducible build validation
+- [ ] Production compose profile separation
+
+---
+
+# 🧪 CI / GitHub Actions
+
+- [x] Basic CI concept established
+- [ ] Detect changed endpoints
+- [ ] Docker layer caching (type=gha)
+- [ ] Matrix builds per endpoint
+- [ ] Infra-change full rebuild logic
+- [ ] Nightly full ecosystem spin-up
+- [ ] E2E job in CI
+- [ ] Dockerfile lint (hadolint)
+- [ ] Security scan (Trivy)
+- [ ] Dependency audit job
+- [ ] CI duration metrics tracking
+
+---
+
+# 🧪 Testing Infrastructure
+
+## Root-Level
+
+- [ ] E2E test framework
+- [ ] Smoke test harness
+- [ ] Endpoint discovery test
+- [ ] Proxy routing validation
+- [ ] CI test report aggregation
+
+## Service-Level
+
+- [ ] Native linter for each service
+- [ ] Native test suite for each service
+- [ ] AST testing where applicable
+- [x] Version locking (partial in many endpoints)
+- [ ] Purge unused code/comments
+- [x] HTML templated output for web apps
+- [ ] Consume `.env` and secrets properly
+- [x] Production path handling `/<service>/`
+- [x] Dev path handling `/`
+- [ ] Standardized documentation format per service
+
+---
+
+# 🧪 Smoke Tests
+
+- [ ] Confirm root dashboard is available
+- [ ] Confirm endpoint returns 200
+- [ ] Confirm `/<service>/` returns 200
+- [ ] Confirm "Howdy, World!" in response
+- [ ] Confirm `/healthz` if implemented
+
+---
+
+# 🧪 Negative Tests
+
+- [ ] Confirm no public port leakage
+- [ ] Confirm global 404 page
+- [ ] Confirm endpoint-level 404
+- [ ] Confirm global 500 page
+
+---
+
+# 📊 Performance & Benchmarking
+
+- [ ] Benchmark endpoints
+- [ ] RPS comparison
+- [ ] Memory usage comparison
+- [ ] Cold start timing
+- [ ] Container startup timing
+- [ ] Proxy performance comparison
+
+---
+
+# 📦 Shared Assets
+
+- [ ] Root `/assets/` folder (future lock-in)
+- [ ] Shared favicon
+- [ ] Shared CSS baseline
+- [ ] Shared JS helper
+- [ ] Shared branding banner
+- [ ] Shared logging format
+- [x] Consistent port conventions
+- [x] Consistent environment variable schema
+
+---
+
+# 🔐 Security Hardening
+
+- [ ] Non-root containers
+- [ ] Remove unnecessary OS packages
+- [ ] Image vulnerability scanning
+- [ ] Dependency audit
+- [ ] CSP headers
+- [ ] Rate limiting
+- [ ] Secure headers audit
+
+---
+
+# 🚀 Deployment
+
+- [x] Kamal 2 baseline configuration
+- [x] GHCR support
+- [x] DigitalOcean deploy model
+- [ ] Production validation workflow
+- [ ] Rollback validation
+- [x] Bitwarden secrets model
+- [ ] Zero-downtime verification
+
+---
+
+# 🧠 Builder (Future Critical System)
+
+- [ ] Endpoint generator CLI
+- [ ] CI config generator
+- [ ] Dockerfile template generator
+- [ ] Compose validator
+- [ ] Endpoint health scanner
+- [ ] Drift detection system
+- [ ] Cross-endpoint dependency map
+- [ ] Auto-doc generator
+
+---
+
+# 🏛 Languages & Framework Coverage
+
+## Completed & Deployed
+
+- [x] C# (ASP.NET)
+- [x] Caddy
+- [x] Clojure
+- [x] Go
+- [x] Java Spring Boot
+- [x] JavaScript Inertia
+- [x] jQuery
+- [x] Stimulus
+- [x] Vue
+- [x] NGINX
+- [x] Odin HTTP
+- [x] Python FastAPI
+- [x] Ruby on Rails
+- [x] WEBrick
+- [x] Rust Leptos
+- [x] Zig
+
+## Pending / Planned
+
+- [ ] Ada
+- [ ] AWK
+- [ ] BASIC
+- [ ] C
+- [ ] C++
+- [ ] COBOL
+- [ ] Dart
+- [ ] Elixir (Ecosystem beyond Phoenix/Bandit)
+- [ ] Erlang
+- [ ] Fortran
+- [ ] Haskell
+- [ ] Angular
+- [ ] Ember
+- [ ] Next.js
+- [ ] Nuxt
+- [ ] Node (plain)
+- [ ] React
+- [ ] Svelte
+- [ ] TypeScript (full native endpoint)
+- [ ] Vanilla JS
+- [ ] Lisp
+- [ ] Lua
+- [ ] Oberon
+- [ ] Perl
+- [ ] PHP (Laravel, Symfony)
+- [ ] Django
+- [ ] Flask
+- [ ] Typer
+- [ ] Uvicorn standalone
+- [ ] Rack
+- [ ] Sinatra
+- [ ] Falcon
+- [ ] Axum
+- [ ] Bash
+- [ ] Swift
+- [ ] Kotlin
+- [ ] Scala
+- [ ] Crystal
+- [ ] gRPC demo
+- [ ] WebSocket demo
+- [ ] GraphQL demo
+
+---
+
+# 📖 Documentation & Story
+
+- [ ] “Why These Languages” README section
+- [ ] Bench / profile notes per language
+- [ ] “Learning → Shipped” changelog
+- [ ] Architecture overview diagram
+- [ ] Builder roadmap document
+- [ ] Deployment guide
+- [ ] CI explanation document
+
+---
+

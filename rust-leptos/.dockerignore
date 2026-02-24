@@ -1,3 +1,4 @@
+# rust-leptos/.dockerignore
 .DS_Store
 .git
 .gitignore

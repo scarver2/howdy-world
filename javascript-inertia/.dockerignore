@@ -49,7 +49,6 @@ Thumbs.db
 
 # Docker artifacts
 Dockerfile*
-docker-compose*.yml
 compose*.yml
 
 # Docs / misc

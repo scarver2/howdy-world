@@ -1,3 +1,4 @@
+# ruby-on-rails/config/ci.rb
 # Run using bin/ci
 
 CI.run do

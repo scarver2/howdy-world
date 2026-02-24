@@ -5,7 +5,7 @@ from fastapi.responses import HTMLResponse
 
 app = FastAPI(title="Howdy World")
 
-HOWDY_HTML = """<!DOCTYPE html>
+HOWDY_HTML = """<!doctype html>
 <html>
 <head>
   <meta charset="utf-8">
