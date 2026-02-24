@@ -6,6 +6,7 @@ discover_endpoints() {
     dir="${dir%/}"
     [[ "$dir" == .* ]] && continue
     [[ "$dir" == _* ]] && continue
+    [[ "$dir" == bin ]] && continue
 
     skip=0
     for item in "${BLACKLIST[@]}"; do
