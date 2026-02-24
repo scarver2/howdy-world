@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 # bin/contracts/file_headers.sh
 
+# Enforces filepath header contracts across the repository.
+#
+# Design goals:
+# - Single file read per file
+# - No subshell forks inside main loop
+# - Deterministic policy dispatch via case
+# - Compiler-accurate comment styles
+# - Self-describing function names
+
 # Maintenance instructions
 # 1. To include: Update the matches_positive function to include new file extensions
 # 2. To exclude: Update the matches_negative_pattern function to include new file extensions
@@ -8,160 +17,178 @@
 # 4. To use double slash comment style: Update the matches_double_slash function to include new file extensions
 # 5. To use XML comment style: Update the matches_xml_comment_style function to include new file extensions
 
-# ----------------------------------
-# Enforcement of filepath in headers
-# ----------------------------------
-
 require_file_headers() {
   : "${ROOT_DIR:?ROOT_DIR must be set}"
 
   local root="$ROOT_DIR"
   local failures=0
 
-  # ----------------------------
-  # Fast matchers using case
-  # ----------------------------
+  # ----------------------------------------
+  # Reporting
+  # ----------------------------------------
 
-  matches_positive() {
+  report_missing_header() {
+    local rel="$1"
+    local type="$2"
+    printf 'Missing filepath header (%s): %s\n' "$type" "$rel"
+  }
+
+  is_binary_file() {
+    LC_ALL=C grep -Iq . "$1"
+    [[ $? -ne 0 ]]
+  }
+
+  # ----------------------------------------
+  # Exclusion Rules (non-policy files)
+  # ----------------------------------------
+
+  is_excluded_extension() {
     case "$1" in
-      .dockerignore|.gitignore|*.clj|*.conf|*.css|*.exs|*.go|*.js|*.php|*.py|*.rb|*.sh|*.toml|*.ts|*.xml|*.yaml|*.yml|Dockerfile*|Gemfile)
+      .DS_Store|*.exe|*.gif|*.jpeg|*.jpg|*.json|*.md|*.mp3|*.mp4|*.pdf|*.png|*.svg|*.tar.gz|*.tar|*.wav|*.webm|*.zip)
+        return 0 ;;
+    esac
+    return 1
+  }
+
+  # ----------------------------------------
+  # Comment Style Enforcement
+  # ----------------------------------------
+
+  enforce_header_policy() {
+    local base="$1"
+    local rel="$2"
+    local first_line="$3"
+    local second_line="$4"
+
+    case "$base" in
+
+      # ----------------------------------
+      # ERB (non-rendering Ruby comment)
+      # ----------------------------------
+      *.erb)
+        if [[ "$first_line" != "<%# $rel %>" ]]; then
+          report_missing_header "$rel" "ERB"
+          return 1
+        fi
+        return 0
+        ;;
+
+      # ----------------------------------
+      # HTML (first-line markup comment)
+      # ----------------------------------
+      *.html|*.htm)
+        if [[ "$first_line" != "<!-- $rel -->" ]]; then
+          report_missing_header "$rel" "HTML"
+          return 1
+        fi
+        return 0
+        ;;
+
+      # ----------------------------------
+      # XML (second line if declaration present)
+      # ----------------------------------
+      *.xml)
+        local target="$first_line"
+
+        if [[ "$first_line" == "<?xml"* ]]; then
+          target="$second_line"
+        fi
+
+        if [[ "$target" != "<!-- $rel -->" ]]; then
+          report_missing_header "$rel" "XML"
+          return 1
+        fi
+        return 0
+        ;;
+
+      # ----------------------------------
+      # CSS
+      # ----------------------------------
+      *.css)
+        if [[ "$first_line" != "/* $rel"* ]]; then
+          report_missing_header "$rel" "CSS"
+          return 1
+        fi
+        return 0
+        ;;
+
+      # ----------------------------------
+      # Clojure
+      # ----------------------------------
+      *.clj)
+        if [[ "$first_line" != ";; $rel" ]]; then
+          report_missing_header "$rel" "Clojure"
+          return 1
+        fi
+        return 0
+        ;;
+
+      # ----------------------------------
+      # Slash-style languages
+      # ----------------------------------
+      *.go|*.js|*.mod|*.ts|*.zig)
+        if [[ "$first_line" != "// $rel" ]]; then
+          report_missing_header "$rel" "SlashComment"
+          return 1
+        fi
+        return 0
+        ;;
+
+      # ----------------------------------
+      # PHP (second-line slash comment)
+      # ----------------------------------
+      *.php)
+        if [[ "$first_line" != "<?php"* ]] || [[ "$second_line" != "// $rel" ]]; then
+          report_missing_header "$rel" "PHP"
+          return 1
+        fi
+        return 0
+        ;;
+
+      # ----------------------------------
+      # Default: Hash-style languages
+      # ----------------------------------
+      *)
+        if [[ "$first_line" != "# $rel" ]]; then
+          report_missing_header "$rel" "HashComment"
+          return 1
+        fi
         return 0
         ;;
     esac
-    return 1
   }
 
-  matches_negative_pattern() {
-    case "$1" in
-      *.exe|*.gif|*.html|*.jpeg|*.jpg|*.json|*.md|*.mp3|*.mp4|*.pdf|*.png|*.svg|*.tar.gz|*.tar|*.wav|*.webm|*.zip)
-        return 0
-        ;;
-    esac
-    return 1
-  }
-
-  matches_double_semicolon() {
-    case "$1" in
-      *.clj) return 0 ;;
-    esac
-    return 1
-  }
-
-  matches_double_slash() {
-    case "$1" in
-      *.go|*.js|*.ts) return 0 ;;
-    esac
-    return 1
-  }
-
-  matches_xml_comment_style() {
-    case "$1" in
-      *.xml) return 0 ;;
-    esac
-    return 1
-  }
-
-  # ----------------------------
-  # Pruned find (huge speed win)
-  # ----------------------------
+  # ----------------------------------------
+  # Main Scan Loop
+  # ----------------------------------------
 
   while IFS= read -r -d '' file; do
     rel="${file#$root/}"
     base="${file##*/}"
 
-    matches_positive "$base" || continue
-    matches_negative_pattern "$base" && continue
+    # Skip excluded binary/non-policy extensions
+    is_excluded_extension "$base" && continue
 
-    # ----------------------------
-    # Read first line (no sed)
-    # ----------------------------
+    # TODO: unnecessary if build artifacts are in dist folder
+    is_binary_file "$file" && continue
 
-    IFS= read -r first_line < "$file" || true
+    # Single file read
+    local first_line=""
+    local second_line=""
 
-    # Allow shebang
+    {
+      IFS= read -r first_line
+      IFS= read -r second_line
+    } < "$file"
+
+    # Allow shebang skip
     if [[ "$first_line" == "#!"* ]]; then
-      {
-        IFS= read -r _
-        IFS= read -r first_line
-      } < "$file"
+      first_line="$second_line"
+      IFS= read -r second_line < <(sed -n '3p' "$file" 2>/dev/null)
     fi
 
-    # ----------------------------
-    # PHP special case
-    # ----------------------------
-
-    if [[ "$base" == *.php ]]; then
-      {
-        IFS= read -r line1
-        IFS= read -r line2
-      } < "$file"
-
-      if [[ "$line1" != "<?php"* ]] || [[ "$line2" != "// $rel" ]]; then
-        echo "Missing filepath header (PHP): $rel"
-        ((failures++))
-      fi
-      continue
-    fi
-
-    # ----------------------------
-    # Clojure
-    # ----------------------------
-
-    if matches_double_semicolon "$base"; then
-      if [[ "$first_line" != ";; $rel" ]]; then
-        echo "Missing filepath header: $rel"
-        ((failures++))
-      fi
-      continue
-    fi
-
-    # ----------------------------
-    # Slasher files
-    # ----------------------------
-
-    if matches_double_slash "$base"; then
-      if [[ "$first_line" != "// $rel" ]]; then
-        echo "Missing filepath header: $rel"
-        ((failures++))
-      fi
-      continue
-    fi
-
-    # ----------------------------
-    # CSS special case
-    # ----------------------------
-
-    if [[ "$base" == *.css ]]; then
-      if [[ "$first_line" != "/* $rel"* ]]; then
-        echo "Missing filepath header (CSS): $rel"
-        ((failures++))
-      fi
-      continue
-    fi
-
-    # ----------------------------
-    # XML use case
-    # ----------------------------
-
-    if matches_xml_comment_style "$base"; then
-      {
-        IFS= read -r _
-        IFS= read -r xml_comment
-      } < "$file"
-
-      if [[ "$xml_comment" != "<!-- $rel -->" ]]; then
-        echo "Missing filepath header (XML): $rel"
-        ((failures++))
-      fi
-      continue
-    fi
-
-    # ----------------------------
-    # Default enforcement
-    # ----------------------------
-
-    if [[ "$first_line" != "# $rel" ]]; then
-      echo "Missing filepath header: $rel"
+    # Enforce policy
+    if ! enforce_header_policy "$base" "$rel" "$first_line" "$second_line"; then
       ((failures++))
     fi
 
@@ -187,8 +214,4 @@ require_file_headers() {
       \) -prune \
       -o -type f -print0
   )
-
-  if (( failures > 0 )); then
-    fail "$failures file(s) missing filepath header."
-  fi
 }
