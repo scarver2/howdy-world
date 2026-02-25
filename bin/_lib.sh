@@ -20,6 +20,7 @@ source "$BIN_DIR/functions/endpoints.sh"
 source "$BIN_DIR/functions/http.sh"
 source "$BIN_DIR/functions/banner.sh"
 source "$BIN_DIR/functions/prompt.sh"
+source "$BIN_DIR/functions/yaml.sh"
 
 print_available_commands() {
   for file in "$ROOT_DIR/bin/"*; do
