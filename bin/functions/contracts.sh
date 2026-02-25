@@ -19,6 +19,12 @@ declare -a CONTRACT_MESSAGES=()
 # Emitters
 # -----------------------------
 
+contract_abort() {
+  CONTRACT_MESSAGES+=("ABORT|$1")
+  ((TOTAL_ERRORS++))
+  exit 1
+}
+
 contract_error() {
   CONTRACT_MESSAGES+=("ERROR|$1")
   ((TOTAL_ERRORS++))
