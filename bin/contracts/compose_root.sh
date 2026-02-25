@@ -75,12 +75,12 @@ validate_service() {
   local compose="$1"
   local svc="$2"
 
-  # build.context must be ./svc
+  # build must be ./svc
   expected="./$svc"
-  context=$(yq ".services.$svc.build.context" "$compose")
+  build=$(yq ".services.$svc.build" "$compose")
 
-  if [[ "$context" != "$expected" ]]; then
-    contract_error "Service '$svc' build.context must be '$expected'"
+  if [[ "$build" != "$expected" ]]; then
+    contract_error "Service '$svc' build must be '$expected'"
   fi
 
   # container_name must equal service name
