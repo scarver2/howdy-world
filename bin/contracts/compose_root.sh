@@ -8,6 +8,7 @@ contract_run() {
 
   validate_required_tools_installed
   validate_docker_compose_file_exists "$compose"
+  validate_docker_compose_file_structure "$compose"
   validate_services "$compose"
   validate_endpoint_services "$compose"
   validate_service_symmetry "$compose"
@@ -27,6 +28,14 @@ validate_docker_compose_file_exists() {
 
   if [[ ! -f "$compose" ]]; then
     contract_abort "Missing root compose.yml"
+  fi
+}
+
+validate_docker_compose_file_structure() {
+  local compose="$1"
+
+  if ! docker compose config --quiet; then
+    contract_abort "$compose is invalid"
   fi
 }
 
