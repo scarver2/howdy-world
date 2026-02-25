@@ -6,16 +6,8 @@ contract_run() {
 
   local compose="$ROOT_DIR/compose.yml"
 
-  if [[ ! -f "$compose" ]]; then
-    contract_error "Missing root compose.yml"
-    return
-  fi
-
-  if ! command -v yq >/dev/null 2>&1; then
-    contract_error "yq required for compose contract"
-    return
-  fi
-
+  validate_required_tools_installed
+  validate_docker_compose_file_exists "$compose"
   validate_services "$compose"
   validate_endpoint_services "$compose"
   validate_service_symmetry "$compose"
@@ -28,6 +20,14 @@ mapfile_services() {
   while IFS= read -r svc; do
     SERVICES+=("$svc")
   done < <(yq '.services | keys | .[]' "$1")
+}
+
+validate_docker_compose_file_exists() {
+  local compose="$1"
+
+  if [[ ! -f "$compose" ]]; then
+    contract_abort "Missing root compose.yml"
+  fi
 }
 
 validate_endpoint_services() {
@@ -69,6 +69,16 @@ validate_endpoint_services() {
       contract_error "Service '$ep' must define 'expose:'"
     fi
   done
+}
+
+validate_required_tools_installed() {
+  if ! command -v yq >/dev/null 2>&1; then
+    contract_abort "yq required for compose contract"
+  fi
+
+  if ! command -v docker >/dev/null 2>&1; then
+    contract_abort "docker required for compose contract"
+  fi
 }
 
 validate_service() {
