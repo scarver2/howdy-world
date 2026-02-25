@@ -63,6 +63,7 @@ services:
       - "8080"
   javascript-inertia:
     build: ./javascript-inertia
+    container_name: javascript-inertia
     expose:
       - "3000"
   javascript-jquery:
