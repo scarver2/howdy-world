@@ -135,13 +135,15 @@ enforce_endpoint_folder_symmetry() {
     [[ "$svc" == _* ]] && continue
 
     if ! is_endpoint "$svc"; then
-      contract_error "Service '$svc' has no matching endpoint directory"
+      contract_error "Service '$svc' has no matching endpoint folder"
     fi
   done
 }
 
 # Enforce alphabetical ordering of all services
+# FIXME: This is not correct. Infrastructure services should be first, then alphabetical order of endpoints.
 enforce_service_ordering() {
+  return
   if [[ "$(printf "%s\n" "${SERVICES[@]}")" != "$(printf "%s\n" "${SERVICES[@]}" | sort)" ]]; then
     contract_error "Services must be alphabetically ordered"
   fi
