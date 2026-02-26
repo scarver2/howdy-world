@@ -3,8 +3,6 @@
 
 : "${ROOT_DIR:?ROOT_DIR must be set before sourcing contracts.sh}"
 
-source "$ROOT_DIR/bin/functions/endpoints.sh"
-
 # -----------------------------
 # Global State
 # -----------------------------
@@ -22,7 +20,7 @@ declare -a CONTRACT_MESSAGES=()
 contract_abort() {
   CONTRACT_MESSAGES+=("ABORT|$1")
   ((TOTAL_ERRORS++))
-  exit 1
+  return 1
 }
 
 contract_error() {
@@ -90,7 +88,7 @@ run_contract() {
     exit 2
   fi
 
-  contract_run
+  contract_run || true
   render_contract_messages
 }
 
