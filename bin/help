@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # bin/help
-set -euo pipefail
 
 source "$(dirname "$0")/_lib.sh"
 

@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # bin/version
-set -euo pipefail
 
 source "$(dirname "$0")/_lib.sh"
 

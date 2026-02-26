@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # odin-http/bin/setup
 
-set -euo pipefail
 source "$(dirname "$0")/_lib.sh"
 
 ROOT="$(endpoint_root)"
