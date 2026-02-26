@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 # bin/ci
 
-ROOT_DIR="$(git rev-parse --show-toplevel)"
-
-source "$ROOT_DIR/bin/functions/contracts.sh"
+source "$(dirname "$0")/_lib.sh"
 
 run_all_contracts
 
