@@ -1,15 +1,15 @@
 # compose.yml
 name: howdy-world
 services:
-  nginx:
+  _infrastructure_proxy_nginx:
     build: ./_infrastructure/proxy/nginx
-    container_name: nginx
+    container_name: _infrastructure_proxy_nginx
     ports:
       - "80:80"
     restart: unless-stopped
-  dashboard:
+  _dashboard:
     build: ./_dashboard
-    container_name: dashboard
+    container_name: _dashboard
     expose:
       - "8080"
 
@@ -31,29 +31,21 @@ services:
   elixir-bandit:
     build: ./elixir-bandit
     container_name: elixir-bandit
-    environment:
-      - PORT=4000
     expose:
       - "4000"
   elixir-phoenix:
     build: ./elixir-phoenix
     container_name: elixir-phoenix
-    environment:
-      - PORT=4000
     expose:
       - "4000"
   go:
     build: ./go
     container_name: go
-    environment:
-      - PORT=8080
     expose:
       - "8080"
   java-spring-boot:
     build: ./java-spring-boot
     container_name: java-spring-boot
-    environment:
-      - PORT=8080
     expose:
       - "8080"
   javascript:
@@ -74,8 +66,8 @@ services:
   javascript-react:
     build: ./javascript-react
     container_name: javascript-react
-    environment:
-      - PORT=8080
+    expose:
+      - "8080"
   javascript-stimulus:
     build: ./javascript-stimulus
     container_name: javascript-stimulus
