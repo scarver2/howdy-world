@@ -53,13 +53,13 @@ render_contract_messages() {
     case "$level" in
       ERROR)
         printf "✖ %s\n" "$text"
-        if [[ "$GITHUB_ACTIONS" == "true" ]]; then
+        if [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
           echo "::error::$text"
         fi
         ;;
       WARN)
         printf "⚠ %s\n" "$text"
-        if [[ "$GITHUB_ACTIONS" == "true" ]]; then
+        if [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
           echo "::warning::$text"
         fi
         ;;
