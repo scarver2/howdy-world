@@ -128,11 +128,14 @@ enforce_blacklist_keys() {
 }
 
 # Enforce service name matches endpoint folder name
+# TODO: Improve handling of infrastructure services. Remove hard-coded service names.
 enforce_endpoint_folder_symmetry() {
   for svc in "${SERVICES[@]}"; do
 
     # Ignore infrastructure services
     [[ "$svc" == _* ]] && continue
+    [[ "$svc" == dashboard ]] && continue
+    [[ "$svc" == infrastructure_proxy_nginx ]] && continue
 
     if ! is_endpoint "$svc"; then
       contract_error "Service '$svc' has no matching endpoint folder"
