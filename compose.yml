@@ -1,17 +1,18 @@
 # compose.yml
 name: howdy-world
 services:
-  _infrastructure_proxy_nginx:
+  dashboard:
+    build: ./_dashboard
+    container_name: dashboard
+    expose:
+      - "8080"
+
+  infrastructure_proxy_nginx:
     build: ./_infrastructure/proxy/nginx
-    container_name: _infrastructure_proxy_nginx
+    container_name: infrastructure_proxy_nginx
     ports:
       - "80:80"
     restart: unless-stopped
-  _dashboard:
-    build: ./_dashboard
-    container_name: _dashboard
-    expose:
-      - "8080"
 
   caddy:
     build: ./caddy
