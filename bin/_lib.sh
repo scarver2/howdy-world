@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 # bin/_lib.sh
 
+# Exit immediately if a command exits with a non-zero status.
+# Treat unset variables as an error when substituting.
+# Cause a pipeline to return the exit status of the last command in the pipeline that failed.
+# Print commands and their arguments as they are executed.
+set -euo pipefail
+
 # Resolve bin directory (where _lib.sh lives)
 BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
