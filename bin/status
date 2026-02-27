@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # bin/status
+
 source "$(dirname "$0")/_lib.sh"
 cd "$ROOT_DIR"
 
@@ -16,29 +17,31 @@ Notes:
 USAGE
 }
 
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  usage
+  exit 0
+fi
+
+banner
+
 DO_ALL=0
 DO_HTTP=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    -h|--help) usage; exit 0 ;;
-    --all) DO_ALL=1; shift ;;
+    --all)  DO_ALL=1; shift ;;
     --http) DO_HTTP=1; shift ;;
     --base) BASE_URL="${2:-}"; shift 2 ;;
     *) echo "Unknown option: $1"; echo; usage; exit 2 ;;
   esac
 done
 
-echo "Howdy World Status"
-echo "Compose: ${COMPOSE_FILE}"
-echo
-
-docker compose -f "$COMPOSE_FILE" ps
+compose ps
 
 if (( DO_ALL == 1 )); then
   echo
   echo "Images"
-  docker compose -f "$COMPOSE_FILE" images
+  compose images
 fi
 
 if (( DO_HTTP == 1 )); then
@@ -46,7 +49,7 @@ if (( DO_HTTP == 1 )); then
   echo "HTTP smoke (2xx = OK): ${BASE_URL}"
 
   # Minimal curated list; edit to match your root routing.
-  ENDPOINTS=(
+  CHECKS=(
     "/"
     "/javascript-react/"
     "/jquery4/"
@@ -58,33 +61,26 @@ if (( DO_HTTP == 1 )); then
     "/dotnet/"
   )
 
-  GREEN="$(printf '\033[0;32m')"
-  RED="$(printf '\033[0;31m')"
-  RESET="$(printf '\033[0m')"
-
-  CURL_COMMON=(-sS -L --max-time 5 -o /dev/null -w "%{http_code}")
-
   fails=0
-  for ep in "${ENDPOINTS[@]}"; do
+  for ep in "${CHECKS[@]}"; do
     url="${BASE_URL}${ep}"
-    code="$(curl "${CURL_COMMON[@]}" "$url" 2>/dev/null || true)"
+    code="$(http_code "$url")"
     [[ -n "$code" ]] || code="???"
 
     printf "%-40s " "$ep"
     if [[ "$code" =~ ^2[0-9][0-9]$ ]]; then
-      printf "%bOK%b (HTTP %s)\n" "$GREEN" "$RESET" "$code"
+      ok "HTTP $code"
     else
       ((fails++))
-      printf "%bFAIL%b (HTTP %s)\n" "$RED" "$RESET" "$code"
+      fail "HTTP $code"
     fi
   done
 
   echo
   if (( fails == 0 )); then
-    printf "%bAll HTTP checks OK%b\n" "$GREEN" "$RESET"
+    ok "All HTTP checks passed"
   else
-    printf "%b%d HTTP check(s) failing%b\n" "$RED" "$fails" "$RESET"
+    fail "$fails HTTP check(s) failing"
     exit 1
   fi
 fi
-
