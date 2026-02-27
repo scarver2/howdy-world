@@ -3,8 +3,6 @@
 
 : "${ROOT_DIR:?ROOT_DIR must be set before sourcing contracts.sh}"
 
-source "$ROOT_DIR/bin/functions/endpoints.sh"
-
 # -----------------------------
 # Global State
 # -----------------------------
@@ -18,6 +16,12 @@ declare -a CONTRACT_MESSAGES=()
 # -----------------------------
 # Emitters
 # -----------------------------
+
+contract_abort() {
+  CONTRACT_MESSAGES+=("ABORT|$1")
+  ((TOTAL_ERRORS++))
+  return 1
+}
 
 contract_error() {
   CONTRACT_MESSAGES+=("ERROR|$1")
@@ -49,13 +53,13 @@ render_contract_messages() {
     case "$level" in
       ERROR)
         printf "✖ %s\n" "$text"
-        if [[ "$GITHUB_ACTIONS" == "true" ]]; then
+        if [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
           echo "::error::$text"
         fi
         ;;
       WARN)
         printf "⚠ %s\n" "$text"
-        if [[ "$GITHUB_ACTIONS" == "true" ]]; then
+        if [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
           echo "::warning::$text"
         fi
         ;;
@@ -84,7 +88,7 @@ run_contract() {
     exit 2
   fi
 
-  contract_run
+  contract_run || true
   render_contract_messages
 }
 

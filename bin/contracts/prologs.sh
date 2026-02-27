@@ -73,8 +73,8 @@ read_first_two_lines() {
   SECOND_LINE=""
 
   {
-    IFS= read -r FIRST_LINE
-    IFS= read -r SECOND_LINE
+    IFS= read -r FIRST_LINE || true
+    IFS= read -r SECOND_LINE || true
   } < "$1"
 }
 

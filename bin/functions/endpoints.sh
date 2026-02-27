@@ -8,6 +8,10 @@ discover_endpoints() {
     [[ "$dir" == _* ]] && continue
     [[ "$dir" == bin ]] && continue
 
+    if [[ -f "$dir/.disabled" ]]; then
+      continue
+    fi
+
     skip=0
     for item in "${BLACKLIST[@]}"; do
       [[ "$dir" == "$item" ]] && skip=1

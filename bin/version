@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # bin/version
-set -euo pipefail
 
 source "$(dirname "$0")/_lib.sh"
+cd "$ROOT_DIR"
 
-echo "Howdy World CLI"
-echo "Version: $HW_VERSION"
+banner

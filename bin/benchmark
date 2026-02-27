@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# bin/benchmark
+
+source "$(dirname "$0")/_lib.sh"
+cd "$ROOT_DIR"
+
+# -----------------------------
+# Config
+# -----------------------------
+CONCURRENCY="${CONCURRENCY:-20}"
+DURATION="${DURATION:-5s}"
+REQUESTS="${REQUESTS:-0}"   # if >0 overrides DURATION
+TIMEOUT="${TIMEOUT:-10}"
+
+# -----------------------------
+# Prechecks
+# -----------------------------
+require_command docker
+require_command hey
+
+# -----------------------------
+# Header
+# -----------------------------
+banner
+
+echo "🏇 Benchmark"
+echo "-----------------------------------------------"
+echo "Concurrency : $CONCURRENCY"
+echo "Duration    : $DURATION"
+echo "Host        : $BASE_URL"
+echo "Requests    : ${REQUESTS:-auto}"
+echo
+
+printf "%-25s %-12s %-12s %-12s %-8s\n" "Endpoint" "Req/sec" "Avg(ms)" "P95(ms)" "Errors"
+printf "%-25s %-12s %-12s %-12s %-8s\n" "--------" "--------" "-------" "-------" "------"
+
+# -----------------------------
+# Bench loop
+# -----------------------------
+while IFS= read -r service; do
+  url="$BASE_URL/$service/"
+
+  if [[ "$REQUESTS" -gt 0 ]]; then
+    output=$(hey -c "$CONCURRENCY" -n "$REQUESTS" -t "$TIMEOUT" "$url" 2>/dev/null)
+  else
+    output=$(hey -c "$CONCURRENCY" -z "$DURATION" -t "$TIMEOUT" "$url" 2>/dev/null)
+  fi
+
+  rps=$(printf "%s" "$output" | awk '/Requests\/sec/ {print $2}')
+  avg=$(printf "%s" "$output" | awk '/Average:/ {print $2}' | sed 's/ms//')
+  p95=$(printf "%s" "$output" | awk '/95%/ {print $2}' | sed 's/ms//')
+  errors=$(printf "%s" "$output" | awk '/Non-2xx or 3xx responses/ {print $5}')
+
+  rps=${rps:-0}
+  avg=${avg:-0}
+  p95=${p95:-0}
+  errors=${errors:-0}
+
+  printf "%-25s %-12s %-12s %-12s %-8s\n" "$service" "$rps" "$avg" "$p95" "$errors"
+
+done < <(discover_endpoints)
+
+echo
+echo "✅ Benchmark complete."
+echo

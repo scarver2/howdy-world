@@ -1,16 +1,12 @@
 #!/usr/bin/env bash
 # bin/ci
 
-ROOT_DIR="$(git rev-parse --show-toplevel)"
+source "$(dirname "$0")/_lib.sh"
+cd "$ROOT_DIR"
 
-source "$ROOT_DIR/bin/functions/contracts.sh"
-
+banner
 run_all_contracts
-
-if (( TOTAL_ERRORS > 0 )); then
-  echo "CI failed due to contract violations."
-  exit 1
-fi
+contracts_exit_if_failed
 
 # TODO: continue with docker builds / tests
 # Disabled until I confirm this can run on GitHub Actions

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# bin/setup
+
+echo "Howdy World Setup"
+echo
+
+# TODO: ask scripts for installation items
+
+brew install docker
+# FUTURE: brew install hadolint
+brew install hey
+# FUTURE: brew install shellcheck
+# FUTURE: brew install yamllint
+brew install yq

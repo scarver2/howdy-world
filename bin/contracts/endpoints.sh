@@ -5,13 +5,18 @@ contract_run() {
   : "${ROOT_DIR:?ROOT_DIR must be set}"
 
   # FUTURE: detect bin scripts
+  #   bin/build
+  #   bin/clean
   #   bin/down
+  #   bin/lint
   #   bin/outdated
   #   bin/restart
+  #   bin/run
   #   bin/setup
   #   bin/start
   #   bin/stop
   #   bin/up
+  #   bin/update
   #   bin/upgrade
   #   bin/version
 

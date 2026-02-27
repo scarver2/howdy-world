@@ -23,8 +23,15 @@ Notes:
 USAGE
 }
 
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  usage
+  exit 0
+fi
+
+banner
+
 if [[ "${1:-}" == "--list" ]]; then
-  services
+  services | sort
   exit 0
 fi
 

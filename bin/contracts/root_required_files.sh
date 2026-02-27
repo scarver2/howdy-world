@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# bin/contracts/root.sh
+# bin/contracts/root_required_files.sh
 
 contract_run() {
   local root_dir

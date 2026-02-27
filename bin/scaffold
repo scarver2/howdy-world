@@ -5,17 +5,20 @@ cd "$ROOT_DIR"
 
 usage() {
   echo "Usage: bin/scaffold <endpoint-name>"
-  exit 1
 }
 
 NAME="${1:-}"
-[[ -z "$NAME" ]] && usage
+
+if [[ "$NAME" == "-h" || "$NAME" == "--help" || -z "$NAME" ]]; then
+  usage
+  exit 0
+fi
 
 if ! [[ "$NAME" =~ ^[a-z][a-z0-9-]*$ ]]; then
-  echo "Invalid endpoint name."
-  echo "Must be lowercase kebab-case and start with a letter."
-  exit 1
+  abort "Invalid endpoint name '$NAME'. Must be lowercase kebab-case starting with a letter."
 fi
+
+banner
 
 TEMPLATE_DIR="$ROOT_DIR/bin/templates/generic"
 
