@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# ruby-rage/bin/start
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENDPOINT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+if [[ -f "$ENDPOINT_DIR/../bin/_lib.sh" ]]; then
+  source "$ENDPOINT_DIR/../bin/_lib.sh"
+  require_endpoint_contract
+fi
+
+cd "$ENDPOINT_DIR"
+
+exec "$ENDPOINT_DIR/bin/up" "$@"
