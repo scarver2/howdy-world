@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 # bin/down
+
 source "$(dirname "$0")/_lib.sh"
-# cd "$ROOT_DIR"
+cd "$ROOT_DIR"
+
+banner
 
 # Default behavior: down --remove-orphans
 # You can override/extend by passing args, e.g.:
