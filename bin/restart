@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # bin/restart
+
 source "$(dirname "$0")/_lib.sh"
+cd "$ROOT_DIR"
+
+banner
 
 # Default: restart and rebuild (cached deltas)
 # Override by passing args, e.g.:
@@ -12,19 +16,18 @@ if [[ "${1:-}" == "--no-build" ]]; then
   shift
 fi
 
-docker compose -f "$COMPOSE_FILE" down --remove-orphans
+compose down --remove-orphans
 
 if (( NO_BUILD == 1 )); then
   if [[ $# -eq 0 ]]; then
-    docker compose -f "$COMPOSE_FILE" up -d
+    compose up -d
   else
-    docker compose -f "$COMPOSE_FILE" up "$@"
+    compose up "$@"
   fi
 else
   if [[ $# -eq 0 ]]; then
-    docker compose -f "$COMPOSE_FILE" up -d --build
+    compose up -d --build
   else
-    docker compose -f "$COMPOSE_FILE" up --build "$@"
+    compose up --build "$@"
   fi
 fi
-
