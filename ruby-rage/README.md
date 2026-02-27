@@ -1,6 +1,9 @@
-# Howdy ruby-rage
+# Howdy Ruby Rage
 
-Describe this endpoint.
+Ruby Rage is primarily designed for APIs, not web content. This project is somewhat coercive.
+
+A good example of API routing in Rage: https://zuplo.com/blog/ruby-rage-rest-api-tutorial
+
 
 ## Development
 
