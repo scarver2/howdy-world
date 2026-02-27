@@ -1,6 +1,15 @@
 # ruby-rage/Dockerfile
-FROM alpine:3.20
-RUN apk add --no-cache lighttpd
-COPY index.html /var/www/localhost/htdocs/index.html
+FROM ruby:4.0.1-alpine
+
+WORKDIR /app
+
+RUN apk add --no-cache build-base
+
+COPY Gemfile* ./
+RUN bundle install --without development test
+
+COPY . .
+
 EXPOSE 3000
-CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
+
+CMD ["bundle", "exec", "rackup", "-o", "0.0.0.0", "-p", "3000"]

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# ruby-rage/bin/test
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENDPOINT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+if [[ -f "$ENDPOINT_DIR/../bin/_lib.sh" ]]; then
+  source "$ENDPOINT_DIR/../bin/_lib.sh"
+  # TODO: require_endpoint_contract
+fi
+
+cd "$ENDPOINT_DIR"
+
+if ! command -v bundle >/dev/null 2>&1; then
+  echo "ERROR: bundler not found. Run: gem install bundler" >&2
+  exit 1
+fi
+
+bundle install --quiet
+
+exec bundle exec rspec

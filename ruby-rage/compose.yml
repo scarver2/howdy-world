@@ -3,7 +3,8 @@ services:
   ruby-rage:
     build:
       context: .
-      dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    volumes:
+      - ./public:/var/www/localhost/htdocs
     restart: unless-stopped
