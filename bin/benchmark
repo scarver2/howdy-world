@@ -4,76 +4,61 @@
 source "$(dirname "$0")/_lib.sh"
 cd "$ROOT_DIR"
 
-echo "Running Howdy World Benchmark"
-echo
-
-############################################
-# CONFIG (alphabetical order)
-############################################
+# -----------------------------
+# Config
+# -----------------------------
 CONCURRENCY="${CONCURRENCY:-20}"
 DURATION="${DURATION:-5s}"
-HOST="${HOST:-http://howdy.localhost}"
 REQUESTS="${REQUESTS:-0}"   # if >0 overrides DURATION
 TIMEOUT="${TIMEOUT:-10}"
 
-############################################
-# PRECHECKS
-############################################
+# -----------------------------
+# Prechecks
+# -----------------------------
 require_command docker
 require_command hey
 
-############################################
-# DISCOVER ENDPOINTS
-############################################
-# Exclude infrastructure and dashboard
-ENDPOINTS=($(docker compose config --services | grep -vE '^(dashboard|infrastructure|proxy)$' | sort))
-
-if [[ ${#ENDPOINTS[@]} -eq 0 ]]; then
-  abort "No endpoints discovered."
-fi
-
-############################################
-# HEADER
-############################################
+# -----------------------------
+# Header
+# -----------------------------
 banner
 
-echo "🏇 Howdy World Benchmark"
+echo "🏇 Benchmark"
 echo "-----------------------------------------------"
 echo "Concurrency : $CONCURRENCY"
 echo "Duration    : $DURATION"
+echo "Host        : $BASE_URL"
 echo "Requests    : ${REQUESTS:-auto}"
 echo
 
 printf "%-25s %-12s %-12s %-12s %-8s\n" "Endpoint" "Req/sec" "Avg(ms)" "P95(ms)" "Errors"
 printf "%-25s %-12s %-12s %-12s %-8s\n" "--------" "--------" "-------" "-------" "------"
 
-############################################
-# BENCH LOOP
-############################################
-for service in "${ENDPOINTS[@]}"; do
-
-  URL="$HOST/$service/"
+# -----------------------------
+# Bench loop
+# -----------------------------
+while IFS= read -r service; do
+  url="$BASE_URL/$service/"
 
   if [[ "$REQUESTS" -gt 0 ]]; then
-    OUTPUT=$(hey -c "$CONCURRENCY" -n "$REQUESTS" -t "$TIMEOUT" "$URL" 2>/dev/null)
+    output=$(hey -c "$CONCURRENCY" -n "$REQUESTS" -t "$TIMEOUT" "$url" 2>/dev/null)
   else
-    OUTPUT=$(hey -c "$CONCURRENCY" -z "$DURATION" -t "$TIMEOUT" "$URL" 2>/dev/null)
+    output=$(hey -c "$CONCURRENCY" -z "$DURATION" -t "$TIMEOUT" "$url" 2>/dev/null)
   fi
 
-  # Extract metrics
-  RPS=$(echo "$OUTPUT" | awk '/Requests\/sec/ {print $2}')
-  AVG=$(echo "$OUTPUT" | awk '/Average:/ {print $2}' | sed 's/ms//')
-  P95=$(echo "$OUTPUT" | awk '/95%/ {print $2}' | sed 's/ms//')
-  ERRORS=$(echo "$OUTPUT" | awk '/Non-2xx or 3xx responses/ {print $5}')
+  rps=$(printf "%s" "$output" | awk '/Requests\/sec/ {print $2}')
+  avg=$(printf "%s" "$output" | awk '/Average:/ {print $2}' | sed 's/ms//')
+  p95=$(printf "%s" "$output" | awk '/95%/ {print $2}' | sed 's/ms//')
+  errors=$(printf "%s" "$output" | awk '/Non-2xx or 3xx responses/ {print $5}')
 
-  RPS=${RPS:-0}
-  AVG=${AVG:-0}
-  P95=${P95:-0}
-  ERRORS=${ERRORS:-0}
+  rps=${rps:-0}
+  avg=${avg:-0}
+  p95=${p95:-0}
+  errors=${errors:-0}
 
-  printf "%-25s %-12s %-12s %-12s %-8s\n" "$service" "$RPS" "$AVG" "$P95" "$ERRORS"
+  printf "%-25s %-12s %-12s %-12s %-8s\n" "$service" "$rps" "$avg" "$p95" "$errors"
 
-done
+done < <(discover_endpoints)
 
 echo
 echo "✅ Benchmark complete."
