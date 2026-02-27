@@ -104,6 +104,11 @@ services:
     container_name: ruby-on-rails
     expose:
       - "3000" # Ruby on Rails HTTP server listens on 3000
+  ruby-rage:
+    build: ./ruby-rage
+    container_name: ruby-rage
+    expose:
+      - "3000" # Ruby HTTP server listens on this port
   ruby-webrick:
     build: ./ruby-webrick
     container_name: ruby-webrick
