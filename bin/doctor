@@ -1,27 +1,12 @@
 #!/usr/bin/env bash
 # bin/doctor
+
 source "$(dirname "$0")/_lib.sh"
 cd "$ROOT_DIR"
 
-COMPOSE_FILE="${COMPOSE_FILE:-compose.yml}"
-BASE_URL="${BASE_URL:-http://howdy.localhost}"
-
-GREEN="$(printf '\033[0;32m')"
-YELLOW="$(printf '\033[0;33m')"
-RED="$(printf '\033[0;31m')"
-RESET="$(printf '\033[0m')"
-
-ok()   { printf "%bOK%b   %s\n"   "$GREEN" "$RESET" "$1"; }
-warn() { printf "%bWARN%b %s\n" "$YELLOW" "$RESET" "$1"; }
-fail() { printf "%bFAIL%b %s\n"  "$RED" "$RESET" "$1"; }
-
 have() { command -v "$1" >/dev/null 2>&1; }
 
-echo "Howdy World Doctor"
-echo "Root:   $ROOT_DIR"
-echo "Compose: $COMPOSE_FILE"
-echo "Base:   $BASE_URL"
-echo
+banner
 
 # 1) Docker CLI
 if have docker; then
@@ -56,8 +41,8 @@ else
 fi
 
 # 5) Compose parses + service list
-if services="$(docker compose -f "$COMPOSE_FILE" config --services 2>/dev/null)"; then
-  count="$(printf "%s\n" "$services" | sed '/^\s*$/d' | wc -l | tr -d ' ')"
+if svc_list="$(docker compose -f "$COMPOSE_FILE" config --services 2>/dev/null)"; then
+  count="$(printf "%s\n" "$svc_list" | sed '/^\s*$/d' | wc -l | tr -d ' ')"
   ok "compose parses; services: $count"
 else
   fail "compose config failed to render (syntax/env issue)"
@@ -71,7 +56,6 @@ dns_ok=0
 if have getent; then
   if getent hosts "$host_name" >/dev/null 2>&1; then dns_ok=1; fi
 elif have dscacheutil; then
-  # macOS
   if dscacheutil -q host -a name "$host_name" 2>/dev/null | grep -qi "ip_address"; then dns_ok=1; fi
 elif have ping; then
   if ping -c 1 -t 1 "$host_name" >/dev/null 2>&1; then dns_ok=1; fi
@@ -84,15 +68,14 @@ else
 fi
 
 # 7) HTTP check (root)
-http_code=""
 if have curl; then
-  http_code="$(curl -sS -L --max-time 4 -o /dev/null -w "%{http_code}" "${BASE_URL}/" 2>/dev/null || true)"
-  [[ -n "$http_code" ]] || http_code="???"
+  code="$(http_code "${BASE_URL}/")"
+  [[ -n "$code" ]] || code="???"
 
-  if [[ "$http_code" =~ ^2[0-9][0-9]$ ]]; then
-    ok "HTTP reachable: ${BASE_URL}/ (HTTP $http_code)"
+  if [[ "$code" =~ ^2[0-9][0-9]$ ]]; then
+    ok "HTTP reachable: ${BASE_URL}/ (HTTP $code)"
   else
-    warn "HTTP not healthy yet: ${BASE_URL}/ (HTTP $http_code) — is the stack up?"
+    warn "HTTP not healthy yet: ${BASE_URL}/ (HTTP $code) — is the stack up?"
     echo "     Try: bin/up  (or: docker compose -f $COMPOSE_FILE up -d)"
   fi
 else
@@ -109,8 +92,7 @@ fi
 
 # 9) Best-effort port listening hint (no hard dependency)
 if have lsof; then
-  # Look for listeners on 80/443/8080/3000/etc (just a hint; not authoritative)
-  listeners="$(lsof -nP -iTCP -sTCP:LISTEN 2>/dev/null | egrep ':(80|443|8080|3000|4000|5000|5104|5173)\b' || true)"
+  listeners="$(lsof -nP -iTCP -sTCP:LISTEN 2>/dev/null | grep -E ':(80|443|8080|3000|4000|5000|5104|5173)\b' || true)"
   if [[ -n "$listeners" ]]; then
     ok "found common HTTP listeners (hint):"
     printf "%s\n" "$listeners" | sed 's/^/     /'
@@ -121,4 +103,3 @@ fi
 
 echo
 ok "doctor complete"
-
