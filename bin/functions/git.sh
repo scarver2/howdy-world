@@ -1,6 +1,25 @@
 #!/usr/bin/env bash
 # bin/functions/git.sh
 
+git_commit_endpoint() {
+  local endpoint="$1"
+
+  git add "$endpoint" compose.yml nginx/conf.d/"$endpoint".conf
+  git commit -m "Add $endpoint endpoint"
+}
+
+git_commit_endpoint_if_new() {
+  local endpoint="$1"
+
+  if git ls-files --error-unmatch "$endpoint" >/dev/null 2>&1; then
+    echo "Endpoint already tracked. Skipping git commit."
+    return
+  fi
+
+  git add "$endpoint" compose.yml
+  git commit -m "Add $endpoint endpoint"
+}
+
 git_version() {
   if command -v git >/dev/null 2>&1 && \
      git -C "$ROOT_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
