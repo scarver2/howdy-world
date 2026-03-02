@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# ruby-rage/bin/outdated
+# ruby-rage/bin/lint
 
 source "$(dirname "$0")/_lib.sh"
 
 banner
 
-bundle outdated
+bundle exec rubocop "$@"
