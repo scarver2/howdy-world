@@ -137,6 +137,7 @@ if [[ -f "$COMPOSE_TEMPLATE" ]]; then
 
   if ! compose_service_exists "$ENDPOINT"; then
     yaml_merge_block ".services" "$tmp" compose.yml
+    compose_sort_services
   fi
 
   rm "$tmp"

@@ -28,6 +28,16 @@ compose_service_exists() {
   yaml_has ".services" "$service" compose.yml
 }
 
+compose_sort_services() {
+  local tmp
+  tmp="$(mktemp)"
+
+  # Extract sorted services into temp
+  yq e '.services |= (to_entries | sort_by(.key) | from_entries)' compose.yml > "$tmp"
+
+  mv "$tmp" compose.yml
+}
+
 insert_service_alphabetically() {
   # Extract services section
   tmp="$(mktemp)"
