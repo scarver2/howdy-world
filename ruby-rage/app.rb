@@ -1,14 +1,14 @@
 # ruby-rage/app.rb
 # frozen_string_literal: true
 
-require "rage"
+require 'rage'
 
 class App < Rage::Application
   route do |r|
     r.root do
       [
         200,
-        { "Content-Type" => "text/html" },
+        { 'Content-Type' => 'text/html' },
         [<<~HTML]
           <!DOCTYPE html>
           <html>

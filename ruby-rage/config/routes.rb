@@ -2,5 +2,5 @@
 # frozen_string_literal: true
 
 Rage.routes.draw do
-  root to: "home#index"
+  root to: 'home#index'
 end

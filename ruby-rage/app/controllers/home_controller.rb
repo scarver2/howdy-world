@@ -15,6 +15,6 @@ class HomeController < ApplicationController
       </body>
       </html>
     HTML
-    headers["content-type"] = "text/html; charset=utf-8"
+    headers['content-type'] = 'text/html; charset=utf-8'
   end
 end

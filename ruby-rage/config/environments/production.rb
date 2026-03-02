@@ -9,7 +9,7 @@ Rage.configure do
   config.server.port = 3000
 
   # Specify the logger
-  config.logger = Rage::Logger.new(STDOUT)
+  config.logger = Rage::Logger.new($stdout)
   config.log_level = Logger::INFO
   config.log_formatter = Rage::JSONFormatter.new
 end

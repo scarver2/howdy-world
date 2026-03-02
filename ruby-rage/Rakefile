@@ -1,2 +1,4 @@
-require_relative "config/application"
+# frozen_string_literal: true
+
+require_relative 'config/application'
 Rage.load_tasks

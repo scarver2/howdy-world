@@ -9,7 +9,7 @@ Rage.configure do
   config.server.port = 3000
 
   # Specify the logger
-  config.logger = Rage::Logger.new(STDOUT)
+  config.logger = Rage::Logger.new($stdout)
 
   config.middleware.use Rage::Reloader
 end
