@@ -171,7 +171,7 @@ echo
 
 # Ask before committing
 if confirm "Create git commit for this endpoint?"; then
-  git add "$ENDPOINT" compose.yml nginx/conf.d/"$ENDPOINT".conf
+  git add "$ENDPOINT" compose.yml _infrastructure/proxy/nginx/conf.d/"$ENDPOINT".conf
   git commit -m "Add $ENDPOINT endpoint"
   echo "✔ Commit created."
 else
