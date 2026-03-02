@@ -1,14 +1,6 @@
 #!/usr/bin/env bash
 # __ENDPOINT__/bin/stop
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ENDPOINT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+source "$(dirname "$0")/_lib.sh"
 
-if [[ -f "$ENDPOINT_DIR/../bin/_lib.sh" ]]; then
-  source "$ENDPOINT_DIR/../bin/_lib.sh"
-  require_endpoint_contract
-fi
-
-cd "$ENDPOINT_DIR"
-
-exec "$ENDPOINT_DIR/bin/down" "$@"
+exec "$SCRIPT_DIR/down" "$@"

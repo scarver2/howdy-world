@@ -21,3 +21,23 @@ discover_endpoints() {
     echo "$dir"
   done | sort
 }
+
+remove_build_artifacts() {
+  rm -rf dist build target node_modules 2>/dev/null || true
+}
+
+replace_placeholders_in_directory() {
+  local dir="$1"
+  local endpoint="$2"
+  local port="$3"
+
+  find "$dir" -type f | while read -r file; do
+    sed -i.bak \
+      -e "s/__ENDPOINT__/$endpoint/g" \
+      -e "s/__PORT__/$port/g" \
+      -e "s/__CONTAINER__/$endpoint/g" \
+      "$file"
+
+    rm -f "${file}.bak"
+  done
+}

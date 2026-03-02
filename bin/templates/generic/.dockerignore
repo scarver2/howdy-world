@@ -1,25 +1,27 @@
 # __ENDPOINT__/.dockerignore
+# Ignore files that would unintentionally trigger the Docker build process.
+# Do not ignore Dockerfile and compose.yml files.
 
-# Build & compilation artifacts
+# Build & Compilation Artifacts
+*.bak
 *.dll
 *.dylib
 *.exe
 *.out
 *.so
+*.swp
+*.tmp
 **/bin
 **/obj
+*~
 build
 dist
 target
-*.swp
-*.tmp
-*.bak
-*~
 
 # Databases
+*.db
 *.sqlite
 *.sqlite3
-*.db
 
 # Docs
 *.md
@@ -43,6 +45,8 @@ target
 # OS
 .DS_Store
 .localized
+$RECYCLE.BIN
+desktop.ini
 Thumbs.db
 
 # Test results & coverage
@@ -52,10 +56,6 @@ Thumbs.db
 **/coverage.*
 **/coverage/
 **/TestResults/
-
-# Docker & Compose
-compose*.yml
-# Dockerfile* 
 
 # Git
 .git
@@ -68,9 +68,9 @@ compose*.yml
 .gradle
 .mvn
 *.class
+*.ear
 *.jar
 *.war
-*.ear
 
 # NodeJS
 .bun

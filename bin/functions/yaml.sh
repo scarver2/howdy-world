@@ -16,10 +16,10 @@ yaml_has() {
   [[ "$(yq e "$object_path | has(\"$key\")" "$file")" == "true" ]]
 }
 
-yaml_type() {
+yaml_keys() {
   local path="$1"
   local file="$2"
-  yq e "$path | type" "$file"
+  yq e "$path | keys | .[]" "$file"
 }
 
 yaml_length() {
@@ -28,9 +28,25 @@ yaml_length() {
   yq e "$path | length" "$file"
 }
 
-yaml_keys() {
+# Insert raw YAML block under a path
+yaml_merge_block() {
   local path="$1"
-  local file="$2"
-  yq e "$path | keys | .[]" "$file"
+  local block_file="$2"
+  local file="$3"
+
+  yq e -i "$path *= load(\"$block_file\")" "$file"
 }
 
+# Append or replace a key under a mapping
+yaml_set() {
+  local path="$1"
+  local value="$2"
+  local file="$3"
+  yq e -i "$path = $value" "$file"
+}
+
+yaml_type() {
+  local path="$1"
+  local file="$2"
+  yq e "$path | type" "$file"
+}
