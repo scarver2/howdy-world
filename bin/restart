@@ -2,32 +2,30 @@
 # bin/restart
 
 source "$(dirname "$0")/_lib.sh"
-cd "$ROOT_DIR"
 
-banner
+# SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Default: restart and rebuild (cached deltas)
-# Override by passing args, e.g.:
-#   bin/restart --no-build
-#   bin/restart --build --remove-orphans
-NO_BUILD=0
-if [[ "${1:-}" == "--no-build" ]]; then
-  NO_BUILD=1
-  shift
-fi
+# TODO: confirm no behavior changed before removing this section
+# NO_BUILD=0
+# if [[ "${1:-}" == "--no-build" ]]; then
+#   NO_BUILD=1
+#   shift
+# fi
+# compose down --remove-orphans
 
-compose down --remove-orphans
+# if (( NO_BUILD == 1 )); then
+#   if [[ $# -eq 0 ]]; then
+#     compose up -d
+#   else
+#     compose up "$@"
+#   fi
+# else
+#   if [[ $# -eq 0 ]]; then
+#     compose up -d --build
+#   else
+#     compose up --build "$@"
+#   fi
+# fi
 
-if (( NO_BUILD == 1 )); then
-  if [[ $# -eq 0 ]]; then
-    compose up -d
-  else
-    compose up "$@"
-  fi
-else
-  if [[ $# -eq 0 ]]; then
-    compose up -d --build
-  else
-    compose up --build "$@"
-  fi
-fi
+"$SCRIPT_DIR/down"
+"$SCRIPT_DIR/up" "$@"

@@ -118,6 +118,7 @@ This is the checklist I’d use to declare the branding/theme effort done (v1):
 
 ```bash
 chmod +x bin/setup bin/build bin/run bin/clean bin/outdated bin/update
+chmod +x bin/*
 ```
 
 🧠 Keeping Architecturally Clean

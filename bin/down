@@ -10,6 +10,7 @@ banner
 # You can override/extend by passing args, e.g.:
 #   bin/down --volumes
 #   bin/down --remove-orphans --volumes
+
 if [[ $# -eq 0 ]]; then
   compose down --remove-orphans
 else
