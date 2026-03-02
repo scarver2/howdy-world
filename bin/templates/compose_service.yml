@@ -1,6 +1,5 @@
-services:
-  __ENDPOINT__:
-    build: ./__ENDPOINT__
-    container_name: __ENDPOINT__
-    expose:
-      - "__PORT__"
+__ENDPOINT__:
+  build: ./__ENDPOINT__
+  container_name: __ENDPOINT__
+  expose:
+    - "__PORT__"

@@ -22,6 +22,10 @@ discover_endpoints() {
   done | sort
 }
 
+remove_build_artifacts() {
+  rm -rf dist build target node_modules 2>/dev/null || true
+}
+
 replace_placeholders_in_directory() {
   local dir="$1"
   local endpoint="$2"

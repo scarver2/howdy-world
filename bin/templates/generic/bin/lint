@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# __ENDPOINT__/bin/down
+# __ENDPOINT__/bin/lint
 
 source "$(dirname "$0")/_lib.sh"
 
 banner
 
-docker compose down "$@"
+# insert logic here
