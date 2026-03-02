@@ -57,7 +57,7 @@ prompt_overwrite() {
 
   while true; do
     echo "File exists: $target"
-    read -rp "[o]verwrite [s]kip [d]iff [a]ll overwrite [q]uit: " choice << /dev/tty
+    read -rp "[o]verwrite [s]kip [d]iff [a]ll overwrite [q]uit: " choice < /dev/tty
     case "$choice" in
       o|O) return 0 ;;
       s|S) return 1 ;;
