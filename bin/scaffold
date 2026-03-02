@@ -31,15 +31,15 @@ ensure_root_context
 ensure_clean_working_tree
 ensure_master_up_to_date
 
-# Create branch from master
-if ! git show-ref --verify --quiet "refs/heads/$ENDPOINT"; then
-  git checkout -b "$ENDPOINT"
-fi
-
 TEMPLATE_DIR="$ROOT_DIR/bin/templates/generic"
 
 if [[ ! -d "$TEMPLATE_DIR" ]]; then
   abort "Template directory not found: $TEMPLATE_DIR"
+fi
+
+# Create branch from master
+if ! git show-ref --verify --quiet "refs/heads/$ENDPOINT"; then
+  git checkout -b "$ENDPOINT"
 fi
 
 echo "Scaffolding endpoint: $ENDPOINT"
