@@ -4,21 +4,34 @@ source "$(dirname "$0")/_lib.sh"
 cd "$ROOT_DIR"
 
 usage() {
-  echo "Usage: bin/scaffold <endpoint-name>"
+  cat <<'USAGE'
+Usage:
+  bin/scaffold <endpoint-name> [port]
+
+If port is omitted, defaults to 3000.
+USAGE
 }
 
-NAME="${1:-}"
+ENDPOINT="${1:-}"
+PORT="${2:-3000}"
 
-if [[ "$NAME" == "-h" || "$NAME" == "--help" || -z "$NAME" ]]; then
-  usage
-  exit 0
+[[ -z "$ENDPOINT" ]] && usage
+
+# if [[ "$ENDPOINT" == "-h" || "$ENDPOINT" == "--help" || -z "$ENDPOINT" ]]; then
+#   usage
+#   exit 0
+# fi
+
+if ! [[ "$ENDPOINT" =~ ^[a-z][a-z0-9-]*$ ]]; then
+  abort "Invalid endpoint name '$ENDPOINT'. Must be lowercase kebab-case starting with a letter."
 fi
 
-if ! [[ "$NAME" =~ ^[a-z][a-z0-9-]*$ ]]; then
-  abort "Invalid endpoint name '$NAME'. Must be lowercase kebab-case starting with a letter."
-fi
+banner "Scaffold Endpoint"
 
-banner
+ensure_root_context
+# FUTURE: ensure_master_branch
+ensure_clean_working_tree
+ensure_master_up_to_date
 
 TEMPLATE_DIR="$ROOT_DIR/bin/templates/generic"
 

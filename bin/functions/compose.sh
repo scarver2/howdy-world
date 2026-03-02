@@ -5,6 +5,49 @@ compose() {
   docker compose -f "$COMPOSE_FILE" "$@"
 }
 
+compose_add_service_from_template() {
+  local endpoint="$1"
+  local port="$2"
+
+  tmp="$(mktemp)"
+  cp "$ROOT_DIR/bin/templates/compose_service.yml" "$tmp"
+
+  sed -i.bak \
+    -e "s/__ENDPOINT__/$endpoint/g" \
+    -e "s/__PORT__/$port/g" \
+    "$tmp"
+
+  rm -f "$tmp.bak"
+
+  yaml_merge_block ".services" "$tmp" compose.yml
+  rm "$tmp"
+}
+
+compose_service_exists() {
+  local service="$1"
+  yaml_has ".services" "$service" compose.yml
+}
+
+insert_service_alphabetically() {
+  # Extract services section
+  tmp="$(mktemp)"
+
+  awk '
+    BEGIN { in_services=0 }
+    /^services:/ { print; in_services=1; next }
+    in_services && /^[^ ]/ { in_services=0 }
+    { print }
+  ' compose.yml > "$tmp"
+
+  # Append new service block
+  echo "$SERVICE_BLOCK" >> "$tmp"
+
+  # Sort services (excluding dashboard + infrastructure)
+  enforce_service_ordering "$tmp"
+
+  mv "$tmp" compose.yml
+}
+
 services() {
   compose config --services
 }

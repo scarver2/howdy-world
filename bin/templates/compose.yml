@@ -1,8 +1,0 @@
-# TODO: insert this snippet into $ROOT_DIR/compose.yml
-services:
-  __ENDPOINT__:
-    build:
-      context: ./__ENDPOINT__
-    container_name: __ENDPOINT__
-    expose:
-      - "3000"
