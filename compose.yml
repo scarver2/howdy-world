@@ -1,19 +1,6 @@
 # compose.yml
 name: howdy-world
 services:
-  dashboard:
-    build: ./_dashboard
-    container_name: dashboard
-    expose:
-      - "8080"
-
-  infrastructure_proxy_nginx:
-    build: ./_infrastructure/proxy/nginx
-    container_name: infrastructure_proxy_nginx
-    ports:
-      - "80:80"
-    restart: unless-stopped
-
   caddy:
     build: ./caddy
     container_name: caddy
@@ -24,6 +11,11 @@ services:
     container_name: clojure
     expose:
       - "3000"
+  dashboard:
+    build: ./_dashboard
+    container_name: dashboard
+    expose:
+      - "8080"
   dotnet-aspnet:
     build: ./dotnet-aspnet
     container_name: dotnet-aspnet
@@ -44,6 +36,12 @@ services:
     container_name: go
     expose:
       - "8080"
+  infrastructure_proxy_nginx:
+    build: ./_infrastructure/proxy/nginx
+    container_name: infrastructure_proxy_nginx
+    ports:
+      - "80:80"
+    restart: unless-stopped
   java-spring-boot:
     build: ./java-spring-boot
     container_name: java-spring-boot
