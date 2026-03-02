@@ -92,7 +92,7 @@ enforce_policy() {
   local second="$4"
 
   case "$base" in
-    .dockerignore|.gitignore|Dockerfile*|*.conf|*.py|*.rb|*.ru|*.sh|*.yml|Gemfile|Rakefile)
+    .dockerignore|.gitignore|Dockerfile*|*.conf|*.py|*.rb|*.rspec|*.ru|*.sh|*.yml|Gemfile|Rakefile)
       [[ "$first" == "# $rel" ]] || contract_error "Missing prolog (Hash): $rel" ;;
     *.css)
       [[ "$first" == "/* $rel"* ]] || contract_error "Missing prolog (CSS): $rel" ;;
