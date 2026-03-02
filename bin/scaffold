@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # bin/scaffold
+
+set -euo pipefail
 source "$(dirname "$0")/_lib.sh"
 cd "$ROOT_DIR"
 
@@ -10,17 +12,13 @@ Usage:
 
 If port is omitted, defaults to 3000.
 USAGE
+  exit 1
 }
 
 ENDPOINT="${1:-}"
 PORT="${2:-3000}"
 
 [[ -z "$ENDPOINT" ]] && usage
-
-# if [[ "$ENDPOINT" == "-h" || "$ENDPOINT" == "--help" || -z "$ENDPOINT" ]]; then
-#   usage
-#   exit 0
-# fi
 
 if ! [[ "$ENDPOINT" =~ ^[a-z][a-z0-9-]*$ ]]; then
   abort "Invalid endpoint name '$ENDPOINT'. Must be lowercase kebab-case starting with a letter."
@@ -29,26 +27,31 @@ fi
 banner "Scaffold Endpoint"
 
 ensure_root_context
-# FUTURE: ensure_master_branch
+# ensure_master_branch
 ensure_clean_working_tree
 ensure_master_up_to_date
+
+# Create branch from master
+if git show-ref --verify --quiet "refs/heads/$ENDPOINT"; then
+  abort "Branch '$ENDPOINT' already exists."
+fi
+
+git checkout -b "$ENDPOINT"
 
 TEMPLATE_DIR="$ROOT_DIR/bin/templates/generic"
 
 if [[ ! -d "$TEMPLATE_DIR" ]]; then
-  echo "Template directory not found: $TEMPLATE_DIR"
-  exit 1
+  abort "Template directory not found: $TEMPLATE_DIR"
 fi
 
-mkdir -p "$NAME"
-
-echo "Scaffolding endpoint: $NAME"
+echo "Scaffolding endpoint: $ENDPOINT"
 echo
 
 OVERWRITE_ALL=0
 
 prompt_overwrite() {
   local target="$1"
+  local src="$2"
 
   if (( OVERWRITE_ALL == 1 )); then
     return 0
@@ -61,7 +64,7 @@ prompt_overwrite() {
       o|O) return 0 ;;
       s|S) return 1 ;;
       d|D)
-        diff -u "$target" "$2" || true
+        diff -u "$target" "$src" || true
         ;;
       a|A)
         OVERWRITE_ALL=1
@@ -92,23 +95,87 @@ copy_file() {
 # Copy templates with collision handling
 while IFS= read -r -d '' file; do
   rel="${file#$TEMPLATE_DIR/}"
-  target="$NAME/$rel"
+  target="$ENDPOINT/$rel"
   copy_file "$file" "$target"
 done < <(find "$TEMPLATE_DIR" -type f -print0)
 
-# Replace placeholders
-find "$NAME" -type f -print0 | while IFS= read -r -d '' file; do
-  sed -i '' "s/__ENDPOINT__/$NAME/g" "$file" 2>/dev/null || \
-  sed -i "s/__ENDPOINT__/$NAME/g" "$file"
+# Replace placeholders (__ENDPOINT__ and __PORT__)
+find "$ENDPOINT" -type f -print0 | while IFS= read -r -d '' file; do
+  sed -i '' \
+    -e "s/__ENDPOINT__/$ENDPOINT/g" \
+    -e "s/__PORT__/$PORT/g" \
+    "$file" 2>/dev/null || \
+  sed -i \
+    -e "s/__ENDPOINT__/$ENDPOINT/g" \
+    -e "s/__PORT__/$PORT/g" \
+    "$file"
 done
 
 # Ensure bin scripts executable
-if [[ -d "$NAME/bin" ]]; then
-  chmod +x "$NAME/bin/"* 2>/dev/null || true
+if [[ -d "$ENDPOINT/bin" ]]; then
+  chmod +x "$ENDPOINT/bin/"* 2>/dev/null || true
 fi
 
-# TODO: insert snippet into compose.yml
-# TODO: insert snippet into nginx/conf.d/$NAME.conf
+# -------------------------------------------------------------------
+# Insert service into compose.yml (template-driven)
+# -------------------------------------------------------------------
+
+COMPOSE_TEMPLATE="$ROOT_DIR/bin/templates/compose_service.yml"
+
+if [[ -f "$COMPOSE_TEMPLATE" ]]; then
+  tmp="$(mktemp)"
+  cp "$COMPOSE_TEMPLATE" "$tmp"
+
+  sed -i '' \
+    -e "s/__ENDPOINT__/$ENDPOINT/g" \
+    -e "s/__PORT__/$PORT/g" \
+    "$tmp" 2>/dev/null || \
+  sed -i \
+    -e "s/__ENDPOINT__/$ENDPOINT/g" \
+    -e "s/__PORT__/$PORT/g" \
+    "$tmp"
+
+  if ! compose_service_exists "$ENDPOINT"; then
+    yaml_merge_block ".services" "$tmp" compose.yml
+  fi
+
+  rm "$tmp"
+fi
+
+# -------------------------------------------------------------------
+# Generate nginx config (template-driven)
+# -------------------------------------------------------------------
+
+NGINX_TEMPLATE="$ROOT_DIR/bin/templates/nginx_endpoint.conf"
+NGINX_TARGET="$ROOT_DIR/nginx/conf.d/$ENDPOINT.conf"
+
+if [[ -f "$NGINX_TEMPLATE" ]]; then
+  cp "$NGINX_TEMPLATE" "$NGINX_TARGET"
+
+  sed -i '' \
+    -e "s/__ENDPOINT__/$ENDPOINT/g" \
+    -e "s/__PORT__/$PORT/g" \
+    "$NGINX_TARGET" 2>/dev/null || \
+  sed -i \
+    -e "s/__ENDPOINT__/$ENDPOINT/g" \
+    -e "s/__PORT__/$PORT/g" \
+    "$NGINX_TARGET"
+fi
 
 echo
-echo "Endpoint '$NAME' scaffolded successfully."
+echo "Scaffold complete. Review changes:"
+echo
+git status --short
+echo
+
+# Ask before committing
+if confirm "Create git commit for this endpoint?"; then
+  git add "$ENDPOINT" compose.yml nginx/conf.d/"$ENDPOINT".conf
+  git commit -m "Add $ENDPOINT endpoint"
+  echo "✔ Commit created."
+else
+  echo "Skipping commit. Changes remain unstaged."
+fi
+
+echo
+echo "✔ Endpoint '$ENDPOINT' scaffolded successfully."
