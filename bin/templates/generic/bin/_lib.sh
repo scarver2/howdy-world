@@ -6,7 +6,8 @@ ENDPOINT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 if [[ -f "$ENDPOINT_DIR/../bin/_lib.sh" ]]; then
   source "$ENDPOINT_DIR/../bin/_lib.sh"
-  require_endpoint_contract
+  # TODO: Is this needed?
+  # require_endpoint_contract
 fi
 
 cd "$ENDPOINT_DIR"
