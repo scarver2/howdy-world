@@ -147,7 +147,7 @@ fi
 # -------------------------------------------------------------------
 
 NGINX_TEMPLATE="$ROOT_DIR/bin/templates/nginx_endpoint.conf"
-NGINX_TARGET="$ROOT_DIR/nginx/conf.d/$ENDPOINT.conf"
+NGINX_TARGET="$ROOT_DIR/_infrastructure/proxy/nginx/conf.d/$ENDPOINT.conf"
 
 if [[ -f "$NGINX_TEMPLATE" ]]; then
   cp "$NGINX_TEMPLATE" "$NGINX_TARGET"
