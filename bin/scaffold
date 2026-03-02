@@ -62,6 +62,11 @@ prepare_endpoint_branch() {
 
 prepare_endpoint_branch
 
+ENDPOINT_PREEXISTED=0
+if [[ -d "$ENDPOINT" ]]; then
+  ENDPOINT_PREEXISTED=1
+fi
+
 TEMPLATE_DIR="$ROOT_DIR/bin/templates/generic"
 
 if [[ ! -d "$TEMPLATE_DIR" ]]; then
@@ -250,15 +255,21 @@ git status --short
 echo
 
 # -------------------------------------------------------------------
-# Commit prompt
+# Commit prompt (only for new endpoint)
 # -------------------------------------------------------------------
 
-if confirm "Create git commit for this endpoint?"; then
-  git add -A
-  git commit -m "Add $ENDPOINT endpoint"
-  echo "✔ Commit created."
+if (( ENDPOINT_PREEXISTED == 0 )); then
+  echo
+  if confirm "Create git commit for this endpoint?"; then
+    git add -A
+    git commit -m "Add $ENDPOINT endpoint"
+    echo "✔ Commit created."
+  else
+    echo "Skipping commit. Changes remain unstaged."
+  fi
 else
-  echo "Skipping commit. Changes remain unstaged."
+  echo
+  echo "Endpoint previously existed. No automatic commit prompt."
 fi
 
 echo
