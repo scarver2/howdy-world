@@ -27,9 +27,40 @@ fi
 banner "Scaffold Endpoint"
 
 ensure_root_context
-# Disabled: ensure_master_branch
 ensure_clean_working_tree
 ensure_master_up_to_date
+
+# -------------------------------------------------------------------
+# Branch handling (non-single-use)
+# -------------------------------------------------------------------
+
+git_branch_exists() {
+  git show-ref --verify --quiet "refs/heads/$1"
+}
+
+prepare_endpoint_branch() {
+  local current_branch
+  current_branch="$(git_current_branch)"
+
+  if ! git_branch_exists "$ENDPOINT"; then
+    if [[ "$current_branch" != "master" ]]; then
+      echo
+      echo "Endpoint branch '$ENDPOINT' does not exist."
+      echo "You must be on 'master' to create it."
+      echo "Current branch: $current_branch"
+      echo
+      exit 1
+    fi
+
+    git checkout -b "$ENDPOINT"
+    echo "Created and switched to branch '$ENDPOINT'"
+  else
+    echo "Branch '$ENDPOINT' already exists."
+    echo "Scaffolding on current branch: $current_branch"
+  fi
+}
+
+prepare_endpoint_branch
 
 TEMPLATE_DIR="$ROOT_DIR/bin/templates/generic"
 
@@ -37,19 +68,45 @@ if [[ ! -d "$TEMPLATE_DIR" ]]; then
   abort "Template directory not found: $TEMPLATE_DIR"
 fi
 
-# Create branch from master
-if ! git show-ref --verify --quiet "refs/heads/$ENDPOINT"; then
-  git checkout -b "$ENDPOINT"
-fi
-
+echo
 echo "Scaffolding endpoint: $ENDPOINT"
 echo
 
 OVERWRITE_ALL=0
 
+# -------------------------------------------------------------------
+# Render template to temp (Option 1)
+# -------------------------------------------------------------------
+
+render_template_to_tmp() {
+  local src="$1"
+  local endpoint="$2"
+  local port="$3"
+
+  local tmp
+  tmp="$(mktemp)"
+
+  cp "$src" "$tmp"
+
+  sed -i '' \
+    -e "s/__ENDPOINT__/$endpoint/g" \
+    -e "s/__PORT__/$port/g" \
+    "$tmp" 2>/dev/null || \
+  sed -i \
+    -e "s/__ENDPOINT__/$endpoint/g" \
+    -e "s/__PORT__/$port/g" \
+    "$tmp"
+
+  echo "$tmp"
+}
+
+# -------------------------------------------------------------------
+# Prompt logic
+# -------------------------------------------------------------------
+
 prompt_overwrite() {
   local target="$1"
-  local src="$2"
+  local rendered="$2"
 
   if (( OVERWRITE_ALL == 1 )); then
     return 0
@@ -67,7 +124,7 @@ prompt_overwrite() {
         return 1
         ;;
       d|diff)
-        diff -u "$target" "$src" || true
+        diff -u "$target" "$rendered" || true
         ;;
       a|all)
         OVERWRITE_ALL=1
@@ -83,40 +140,43 @@ prompt_overwrite() {
   done
 }
 
+# -------------------------------------------------------------------
+# Copy logic (Option 4 auto-skip if identical)
+# -------------------------------------------------------------------
+
 copy_file() {
   local src="$1"
   local dest="$2"
 
+  local rendered
+  rendered="$(render_template_to_tmp "$src" "$ENDPOINT" "$PORT")"
+
   if [[ -f "$dest" ]]; then
-    if prompt_overwrite "$dest" "$src"; then
-      cp "$src" "$dest"
-    else
+    if cmp -s "$dest" "$rendered"; then
+      rm -f "$rendered"
       return
+    fi
+
+    if prompt_overwrite "$dest" "$rendered"; then
+      cp "$rendered" "$dest"
     fi
   else
     mkdir -p "$(dirname "$dest")"
-    cp "$src" "$dest"
+    cp "$rendered" "$dest"
   fi
+
+  rm -f "$rendered"
 }
 
-# Copy templates with collision handling
+# -------------------------------------------------------------------
+# Copy templates
+# -------------------------------------------------------------------
+
 while IFS= read -r -d '' file; do
   rel="${file#$TEMPLATE_DIR/}"
   target="$ENDPOINT/$rel"
   copy_file "$file" "$target"
 done < <(find "$TEMPLATE_DIR" -type f -print0)
-
-# Replace placeholders (__ENDPOINT__ and __PORT__)
-find "$ENDPOINT" -type f -print0 | while IFS= read -r -d '' file; do
-  sed -i '' \
-    -e "s/__ENDPOINT__/$ENDPOINT/g" \
-    -e "s/__PORT__/$PORT/g" \
-    "$file" 2>/dev/null || \
-  sed -i \
-    -e "s/__ENDPOINT__/$ENDPOINT/g" \
-    -e "s/__PORT__/$PORT/g" \
-    "$file"
-done
 
 # Ensure bin scripts executable
 if [[ -d "$ENDPOINT/bin" ]]; then
@@ -124,7 +184,7 @@ if [[ -d "$ENDPOINT/bin" ]]; then
 fi
 
 # -------------------------------------------------------------------
-# Insert service into compose.yml (template-driven)
+# Compose injection (template-driven)
 # -------------------------------------------------------------------
 
 COMPOSE_TEMPLATE="$ROOT_DIR/bin/templates/compose_service.yml"
@@ -151,23 +211,36 @@ if [[ -f "$COMPOSE_TEMPLATE" ]]; then
 fi
 
 # -------------------------------------------------------------------
-# Generate nginx config (template-driven)
+# NGINX injection (template-driven)
 # -------------------------------------------------------------------
 
 NGINX_TEMPLATE="$ROOT_DIR/bin/templates/nginx_endpoint.conf"
 NGINX_TARGET="$ROOT_DIR/_infrastructure/proxy/nginx/conf.d/$ENDPOINT.conf"
 
 if [[ -f "$NGINX_TEMPLATE" ]]; then
-  cp "$NGINX_TEMPLATE" "$NGINX_TARGET"
+  tmp="$(mktemp)"
+  cp "$NGINX_TEMPLATE" "$tmp"
 
   sed -i '' \
     -e "s/__ENDPOINT__/$ENDPOINT/g" \
     -e "s/__PORT__/$PORT/g" \
-    "$NGINX_TARGET" 2>/dev/null || \
+    "$tmp" 2>/dev/null || \
   sed -i \
     -e "s/__ENDPOINT__/$ENDPOINT/g" \
     -e "s/__PORT__/$PORT/g" \
-    "$NGINX_TARGET"
+    "$tmp"
+
+  if [[ -f "$NGINX_TARGET" ]]; then
+    if ! cmp -s "$NGINX_TARGET" "$tmp"; then
+      if prompt_overwrite "$NGINX_TARGET" "$tmp"; then
+        cp "$tmp" "$NGINX_TARGET"
+      fi
+    fi
+  else
+    cp "$tmp" "$NGINX_TARGET"
+  fi
+
+  rm "$tmp"
 fi
 
 echo
@@ -176,9 +249,12 @@ echo
 git status --short
 echo
 
-# Ask before committing
+# -------------------------------------------------------------------
+# Commit prompt
+# -------------------------------------------------------------------
+
 if confirm "Create git commit for this endpoint?"; then
-  git add "$ENDPOINT" compose.yml _infrastructure/proxy/nginx/conf.d/"$ENDPOINT".conf
+  git add -A
   git commit -m "Add $ENDPOINT endpoint"
   echo "✔ Commit created."
 else
