@@ -57,19 +57,28 @@ prompt_overwrite() {
 
   while true; do
     echo "File exists: $target"
-    read -rp "[o]verwrite [s]kip [d]iff [a]ll overwrite [q]uit: " choice < /dev/tty
-    case "$choice" in
-      o|O) return 0 ;;
-      s|S) return 1 ;;
-      d|D)
+    read -rp "Overwrite? [Yes]  [No]  [Diff]  [All]  [Quit]: " choice < /dev/tty
+
+    case "${choice,,}" in
+      y|yes)
+        return 0
+        ;;
+      n|no|"")
+        return 1
+        ;;
+      d|diff)
         diff -u "$target" "$src" || true
         ;;
-      a|A)
+      a|all)
         OVERWRITE_ALL=1
         return 0
         ;;
-      q|Q) exit 1 ;;
-      *) echo "Invalid option." ;;
+      q|quit)
+        exit 1
+        ;;
+      *)
+        echo "Invalid option."
+        ;;
     esac
   done
 }
