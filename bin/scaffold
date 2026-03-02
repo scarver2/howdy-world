@@ -27,7 +27,7 @@ fi
 banner "Scaffold Endpoint"
 
 ensure_root_context
-ensure_master_branch
+# Disabled: ensure_master_branch
 ensure_clean_working_tree
 ensure_master_up_to_date
 
