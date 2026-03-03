@@ -20,9 +20,12 @@ The page will open with a list of endpoints of the currently supported languages
     * [ASP.NET](./dotnet-aspnet)
 * [Caddy](./caddy)
 * [Clojure](./clojure)
-* [Elixir](./elixir)
+* Elixir
     * [Bandit](./elixir-bandit)
+    * [Phoenix](./elixir-phoenix)
 * [Go](./go)
+* Java
+    * [Spring Boot](./java-spring-boot)
 * [JavaScript](./javascript)
     * [Inertia](./javascript-inertia)
     * [jQuery](./javascript-jquery)
@@ -35,8 +38,9 @@ The page will open with a list of endpoints of the currently supported languages
 * [PHP](./php)
 * [Python](./python)
     * [FastAPI](./python-fastapi)
-* [Ruby](./ruby)
+* Ruby
     * [Falcon](./ruby-falcon)
+    * [Rage](./ruby-rage)
     * [Ruby on Rails](./ruby-on-rails)
     * [Sinatra](./ruby-sinatra)
     * [WEBrick](./ruby-webrick)

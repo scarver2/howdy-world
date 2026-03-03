@@ -78,7 +78,7 @@
 - [ ] Lua
 - [x] NGINX
 - [ ] Oberon
-- [ ] Odin
+- [x] Odin
   - [x] Odin HTTP
 - [ ] Perl
 - [ ] PHP
@@ -101,7 +101,8 @@
   - [ ] Jekyll
   - [ ] Middleman
   - [ ] Rack
-  - [x] Ruby on Rails
+  - [x] Rage
+  - [ ] Ruby on Rails
   - [ ] Sinatra
   - [x] WEBrick
 - [ ] Rust
@@ -117,7 +118,6 @@
 - [x] Reverse Proxy
 - [x] index catalog of available endpoints
 - [x] place individual endpoint's configuration into conf.d
-
 
 ## HTML
 
@@ -248,12 +248,19 @@ Dockerfile
   - howdy.localhost
 
 ```yml
-    networks:
-      - corral
-
 networks:
   corral:
+    driver: bridge
     external: true
+
+services:
+  dashboard:
+    networks:
+      - corral
+  infrastructure_proxy_nginx:
+    networks:
+      - corral
+  ... etc ...
 ```
 
 ## Testing
