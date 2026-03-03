@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 # bin/start
+
 exec "$(dirname "$0")/up" "$@"

@@ -11,6 +11,8 @@ banner
 #   bin/down --volumes
 #   bin/down --remove-orphans --volumes
 
+banner
+
 if [[ $# -eq 0 ]]; then
   compose down --remove-orphans
 else

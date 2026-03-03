@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# ruby-rage/bin/start
+
+source "$(dirname "$0")/_lib.sh"
+
+"$SCRIPT_DIR/up" "$@"

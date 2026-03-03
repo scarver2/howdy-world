@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # bin/setup
 
-echo "Howdy World Setup"
-echo
+banner
 
 # TODO: ask scripts for installation items
 

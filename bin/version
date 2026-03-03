@@ -2,6 +2,5 @@
 # bin/version
 
 source "$(dirname "$0")/_lib.sh"
-cd "$ROOT_DIR"
 
 banner

@@ -1,7 +1,6 @@
 # __ENDPOINT__/.gitignore
 # For language-specific templates, from https://github.com/github/gitignore
 
-
 # Build & Compilation Artifacts
 *.bak
 *.dll
@@ -13,7 +12,8 @@
 *.tmp
 **/obj
 *~
-build
+# bin
+# build
 dist
 target
 
