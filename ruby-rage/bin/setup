@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
 # ruby-rage/bin/setup
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ENDPOINT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+source "$(dirname "$0")/_lib.sh"
 
-if [[ -f "$ENDPOINT_DIR/../bin/_lib.sh" ]]; then
-  source "$ENDPOINT_DIR/../bin/_lib.sh"
-  require_endpoint_contract
+banner
+
+if ! command -v ruby >/dev/null 2>&1; then
+  echo "ERROR: ruby not found. Run: brew install ruby@4.0.1" >&2
+  exit 1
 fi
 
-cd "$ENDPOINT_DIR"
+if ! command -v bundle >/dev/null 2>&1; then
+  echo "ERROR: bundler not found. Run: gem install bundler" >&2
+  exit 1
+fi
 
-echo "Install dependencies for this endpoint here."
+bundle install

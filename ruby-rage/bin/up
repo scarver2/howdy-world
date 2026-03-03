@@ -1,14 +1,8 @@
 #!/usr/bin/env bash
 # ruby-rage/bin/up
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ENDPOINT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+source "$(dirname "$0")/_lib.sh"
 
-if [[ -f "$ENDPOINT_DIR/../bin/_lib.sh" ]]; then
-  source "$ENDPOINT_DIR/../bin/_lib.sh"
-  require_endpoint_contract
-fi
+banner
 
-cd "$ENDPOINT_DIR"
-
-docker compose -f compose.yml up -d --build "$@"
+docker compose up -d "$@"
