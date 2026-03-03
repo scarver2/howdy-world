@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# bin/logs
+# ruby-rage/bin/logs
 
 usage() {
   cat <<'USAGE'
