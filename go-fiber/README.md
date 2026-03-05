@@ -1,6 +1,6 @@
-# Howdy go-fiber
+# Howdy [Go Fiber](https://github.com/gofiber/fiber)
 
-Describe this endpoint.
+Demonstrates Go Fiber web framework
 
 ## Development
 
