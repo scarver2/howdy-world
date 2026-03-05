@@ -1,6 +1,6 @@
-# Howdy nim
+# Howdy [Nim](https://nim-lang.org/)
 
-Describe this endpoint.
+Demonstrates Nim's STDOUT
 
 ## Development
 

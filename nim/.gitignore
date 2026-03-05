@@ -12,11 +12,11 @@
 *.tmp
 **/obj
 *~
+app
 # bin
 # build
 dist
 target
-app
 
 # Logs
 *.logs

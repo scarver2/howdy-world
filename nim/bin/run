@@ -5,4 +5,7 @@ source "$(dirname "$0")/_lib.sh"
 
 banner
 
-docker compose -f compose.dev.yml up --build "$@"
+# Enable this to run within Docker
+# docker compose -f compose.dev.yml up --build "$@"
+
+nim c -r app.nim
