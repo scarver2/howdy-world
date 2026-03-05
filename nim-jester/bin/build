@@ -4,3 +4,5 @@
 source "$(dirname "$0")/_lib.sh"
 
 banner
+
+docker compose build $0

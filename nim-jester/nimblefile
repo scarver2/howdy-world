@@ -1,0 +1,9 @@
+# nim-jester/nimblefile
+
+version       = "0.1.0"
+author        = "Stan Carver II"
+description   = "Howdy World Nim Jester endpoint"
+license       = "MIT"
+
+requires "nim >= 1.6.0"
+requires "jester >= 0.5.0"

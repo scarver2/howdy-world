@@ -5,5 +5,7 @@ source "$(dirname "$0")/_lib.sh"
 
 banner
 
-# insert logic here
-# e.g. require_cmd odin
+brew install nim
+brew install --cask nimble-commander
+
+nimble install jester

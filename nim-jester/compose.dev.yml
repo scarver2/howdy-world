@@ -1,12 +1,10 @@
-# nim-jester/compose.dev.yml
-# Made for static files. Tailor, as needed.
+# nim-jester/compose.yml
+
 services:
   nim-jester:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./:/var/www/localhost/htdocs
-    restart: unless-stopped
+    container_name: nim-jester
+    expose:
+      - "5000"

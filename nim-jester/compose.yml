@@ -3,7 +3,5 @@ services:
   nim-jester:
     build:
       context: .
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    restart: unless-stopped
+    expose:
+      - "5000"
