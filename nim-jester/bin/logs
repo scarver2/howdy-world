@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# nim-jester/bin/logs
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENDPOINT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+if [[ -f "$ENDPOINT_DIR/../bin/_lib.sh" ]]; then
+  source "$ENDPOINT_DIR/../bin/_lib.sh"
+  # require_endpoint_contract
+fi
+
+cd "$ENDPOINT_DIR"
+
+usage() {
+  cat <<'USAGE'
+Usage:
+  bin/logs                     # tail logs for all services
+  bin/logs <service>           # tail logs for one service
+  bin/logs <service> -f        # follow
+  bin/logs -f                  # follow all
+  bin/logs --list              # list services
+
+Examples:
+  bin/logs nginx -f
+  bin/logs rust-leptos
+  bin/logs -f
+USAGE
+}
+
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  usage
+  exit 0
+fi
+
+banner
+
+if [[ "${1:-}" == "--list" ]]; then
+  services
+  exit 0
+fi
+
+SERVICE=""
+if [[ $# -gt 0 && "${1:0:1}" != "-" ]]; then
+  SERVICE="$1"
+  shift
+fi
+
+TAIL_LINES="${TAIL_LINES:-200}"
+
+if [[ -n "$SERVICE" ]]; then
+  validate_service "$SERVICE"
+  compose logs --tail="$TAIL_LINES" "$@" "$SERVICE"
+else
+  compose logs --tail="$TAIL_LINES" "$@"
+fi

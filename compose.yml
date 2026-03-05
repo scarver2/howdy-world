@@ -77,6 +77,11 @@ services:
     container_name: javascript-vue
     expose:
       - "8080"
+  nim-jester:
+    build: ./nim-jester
+    container_name: nim-jester
+    expose:
+      - "3000"
   odin:
     build: ./odin
     container_name: odin

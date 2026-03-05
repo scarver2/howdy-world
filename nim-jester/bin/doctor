@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# nim-jester/bin/doctor
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+# insert logic here
