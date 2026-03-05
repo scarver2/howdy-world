@@ -6,6 +6,11 @@ abort() {
   exit 1
 }
 
+install_command() {
+  brew install "$1"
+}
+
 require_command() {
-  command -v "$1" >/dev/null 2>&1 || abort "$1 is required. Run `bin/setup` to install."
+  local cmd="$1"
+  command -v "$cmd" >/dev/null 2>&1 || abort "Missing required command: $cmd"
 }

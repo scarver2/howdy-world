@@ -8,7 +8,7 @@ source "$SCRIPT_DIR/_lib.sh"
 
 cd "$ROOT_DIR"
 
-require_cmd odin
+require_command odin
 
 info "Running Odin tests..."
 
