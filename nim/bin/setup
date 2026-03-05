@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# nim/bin/setup
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+# insert logic here
+# e.g. require_cmd odin

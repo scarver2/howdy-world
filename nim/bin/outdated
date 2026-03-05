@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# nim/bin/outdated
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+# insert logic here

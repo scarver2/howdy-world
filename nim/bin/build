@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# nim/bin/build
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
