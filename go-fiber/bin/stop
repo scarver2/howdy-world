@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# go-fiber/bin/stop
+
+source "$(dirname "$0")/_lib.sh"
+
+exec "$SCRIPT_DIR/down" "$@"

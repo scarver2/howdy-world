@@ -135,6 +135,7 @@ contract_file_list() {
          -o -path "*/*.key" \
          -o -path "*/*.lock" \
          -o -path "*/*.log" \
+         -o -path "*/*.sum" \
          -o -path "*/*.toml" \
          -o -path "*/bin/templates/*" \
          -o -path "*/_build/*" \

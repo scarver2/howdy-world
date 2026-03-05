@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# go-fiber/bin/setup
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+require_command go
+
+go mod download

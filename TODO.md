@@ -57,6 +57,7 @@
 - [ ] Erlang
 - [ ] Fortran
 - [x] Go
+  - [x] Fiber
 - [ ] Haskell
 - [ ] Java
   - [x] Spring Boot
@@ -135,6 +136,12 @@
       }
     </style>
   </head>
+```
+
+**Alternative Styling**
+```html
+    body { font-family: monospace; background: #111; color: #00ffcc; padding: 40px; }
+    h1 { font-size: 3em; }
 ```
 
 ### Example HTML5 markup
