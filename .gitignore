@@ -2,6 +2,7 @@
 # compiled applications
 /**/howdy
 
+# Logs
 *.log
 
 # OS Files
@@ -9,3 +10,6 @@
 
 # AI
 .claude
+
+# NGINX
+.nginx_hash
