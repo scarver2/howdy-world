@@ -1,0 +1,99 @@
+# swift-vapor/.dockerignore
+# Ignore files that would unintentionally trigger the Docker build process.
+# Do not ignore Dockerfile and compose.yml files.
+
+# Build & Compilation Artifacts
+*.bak
+*.dll
+*.dylib
+*.exe
+*.out
+*.so
+*.swp
+*.tmp
+**/bin
+**/obj
+*~
+build
+dist
+target
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Docs
+*.md
+
+# Env
+.env
+.env.*
+
+# IDE
+.idea
+.vs
+.vscode
+*.sln.docstates
+*.suo
+*.user
+*.userosscache
+
+# Logs
+**/*.log
+
+# OS
+.DS_Store
+.localized
+$RECYCLE.BIN
+desktop.ini
+Thumbs.db
+
+# Test results & coverage
+**/*.coverage
+**/*.coveragexml
+**/*.trx
+**/coverage.*
+**/coverage/
+**/TestResults/
+
+# Git
+.git
+.gitignore
+
+# Go
+*.test
+
+# Java
+.gradle
+.mvn
+*.class
+*.ear
+*.jar
+*.war
+
+# NodeJS
+.bun
+.npm
+.pnpm-store
+.yarn
+node_modules
+
+# Python
+__pycache__
+.coverage
+.mypy_cache
+.pytest_cache
+.ruff_cache
+.venv
+*.egg-info
+*.pyc
+*.pyd
+*.pyo
+htmlcov
+
+# Ruby
+.bundle
+*.gem
+coverage
+vendor/bundle

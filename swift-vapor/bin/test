@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# swift-vapor/bin/test
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+# insert test runner here

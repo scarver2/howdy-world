@@ -122,6 +122,11 @@ services:
     container_name: rust-leptos
     expose:
       - "3000"
+  swift-vapor:
+    build: ./swift-vapor
+    container_name: swift-vapor
+    expose:
+      - "3000"
   zig:
     build: ./zig
     container_name: zig
