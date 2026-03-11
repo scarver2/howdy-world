@@ -3,31 +3,13 @@
 
 source "$(dirname "$0")/_lib.sh"
 
-# SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-# TODO: confirm no behavior changed before removing this section
-# NO_BUILD=0
-# if [[ "${1:-}" == "--no-build" ]]; then
-#   NO_BUILD=1
-#   shift
-# fi
-# compose down --remove-orphans
-
-# if (( NO_BUILD == 1 )); then
-#   if [[ $# -eq 0 ]]; then
-#     compose up -d
-#   else
-#     compose up "$@"
-#   fi
-# else
-#   if [[ $# -eq 0 ]]; then
-#     compose up -d --build
-#   else
-#     compose up --build "$@"
-#   fi
-# fi
-
 banner
 
 "$SCRIPT_DIR/down"
-"$SCRIPT_DIR/up" "$@"
+
+# Pass arguments to up if present. Null arguments passed results in non-daemonized Docker Compose.
+if [[ $# -eq 0 ]]; then
+  "$SCRIPT_DIR/up"
+else
+  "$SCRIPT_DIR/up" "$@"
+fi
