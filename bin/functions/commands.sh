@@ -9,3 +9,14 @@ abort() {
 require_command() {
   command -v "$1" >/dev/null 2>&1 || abort "$1 is required. Run \`bin/setup\` to install."
 }
+
+install_command() {
+  local cmd="$1"
+  shift
+  if command -v "$cmd" >/dev/null 2>&1; then
+    echo "✅ $cmd is already installed"
+  else
+    echo "📦 Installing $cmd..."
+    "$@"
+  fi
+}
