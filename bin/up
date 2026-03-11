@@ -4,6 +4,27 @@ source "$(dirname "$0")/_lib.sh"
 
 banner
 
+# Check if NGINX config has changed
+# TODO: This is a bit hackish. There are other more elegant ways.
+# - Rebuild just the nginx container
+# - Use a volume mount for the config files and let nginx handle the reload
+NGINX_HASH_FILE=".nginx_hash"
+CURRENT_HASH=$(find _infrastructure/proxy/nginx -type f -print0 | sort -z | xargs -0 shasum | shasum)
+
+if [ -f "$NGINX_HASH_FILE" ]; then
+  LAST_HASH=$(cat "$NGINX_HASH_FILE")
+else
+  LAST_HASH=""
+fi
+
+if [ "$CURRENT_HASH" != "$LAST_HASH" ]; then
+  echo "🔁 NGINX config changed — rebuilding..."
+  docker compose build infrastructure_proxy_nginx
+  echo "$CURRENT_HASH" > "$NGINX_HASH_FILE"
+fi
+
+rm -f NGINX_HASH_FILE
+
 # Default behavior: up -d
 # You can override/extend by passing args, e.g.:
 #   bin/up --build

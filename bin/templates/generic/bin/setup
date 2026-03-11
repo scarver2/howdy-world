@@ -6,4 +6,4 @@ source "$(dirname "$0")/_lib.sh"
 banner
 
 # insert logic here
-# e.g. require_command odin
+# e.g. require_command __ENDPOINT__
