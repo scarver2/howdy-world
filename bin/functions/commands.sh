@@ -6,10 +6,9 @@ abort() {
   exit 1
 }
 
-brew_install_command() {
-  brew install "$1"
+require_command() {
+  command -v "$1" >/dev/null 2>&1 || abort "Missing required command: $1"
 }
-
 
 install_command() {
   local cmd="$1"
@@ -20,7 +19,4 @@ install_command() {
     echo "📦 Installing $cmd..."
     "$@"
   fi
-}
-require_command() {
-  command -v "$1" >/dev/null 2>&1 || abort "Missing required command: $1"
 }
