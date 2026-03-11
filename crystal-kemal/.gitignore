@@ -15,6 +15,7 @@
 # bin
 # build
 dist
+lib
 target
 
 # Logs
