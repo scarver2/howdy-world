@@ -4,3 +4,7 @@
 source "$(dirname "$0")/_lib.sh"
 
 banner
+
+require_command crystal
+
+exec crystal build src/server.cr

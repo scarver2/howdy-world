@@ -16,6 +16,8 @@
 # build
 dist
 lib
+server
+server.dwarf
 target
 
 # Logs
