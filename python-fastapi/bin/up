@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # python-fastapi/bin/up
 
-source "$(dirname "${BASH_SOURCE[0]}")/_lib.sh"
+source "$(dirname "$0")/_lib.sh"
 
 ROOT="$(howdy_root)"
 cd "$ROOT"
