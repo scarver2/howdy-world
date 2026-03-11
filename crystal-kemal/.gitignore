@@ -1,0 +1,31 @@
+# crystal-kemal/.gitignore
+# For language-specific templates, from https://github.com/github/gitignore
+
+# Build & Compilation Artifacts
+*.bak
+*.dll
+*.dylib
+*.exe
+*.out
+*.so
+*.swp
+*.tmp
+**/obj
+*~
+# bin
+# build
+dist
+lib
+server
+server.dwarf
+target
+
+# Logs
+*.logs
+
+# OS
+.DS_Store
+.localized
+$RECYCLE.BIN
+desktop.ini
+Thumbs.db

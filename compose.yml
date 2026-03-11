@@ -11,6 +11,11 @@ services:
     container_name: clojure
     expose:
       - "3000"
+  crystal-kemal:
+    build: ./crystal-kemal
+    container_name: crystal-kemal
+    expose:
+      - "3000"
   dashboard:
     build: ./_dashboard
     container_name: dashboard
@@ -36,6 +41,11 @@ services:
     container_name: go
     expose:
       - "8080"
+  go-fiber:
+    build: ./go-fiber
+    container_name: go-fiber
+    expose:
+      - "3000"
   infrastructure_proxy_nginx:
     build: ./_infrastructure/proxy/nginx
     container_name: infrastructure_proxy_nginx

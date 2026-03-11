@@ -5,11 +5,11 @@ source "$(dirname "$0")/_lib.sh"
 
 banner
 
-"$SCRIPT_DIR/down"
+"$BIN_DIR/down"
 
 # Pass arguments to up if present. Null arguments passed results in non-daemonized Docker Compose.
 if [[ $# -eq 0 ]]; then
-  "$SCRIPT_DIR/up"
+  "$BIN_DIR/up"
 else
-  "$SCRIPT_DIR/up" "$@"
+  "$BIN_DIR/up" "$@"
 fi

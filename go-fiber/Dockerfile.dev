@@ -1,0 +1,17 @@
+# go-fiber/Dockerfile.dev
+# Two Options: Static or Framework Specific (DIY)
+# Static Files
+FROM golang:1.25.0
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN go build -o main .
+
+EXPOSE 3000
+
+CMD ["./main"]

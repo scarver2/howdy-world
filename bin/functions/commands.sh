@@ -6,11 +6,21 @@ abort() {
   exit 1
 }
 
-install_command() {
+brew_install_command() {
   brew install "$1"
 }
 
-require_command() {
+
+install_command() {
   local cmd="$1"
-  command -v "$cmd" >/dev/null 2>&1 || abort "Missing required command: $cmd"
+  shift
+  if command -v "$cmd" >/dev/null 2>&1; then
+    echo "✅ $cmd is already installed"
+  else
+    echo "📦 Installing $cmd..."
+    "$@"
+  fi
+}
+require_command() {
+  command -v "$1" >/dev/null 2>&1 || abort "Missing required command: $1"
 }
