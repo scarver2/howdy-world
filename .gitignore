@@ -1,7 +1,9 @@
 # .gitignore
-# compiled applications
+
+# Compiled applications
 /**/howdy
 
+# Logs
 *.log
 
 # OS Files
@@ -9,3 +11,6 @@
 
 # AI
 .claude
+
+# Misc.
+.nginx_hash
