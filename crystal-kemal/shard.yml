@@ -7,6 +7,9 @@ dependencies:
   kemal:
     github: kemalcr/kemal
 
+development_dependencies:
+  ameba:
+    github: crystal-ameba/ameba
 targets:
   server:
     main: src/server.cr

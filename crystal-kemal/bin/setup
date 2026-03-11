@@ -7,4 +7,9 @@ banner
 
 require_command crystal
 
+echo "Installing ameba..."
+brew tap crystal-ameba/ameba
+brew install ameba
+
+echo "Installing dependencies..."
 shards install
