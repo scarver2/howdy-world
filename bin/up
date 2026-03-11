@@ -30,7 +30,7 @@ rm -f NGINX_HASH_FILE
 #   bin/up --build
 #   bin/up --build --remove-orphans
 #   bin/up -d --build
-if [[ $# -eq 0 ]]; then
+if [[ -z "$*" ]]; then
   compose up -d
 else
   compose up "$@"

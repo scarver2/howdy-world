@@ -6,10 +6,4 @@ source "$(dirname "$0")/_lib.sh"
 banner
 
 "$BIN_DIR/down"
-
-# Pass arguments to up if present. Null arguments passed results in non-daemonized Docker Compose.
-if [[ $# -eq 0 ]]; then
-  "$BIN_DIR/up"
-else
-  "$BIN_DIR/up" "$@"
-fi
+"$BIN_DIR/up" "$@"
