@@ -5,4 +5,4 @@ source "$(dirname "$0")/_lib.sh"
 
 banner
 
-# insert logic here
+shards outdated

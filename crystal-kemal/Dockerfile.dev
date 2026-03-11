@@ -1,8 +1,14 @@
 # crystal-kemal/Dockerfile.dev
-# Two Options: Static or Framework Specific (DIY)
-# Static Files
-FROM alpine:3.20
-RUN apk add --no-cache lighttpd
-COPY . /var/www/localhost/htdocs
+
+FROM crystallang/crystal:latest
+
+WORKDIR /app
+
+COPY shard.yml shard.lock* ./
+RUN shards install
+
+COPY . .
+
 EXPOSE 3000
-CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
+
+CMD ["crystal", "run", "src/server.cr"]

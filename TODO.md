@@ -50,6 +50,10 @@
 - [x] Caddy
 - [x] Clojure
 - [ ] COBOL
+- [ ] Crystal
+  - [ ] Amber
+  - [x] Kemal
+  - [ ] Lucky
 - [ ] Dart
 - [ ] Elixir
   - [x] Bandit
