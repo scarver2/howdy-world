@@ -111,9 +111,10 @@ git_version() {
     date="$(git -C "$ROOT_DIR" show -s --format=%cs HEAD 2>/dev/null || echo unknown)"
     dirty="$(git -C "$ROOT_DIR" status --porcelain 2>/dev/null | wc -l | tr -d ' ')"
 
-    [[ "$dirty" != "0" ]] && dirty="yes" || dirty="no"
+    local suffix=""
+    [[ "$dirty" != "0" ]] && suffix=" dirty"
 
-    echo "${branch}@${sha} (${date}) dirty:${dirty}"
+    echo "${branch}@${sha} (${date})${suffix}"
   else
     echo "no-git"
   fi
