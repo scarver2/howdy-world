@@ -141,6 +141,7 @@ contract_file_list() {
          -o -path "*/_build/*" \
          -o -path "*/build/*" \
          -o -path "*/coverage/*" \
+         -o -path "*/crystal*/lib/*" \
          -o -path "*/debug/*" \
          -o -path "*/Debug/*" \
          -o -path "*/deps/*" \
