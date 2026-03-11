@@ -136,4 +136,3 @@ Example of good naming conventions:
     Docker service	odin-http
     NGINX location	/odin-http/
     Compose service	odin-http
-

@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 # python-fastapi/bin/run
 
-source "$(dirname "${BASH_SOURCE[0]}")/_lib.sh"
+source "$(dirname "$0")/_lib.sh"
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-cd "$ROOT_DIR"
 
 # --- OS / package manager guardrails (Howdy World convention) ---
 OS="$(uname -s)"

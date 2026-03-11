@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 # clojure/bin/stop
 
-./bin/down
+source "$(dirname "$0")/_lib.sh"
+
+"$SCRIPT_DIR/down"

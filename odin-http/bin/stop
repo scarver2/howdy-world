@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # odin-http/bin/stop
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$(dirname "$0")/_lib.sh"
 
 exec "$SCRIPT_DIR/down" "$@"

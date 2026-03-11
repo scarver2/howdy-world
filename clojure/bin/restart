@@ -3,7 +3,7 @@
 
 source "$(dirname "$0")/_lib.sh"
 
-banner "clojure:restart"
+banner
 
-./bin/down
-./bin/up
+"$SCRIPT_DIR/down"
+"$SCRIPT_DIR/up" "$@"

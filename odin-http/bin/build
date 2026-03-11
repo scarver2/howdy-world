@@ -8,7 +8,7 @@ cd "$ROOT"
 
 APP="howdy-odin-http"
 
-require_cmd odin
+require_command odin
 
 if ! command -v llvm-config >/dev/null 2>&1; then
   if command -v llvm-config-21 >/dev/null 2>&1; then
@@ -52,7 +52,7 @@ log "Done"
 # log "Done"
 
 require_brew
-require_cmd odin
+require_command odin
 
 odin_with_deps build main.odin -file \
   -o:speed \

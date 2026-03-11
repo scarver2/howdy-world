@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
 # odin-http/bin/test
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+source "$(dirname "$0")/_lib.sh"
 
-source "$SCRIPT_DIR/_lib.sh"
 
-cd "$ROOT_DIR"
 
-require_cmd odin
+require_command odin
 
 info "Running Odin tests..."
 
