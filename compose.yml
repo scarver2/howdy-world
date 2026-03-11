@@ -11,6 +11,11 @@ services:
     container_name: clojure
     expose:
       - "3000"
+  crystal-kemal:
+    build: ./crystal-kemal
+    container_name: crystal-kemal
+    expose:
+      - "3000"
   dashboard:
     build: ./_dashboard
     container_name: dashboard

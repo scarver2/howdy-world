@@ -5,7 +5,7 @@ source "$(dirname "$0")/_lib.sh"
 banner
 
 # Check if NGINX config has changed
-# This is a bit hackish. There are other more elegant ways.
+# TODO: This is a bit hackish. There are other more elegant ways.
 # - Rebuild just the nginx container
 # - Use a volume mount for the config files and let nginx handle the reload
 NGINX_HASH_FILE=".nginx_hash"

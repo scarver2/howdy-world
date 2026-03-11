@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# bin/restart
+# crystal-kemal/bin/test
 
 source "$(dirname "$0")/_lib.sh"
 
 banner
 
-"$BIN_DIR/down"
-"$BIN_DIR/up" "$@"
+# insert test runner here

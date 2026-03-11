@@ -64,7 +64,9 @@ services() {
 
 validate_service() {
   local svc="$1"
-  if ! services | grep -qx "$svc"; then
+  local svc_list
+  svc_list="$(services)"
+  if ! grep -qx "$svc" <<< "$svc_list"; then
     fail "Unknown service: $svc"
     exit 2
   fi

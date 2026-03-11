@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
-# bin/restart
+# crystal-kemal/bin/start
 
 source "$(dirname "$0")/_lib.sh"
 
-banner
+exec "$SCRIPT_DIR/up" "$@"
 
-"$BIN_DIR/down"
-"$BIN_DIR/up" "$@"

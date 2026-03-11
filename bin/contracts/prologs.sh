@@ -92,7 +92,7 @@ enforce_policy() {
   local second="$4"
 
   case "$base" in
-    .dockerignore|.gitignore|Dockerfile*|*.conf|*.py|*.rb|*.rspec|*.ru|*.sh|*.yml|Gemfile|Rakefile)
+    .dockerignore|.gitignore|Dockerfile*|*.conf|*.cr|*.py|*.rb|*.rspec|*.ru|*.sh|*.yml|Gemfile|Rakefile)
       [[ "$first" == "# $rel" ]] || contract_error "Missing prolog (Hash): $rel" ;;
     *.css)
       [[ "$first" == "/* $rel"* ]] || contract_error "Missing prolog (CSS): $rel" ;;
@@ -141,6 +141,7 @@ contract_file_list() {
          -o -path "*/_build/*" \
          -o -path "*/build/*" \
          -o -path "*/coverage/*" \
+         -o -path "*/crystal*/lib/*" \
          -o -path "*/debug/*" \
          -o -path "*/Debug/*" \
          -o -path "*/deps/*" \
@@ -152,6 +153,7 @@ contract_file_list() {
          -o -path "*/target/*" \
          -o -path "*/vendor/*" \
          -o -path "*/.DS_Store" \
+         -o -path "*/.nginx_hash" \
     \) -prune \
     -o -type f -print0
 }

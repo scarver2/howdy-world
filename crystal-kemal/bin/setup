@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# crystal-kemal/bin/setup
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+require_command crystal
+
+install_command ameba bash -c "brew tap crystal-ameba/ameba && brew install ameba"
+
+echo "Installing dependencies..."
+shards install
