@@ -1,0 +1,17 @@
+// swift-vapor/Sources/App/Controllers/HomeController.swift
+import Vapor
+
+struct HomeController {
+
+    // func index(req: Request) async -> Response {
+    func index(req: Request) async throws -> Response {
+
+        let html = HowdyPage().render()
+
+        return Response(
+            status: .ok,
+            headers: ["Content-Type": "text/html"],
+            body: .init(string: html)
+        )
+    }
+}

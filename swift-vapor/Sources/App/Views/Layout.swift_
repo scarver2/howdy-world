@@ -1,0 +1,24 @@
+// swift-vapor/Sources/App/Views/Layout.swift
+
+import Elementary
+
+struct Layout<Content: HTML>: HTML {
+
+    let content: Content
+
+    init(@HTMLBuilder content: () -> Content) {
+        self.content = content()
+    }
+
+    var body: some HTML {
+        html {
+            head {
+                meta(.charset(.utf8))
+                title { "Howdy from Swift Vapor" }
+            }
+            Elementary.body {
+                content
+            }
+        }
+    }
+}

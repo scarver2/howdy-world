@@ -2,6 +2,7 @@
 # For language-specific templates, from https://github.com/github/gitignore
 
 # Build & Compilation Artifacts
+.build
 *.bak
 *.dll
 *.dylib

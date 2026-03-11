@@ -5,4 +5,5 @@ source "$(dirname "$0")/_lib.sh"
 
 banner
 
-# insert test runner here
+swift test --enable-code-coverage
+xcrun llvm-cov report .build/debug/AppPackageTests.xctest

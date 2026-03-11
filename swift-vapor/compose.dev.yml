@@ -4,9 +4,6 @@ services:
   swift-vapor:
     build:
       context: .
-      dockerfile: Dockerfile.dev
     ports:
-      - "3000:3000"
-    volumes:
-      - ./:/var/www/localhost/htdocs
+      - "8080:8080"
     restart: unless-stopped

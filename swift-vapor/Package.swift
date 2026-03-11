@@ -9,8 +9,8 @@ let package = Package(
         .macOS(.v14)
     ],
     dependencies: [
-        .package(url: "https://github.com/vapor/vapor.git", from: "4.100.0"),
-        .package(url: "https://github.com/elementary-swift/elementary.git", from: "0.7.0")
+        .package(url: "https://github.com/vapor/vapor.git", from: "4.121.3"),
+        .package(url: "https://github.com/elementary-swift/elementary.git", from: "0.6.4")
     ],
     targets: [
         .executableTarget(

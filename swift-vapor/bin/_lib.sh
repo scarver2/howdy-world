@@ -10,4 +10,8 @@ if [[ -f "$ENDPOINT_DIR/../bin/_lib.sh" ]]; then
   # require_endpoint_contract
 fi
 
+banner
+
+swift --version
+
 cd "$ENDPOINT_DIR"

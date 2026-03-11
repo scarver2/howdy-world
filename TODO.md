@@ -112,6 +112,7 @@
 - [ ] Shell
   - [ ] Bash
 - [ ] Swift
+  - [x] Vapor
 - [x] Zig
 
 ### NGINX

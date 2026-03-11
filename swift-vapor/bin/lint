@@ -3,6 +3,10 @@
 
 source "$(dirname "$0")/_lib.sh"
 
-banner
+# banner
 
-# insert logic here
+# require_command swiftlint
+
+# cd "$ENDPOINT_DIR"
+
+swiftlint

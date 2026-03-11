@@ -1,0 +1,12 @@
+// swift-vapor/Sources/App/Views/HowdyPage.swift
+
+import Elementary
+
+struct HowdyPage: HTML {
+
+    var body: some HTML {
+        Layout {
+            h1 { "Howdy, World!" }
+        }
+    }
+}

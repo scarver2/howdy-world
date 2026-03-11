@@ -3,7 +3,8 @@
 
 source "$(dirname "$0")/_lib.sh"
 
-banner
+# banner
 
-# insert logic here
-# e.g. require_cmd odin
+require_command swift
+brew install swiftlint
+brew install vapor

@@ -1,0 +1,18 @@
+// swift-vapor/Sources/App/main.swift
+
+import Vapor
+
+@main
+struct Run {
+
+    static func main() async throws {
+
+        let app = try await Application.make(.production)
+
+        defer { app.shutdown() }
+
+        try routes(app)
+
+        try await app.execute()
+    }
+}
