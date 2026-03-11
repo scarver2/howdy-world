@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# crystal-kemal/bin/down
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+docker compose down "$@"
