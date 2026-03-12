@@ -1,0 +1,14 @@
+# ruby-webrick/Gemfile
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+ruby '4.0.1'
+
+gem 'webrick'
+
+group :development, :test do
+  gem 'rspec', require: false
+  gem 'rack-test', require: false
+  gem 'rubocop', require: false
+end
