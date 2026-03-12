@@ -6,3 +6,9 @@ source "https://rubygems.org"
 ruby '4.0.1'
 
 gem 'falcon', '~> 0.54.2'
+
+group :development, :test do
+  gem 'rspec', require: false
+  gem 'rack-test', require: false
+  gem 'rubocop', require: false
+end
