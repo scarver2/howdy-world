@@ -153,7 +153,6 @@ contract_file_list() {
          -o -path "*/target/*" \
          -o -path "*/vendor/*" \
          -o -path "*/.DS_Store" \
-         -o -path "*/.nginx_hash" \
     \) -prune \
     -o -type f -print0
 }

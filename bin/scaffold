@@ -244,6 +244,9 @@ if [[ -f "$NGINX_TEMPLATE" ]]; then
   fi
 
   rm "$tmp"
+
+  echo "🔁 Removing nginx container so it rebuilds with the new config on next \`bin/up\`..."
+  docker rm -f infrastructure_proxy_nginx 2>/dev/null || true
 fi
 
 echo
