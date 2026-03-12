@@ -4,4 +4,3 @@
 source "$(dirname "$0")/_lib.sh"
 
 exec "$SCRIPT_DIR/up" "$@"
-

@@ -5,4 +5,7 @@ source "$(dirname "$0")/_lib.sh"
 
 banner
 
-docker compose -f compose.yml up -d --build "$@"
+# insert up logic here
+docker compose up -d --build "$@"
+
+abort "Not implemented."
