@@ -7,7 +7,7 @@ abort() {
 }
 
 require_command() {
-  command -v "$1" >/dev/null 2>&1 || abort "$1 is required. Run \`bin/setup\` to install."
+  command -v "$1" >/dev/null 2>&1 || abort "Missing required command: $1"
 }
 
 install_command() {

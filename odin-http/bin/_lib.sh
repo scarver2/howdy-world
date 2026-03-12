@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 # odin-http/bin/_lib.sh
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENDPOINT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+if [[ -f "$ENDPOINT_DIR/../bin/_lib.sh" ]]; then
+  source "$ENDPOINT_DIR/../bin/_lib.sh"
+fi
+
+cd "$ENDPOINT_DIR"
+
+
 set -euo pipefail
 
 # --- paths ---
@@ -8,18 +18,24 @@ bin_dir() { cd "$(dirname "${BASH_SOURCE[0]}")" && pwd; }
 endpoint_root() { cd "$(bin_dir)/.." && pwd; }
 
 # --- output helpers ---
-hr() { printf '%s\n' "------------------------------------------------------------"; }
+hr() { printf '%s
+' "------------------------------------------------------------"; }
 
 # FIXME: meh. need better descriptors and less duplication.
-log() { printf '%s\n' "$*"; }
+log() { printf '%s
+' "$*"; }
 status() { printf '%s' "$*"; }
-success() { printf 'SUCCESS: %s\n' "$*"; }
-info() { printf 'INFO: %s\n' "$*"; }
-warn() { printf 'WARN: %s\n' "$*" >&2; }
-die() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
+success() { printf 'SUCCESS: %s
+' "$*"; }
+info() { printf 'INFO: %s
+' "$*"; }
+warn() { printf 'WARN: %s
+' "$*" >&2; }
+die() { printf 'ERROR: %s
+' "$*" >&2; exit 1; }
 
 # --- guards ---
-require_cmd() {
+require_command() {
   local cmd="$1"
   command -v "$cmd" >/dev/null 2>&1 || die "Missing required command: $cmd"
 }
@@ -29,7 +45,7 @@ is_docker() { [ -f "/.dockerenv" ] || grep -qaE '(docker|containerd|kubepods)' /
 require_brew() {
   if is_docker; then return 0; fi
   # Project standard: scripts abort if Homebrew is missing or OS unsupported.
-  require_cmd brew
+  require_command brew
 }
 
 # --- git helpers ---

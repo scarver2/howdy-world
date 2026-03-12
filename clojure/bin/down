@@ -3,7 +3,7 @@
 
 source "$(dirname "$0")/_lib.sh"
 
-banner "clojure:down"
+banner
 
 docker compose -f compose.yml down
 docker compose -f compose.dev.yml down 2>/dev/null || true

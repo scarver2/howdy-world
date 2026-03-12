@@ -7,7 +7,7 @@ ROOT="$(endpoint_root)"
 cd "$ROOT"
 
 require_brew
-require_cmd git
+require_command git
 
 hr
 info "Updating dependency: deps/odin-http"

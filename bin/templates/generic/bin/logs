@@ -1,15 +1,7 @@
 #!/usr/bin/env bash
 # __ENDPOINT__/bin/logs
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ENDPOINT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-
-if [[ -f "$ENDPOINT_DIR/../bin/_lib.sh" ]]; then
-  source "$ENDPOINT_DIR/../bin/_lib.sh"
-  # require_endpoint_contract
-fi
-
-cd "$ENDPOINT_DIR"
+source "$(dirname "$0")/_lib.sh"
 
 usage() {
   cat <<'USAGE'
