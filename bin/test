@@ -6,6 +6,11 @@ source "$(dirname "$0")/_lib.sh"
 banner
 
 # -----------------------------
+# Preflight
+# -----------------------------
+curl -sf --max-time 5 "$BASE_URL/" > /dev/null || abort "Server not responding at $BASE_URL — run \`bin/up\` to start"
+
+# -----------------------------
 # Assets
 # -----------------------------
 echo "Checking assets..."
