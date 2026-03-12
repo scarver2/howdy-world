@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# ruby-on-rails/bin/test
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+# insert test runner here
+abort "Not implemented."
