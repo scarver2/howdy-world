@@ -16,6 +16,14 @@ const html =
     \\</html>
 ;
 
+test "html contains expected title" {
+    try std.testing.expect(std.mem.indexOf(u8, html, "Howdy from Zig") != null);
+}
+
+test "html contains expected greeting" {
+    try std.testing.expect(std.mem.indexOf(u8, html, "Howdy, World!") != null);
+}
+
 pub fn main() !void {
     const address = try std.net.Address.parseIp("0.0.0.0", 3000);
 
