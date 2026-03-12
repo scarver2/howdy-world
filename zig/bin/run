@@ -5,4 +5,4 @@ source "$(dirname "$0")/_lib.sh"
 
 banner
 
-docker compose -f compose.dev.yml up --build "$@"
+zig run howdy.zig

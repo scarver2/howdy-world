@@ -5,5 +5,11 @@ source "$(dirname "$0")/_lib.sh"
 
 banner
 
-# insert test runner here
-curl -s http://localhost:3000 | grep "Howdy, World!"
+require_command zig
+require_command curl
+
+echo "Running unit tests..."
+zig test howdy.zig
+
+echo "Running request test..."
+curl -sf http://localhost:3000 | grep "Howdy, World!"

@@ -5,4 +5,27 @@ source "$(dirname "$0")/_lib.sh"
 
 banner
 
-# insert logic here
+require_command zig
+require_command curl
+
+INSTALLED="$(zig version)"
+LATEST="$(curl -fsSL https://ziglang.org/download/index.json \
+  | grep -o '"[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*"' \
+  | head -1 \
+  | tr -d '"')"
+
+if [[ -z "$LATEST" ]]; then
+  abort "Could not fetch latest Zig version from ziglang.org"
+fi
+
+echo "Installed : $INSTALLED"
+echo "Latest    : $LATEST"
+echo
+
+if [[ "$INSTALLED" == "$LATEST" ]]; then
+  echo "✅ Zig is up to date"
+elif [[ "$(printf '%s\n%s\n' "$INSTALLED" "$LATEST" | sort -V | tail -1)" == "$LATEST" ]]; then
+  echo "⬆️  Zig $LATEST is available — run \`bin/update\` to upgrade"
+else
+  echo "✅ Zig $INSTALLED is newer than latest stable ($LATEST)"
+fi
