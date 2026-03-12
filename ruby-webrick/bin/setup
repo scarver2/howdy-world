@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# ruby-webrick/bin/setup
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+require_command ruby
+require_command bundler
+
+bundle install

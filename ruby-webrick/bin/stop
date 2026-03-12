@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# ruby-webrick/bin/stop
+
+source "$(dirname "$0")/_lib.sh"
+
+exec "$ENDPOINT_DIR/bin/down" "$@"
