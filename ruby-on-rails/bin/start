@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# ruby-on-rails/bin/start
+
+source "$(dirname "$0")/_lib.sh"
+
+exec "$SCRIPT_DIR/up" "$@"
+

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# ruby-on-rails/bin/build
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+docker compose build "$@"
