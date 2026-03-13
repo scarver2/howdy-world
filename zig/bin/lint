@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# zig/bin/lint
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+require_command zig
+
+zig fmt --check . || abort "Formatting issues found — run \`zig fmt .\` to fix"
+
+echo "✅ Formatting OK"

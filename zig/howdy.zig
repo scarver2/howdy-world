@@ -16,6 +16,14 @@ const html =
     \\</html>
 ;
 
+test "html contains expected title" {
+    try std.testing.expect(std.mem.indexOf(u8, html, "Howdy from Zig") != null);
+}
+
+test "html contains expected greeting" {
+    try std.testing.expect(std.mem.indexOf(u8, html, "Howdy, World!") != null);
+}
+
 pub fn main() !void {
     const address = try std.net.Address.parseIp("0.0.0.0", 3000);
 
@@ -28,11 +36,11 @@ pub fn main() !void {
 
         const response = std.fmt.comptimePrint(
             "HTTP/1.1 200 OK\r\n" ++
-            "Content-Type: text/html; charset=utf-8\r\n" ++
-            "Content-Length: {d}\r\n" ++
-            "Connection: close\r\n" ++
-            "\r\n" ++
-            "{s}",
+                "Content-Type: text/html; charset=utf-8\r\n" ++
+                "Content-Length: {d}\r\n" ++
+                "Connection: close\r\n" ++
+                "\r\n" ++
+                "{s}",
             .{ html.len, html },
         );
 

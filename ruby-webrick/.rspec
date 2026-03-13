@@ -1,0 +1,6 @@
+# ruby-webrick/.rspec
+# frozen_string_literal: true
+
+--color
+--require spec_helper
+--format documentation

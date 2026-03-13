@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# zig/bin/update
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+require_command brew
+
+brew upgrade zig

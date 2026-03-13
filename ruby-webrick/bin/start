@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# ruby-webrick/bin/start
+
+source "$(dirname "$0")/_lib.sh"
+
+"$SCRIPT_DIR/up" "$@"

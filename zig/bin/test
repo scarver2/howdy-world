@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# zig/bin/test
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+require_command zig
+require_command curl
+
+echo "Running unit tests..."
+zig test howdy.zig
+
+# Disabled. Requires server to be running. Considering adding a 
+# request test that starts the server, runs the request, and then
+# stops the server. Also considering if this should be containerized.
+# echo "Running request test..."
+# RESPONSE="$(curl -sf http://localhost:3000)" || abort "Server not responding at http://localhost:3000"
+# echo "$RESPONSE" | grep -q "Howdy, World!" || abort "Response missing 'Howdy, World!'"
+# echo "✅ Request test passed"

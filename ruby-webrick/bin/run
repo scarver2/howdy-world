@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# ruby-webrick/bin/run
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+bundle exec ruby app.rb

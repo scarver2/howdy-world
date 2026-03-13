@@ -5,4 +5,5 @@ source "$(dirname "$0")/_lib.sh"
 
 banner
 
-# insert logic here
+# insert doctor logic here
+abort "Not implemented."

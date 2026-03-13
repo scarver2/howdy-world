@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# ruby-webrick/bin/clean
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+rm -rf dist build target node_modules 2>/dev/null || true
