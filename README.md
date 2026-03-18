@@ -1,4 +1,4 @@
-![Howdy World](https://raw.githubusercontent.com/scarver2/howdy-world/main/nginx/www/howdy-world.png)
+![Howdy World](https://raw.githubusercontent.com/scarver2/howdy-world/master/_dashboard/www/assets/howdy-world.png)
 
 # Howdy World
 
@@ -21,7 +21,7 @@ The page will open with a list of endpoints of the currently supported languages
 * [Caddy](./caddy)
 * [Clojure](./clojure)
 * Crystal
-    * [Crystal Kemal]{crystal-kemal}
+    * [Crystal Kemal](crystal-kemal)
 * Elixir
     * [Bandit](./elixir-bandit)
     * [Phoenix](./elixir-phoenix)
@@ -52,4 +52,4 @@ The page will open with a list of endpoints of the currently supported languages
 
 &copy;2026 [Stan Carver II](http://stancarver.com)
 
-![Made in Texas](https://raw.githubusercontent.com/scarver2/howdy-world/main/nginx/www/made-in-texas.png)
+![Made in Texas](https://raw.githubusercontent.com/scarver2/howdy-world/master/_dashboard/www/assets/made-in-texas.png)
