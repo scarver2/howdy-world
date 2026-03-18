@@ -21,7 +21,7 @@ The page will open with a list of endpoints of the currently supported languages
 * [Caddy](./caddy)
 * [Clojure](./clojure)
 * Crystal
-    * [Crystal Kemal]{crystal-kemal}
+    * [Crystal Kemal](crystal-kemal)
 * Elixir
     * [Bandit](./elixir-bandit)
     * [Phoenix](./elixir-phoenix)
