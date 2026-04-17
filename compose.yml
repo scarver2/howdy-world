@@ -117,6 +117,11 @@ services:
     container_name: ruby-rage
     expose:
       - "3000" # Ruby HTTP server listens on this port
+  ruby-wasm:
+    build: ./ruby-wasm
+    container_name: ruby-wasm
+    expose:
+      - "3000"
   ruby-webrick:
     build: ./ruby-webrick
     container_name: ruby-webrick

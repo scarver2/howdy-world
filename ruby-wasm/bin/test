@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# ruby-wasm/bin/test
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+# insert test runner here
+# e.g. curl -s http://localhost:3000 | grep "Howdy, World!"
+
+abort "Not implemented."

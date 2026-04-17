@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# ruby-wasm/bin/lint
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+# insert lint logic here
+abort "Not implemented."

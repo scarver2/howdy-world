@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# ruby-wasm/bin/build
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+# insert build logic here
+abort "Not implemented."

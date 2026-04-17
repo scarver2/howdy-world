@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Howdy World - Ruby WASM</title>
+</head>
+<body>
+  <h1 id="output">Loading Ruby...</h1>
+
+  <script type="module">
+    import initRuby from "./main.js";
+
+    initRuby().then((ruby) => {
+      const result = ruby.eval(`
+        "Howdy World from Ruby WASM 🚀"
+      `);
+
+      document.getElementById("output").innerText = result;
+    });
+  </script>
+</body>
+</html>
