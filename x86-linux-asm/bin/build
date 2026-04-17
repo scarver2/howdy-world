@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# x86-linux-asm/bin/build
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+# insert build logic here
+abort "Not implemented."

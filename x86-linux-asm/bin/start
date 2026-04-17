@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# x86-linux-asm/bin/start
+
+source "$(dirname "$0")/_lib.sh"
+
+exec "$SCRIPT_DIR/up" "$@"

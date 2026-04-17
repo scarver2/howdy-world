@@ -127,6 +127,11 @@ services:
     container_name: rust-leptos
     expose:
       - "3000"
+  x86-linux-asm:
+    build: ./x86-linux-asm
+    container_name: x86-linux-asm
+    expose:
+      - "3000"
   zig:
     build: ./zig
     container_name: zig

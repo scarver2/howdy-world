@@ -1,0 +1,12 @@
+# x86-linux-asm/compose.dev.yml
+# Made for static files. Tailor, as needed.
+services:
+  x86-linux-asm:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/var/www/localhost/htdocs
+    restart: unless-stopped

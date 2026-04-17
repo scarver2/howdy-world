@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# x86-linux-asm/bin/clean
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+remove_build_artifacts
+
+# insert clean logic here
+abort "Not implemented."

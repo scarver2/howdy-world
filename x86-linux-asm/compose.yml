@@ -1,0 +1,9 @@
+# x86-linux-asm/compose.yml
+services:
+  x86-linux-asm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
