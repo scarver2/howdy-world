@@ -3,12 +3,10 @@
 
 source "https://rubygems.org"
 
-ruby '4.0.1'
+ruby '4.0.5'
 
 gem 'webrick'
 
 group :development, :test do
-  gem 'rspec', require: false
-  gem 'rack-test', require: false
   gem 'rubocop', require: false
 end
