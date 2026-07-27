@@ -5,4 +5,41 @@ source "$(dirname "$0")/_lib.sh"
 
 banner
 
-bundle exec rspec
+trap "docker compose down" EXIT
+
+docker compose up -d
+
+# Wait up to 5 seconds for the server to accept connections
+for i in $(seq 1 10); do
+  curl -s "http://localhost:3000/" > /dev/null 2>&1 && break
+  sleep 0.5
+done
+
+fails=0
+
+echo "Checking endpoints..."
+echo
+
+check() {
+  local label="$1"
+  local url="$2"
+  local expected="$3"
+
+  local body
+  body="$(curl -sf "$url" 2>/dev/null)"
+  local exit_code=$?
+
+  printf "%-45s " "$label"
+  if [[ $exit_code -eq 0 ]] && echo "$body" | grep -q "$expected"; then
+    echo "Pass"
+  else
+    echo "FAIL (expected: $expected)"
+    ((fails++))
+  fi
+}
+
+check "GET / contains 'Howdy, World!'" "http://localhost:3000/" "Howdy, World!"
+
+echo
+
+(( fails == 0 )) && exit 0 || exit 1
