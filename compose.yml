@@ -107,6 +107,11 @@ services:
     container_name: ruby-falcon
     expose:
       - "3000" # Ruby HTTP server listens on this port
+  ruby-hanami:
+    build: ./ruby-hanami
+    container_name: ruby-hanami
+    expose:
+      - "3000" # Hanami HTTP server listens on this port
   ruby-on-rails:
     build: ./ruby-on-rails
     container_name: ruby-on-rails
