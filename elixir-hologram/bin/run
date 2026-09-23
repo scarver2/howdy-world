@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# elixir-hologram/bin/run
+set -euo pipefail
+cd "$(dirname "$0")/.."
+exec docker compose up --build
