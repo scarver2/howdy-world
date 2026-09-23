@@ -1,0 +1,4 @@
+# elixir-hologram/.gitignore
+/_build/
+/deps/
+/priv/static/hologram/
