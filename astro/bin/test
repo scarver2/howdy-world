@@ -1,0 +1,14 @@
+#!/bin/sh
+set -eu
+cleanup() { docker compose down >/dev/null 2>&1 || true; }
+trap cleanup EXIT INT TERM
+docker compose up -d --build
+for i in 1 2 3 4 5 6 7 8 9 10; do
+  if curl -fsS http://localhost:4321/astro/ | grep -q '<h1>Howdy, World!</h1>'; then
+    echo "Astro endpoint contract: Pass"
+    exit 0
+  fi
+  sleep 1
+done
+echo "Astro endpoint contract: FAIL" >&2
+exit 1

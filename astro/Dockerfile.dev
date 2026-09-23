@@ -1,0 +1,8 @@
+FROM node:24-alpine
+WORKDIR /app
+COPY package.json ./
+RUN npm install
+COPY --chown=node:node . .
+USER node
+EXPOSE 4321
+CMD ["npm", "run", "dev"]

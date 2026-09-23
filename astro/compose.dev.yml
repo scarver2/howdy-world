@@ -1,0 +1,11 @@
+services:
+  astro:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: astro-dev
+    ports:
+      - "4321:4321"
+    volumes:
+      - .:/app
+      - /app/node_modules
