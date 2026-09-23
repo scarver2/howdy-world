@@ -7,5 +7,3 @@ config :elixir_hologram, ElixirHologramWeb.Endpoint,
   secret_key_base: "howdy-world-hologram-development-secret-key-base-keep-local-only-0123456789",
   server: true,
   url: [host: "localhost"]
-
-config :phoenix, :json_library, Jason
