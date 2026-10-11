@@ -1,5 +1,5 @@
 # _infrastructure/proxy/nginx/Dockerfile
-FROM nginx:alpine
+FROM nginx:1.31.6-alpine
 
 # Remove default config
 RUN rm -rf /etc/nginx/nginx.conf /etc/nginx/conf.d/*

@@ -74,6 +74,9 @@ a dependency lockfile (see below).
   or tolerates the proxy stripping it (see [POLICY.md](POLICY.md)).
 - Builds from a **committed lockfile** with a deterministic install
   (`npm ci`, `bundle install --frozen`, `go.sum`, `mix.lock`, `shard.lock`, …). Pin the framework version.
+- **Pins every version.** No `latest`, bare `alpine`, `stable` or `mainline` tags in `FROM` lines or
+  installs (`npm install foo@latest`, `go install …@latest`); use an exact tag such as `nginx:1.31.6-alpine`.
+  Third-party code vendored under an endpoint is exempt.
 - Does not reference other endpoints (client-side SPAs and databases excepted).
 - Does not hardcode its framework patch version in served content.
 
