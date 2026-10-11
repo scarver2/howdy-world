@@ -18,7 +18,7 @@ The page will open with a list of endpoints of the currently supported languages
 
 * [.NET](./dotnet)
     * [ASP.NET](./dotnet-aspnet)
-* [Astro 7.3](./astro)
+* [Astro](./astro)
 * [Caddy](./caddy)
 * [Clojure](./clojure)
 * Crystal

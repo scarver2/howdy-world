@@ -1,11 +1,12 @@
-# Astro 7.3
+<!-- astro/README.md -->
+# Howdy [Astro](https://astro.build/)
 
-Howdy World endpoint implemented with Astro 7.3.
+A static Astro site built into `dist/` and served by lighttpd.
 
 ## Development
 
 ```bash
-docker compose -f compose.dev.yml up --build --remove-orphans
+bin/run
 ```
 
 Open http://localhost:4321/astro/
@@ -13,9 +14,13 @@ Open http://localhost:4321/astro/
 ## Production
 
 ```bash
-docker compose up --build --remove-orphans
+bin/up
 ```
 
 Open http://localhost:4321/astro/
 
-Production builds the static Astro artifact and serves it with lighttpd.
+## Test
+
+```bash
+bin/test
+```
