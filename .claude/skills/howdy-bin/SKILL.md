@@ -47,3 +47,8 @@ banner
 Claude's Bash tool does not inherit the zsh PATH. Use `/usr/local/bin/gh` for GitHub, and
 `mise exec -- …` for Ruby tooling. Node comes from mise too
 (`~/.local/share/mise/installs/node/latest/bin`).
+
+## Keep graft fresh
+
+Before using graft (`graft ask`, `callers`, `blast`, MCP tools) run `graft build`, or `graft check`
+to see whether `graft/` is stale. Rebuild after switching branches or adding an endpoint.

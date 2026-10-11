@@ -30,3 +30,8 @@ The authoritative inventory is `AGENTS.md`. Read it first; do not work from memo
    - Confirm the path the proxy uses (`proxy_pass` target) actually returns the page, not just the
      standalone port.
 8. **Commit** with Conventional Commits; PR to `master` with `## Summary` and `## Test plan`.
+
+## Keep graft fresh
+
+Before using graft (`graft ask`, `callers`, `blast`, MCP tools) run `graft build`, or `graft check`
+to see whether `graft/` is stale. Rebuild after switching branches or adding an endpoint.

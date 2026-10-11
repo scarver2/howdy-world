@@ -8,6 +8,22 @@ operational inventory. The baseline is [`ruby-on-rails/`](ruby-on-rails), with
 
 An endpoint is **complete** only when every item below exists and `bin/ci` passes.
 
+## 0. Code navigation (graft)
+
+This repo is indexed by [graft](https://www.npmjs.com/package/graft); the graph lives in
+`graft/` (gitignored, local only). Prefer graft over grepping and reading whole files, and
+**keep the index fresh or its answers are wrong**:
+
+```bash
+graft build    # refresh the wiring graph ($0, no key; unchanged files replay from cache)
+graft check    # exits non-zero if graft/ is stale relative to the code
+```
+
+- Run `graft build` at the start of a session, after pulling or switching branches, and after
+  adding or moving an endpoint, before relying on `graft ask`, `callers`, `blast` or the MCP tools.
+- Run `graft check` before trusting results you will act on (renames, blast radius).
+- A new clone has no `graft/`; run `graft build` once. Never commit `graft/`.
+
 ## 1. Endpoint directory (`<endpoint>/`)
 
 The directory name is lowercase kebab-case (`<language>` or `<language>-<framework>`).

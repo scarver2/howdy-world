@@ -26,3 +26,8 @@ done
 
 Report as: enforced failures, convention gaps (from `AGENTS.md`), unverified items. Do not
 claim an endpoint is complete from file presence alone — run its `bin/test`.
+
+## Keep graft fresh
+
+Before using graft (`graft ask`, `callers`, `blast`, MCP tools) run `graft build`, or `graft check`
+to see whether `graft/` is stale. Rebuild after switching branches or adding an endpoint.
