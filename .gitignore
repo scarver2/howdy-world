@@ -9,6 +9,9 @@
 # OS Files
 .DS_Store
 
+# Editors
+.vscode/
+
 # AI
 /graft/
 .claude/*
