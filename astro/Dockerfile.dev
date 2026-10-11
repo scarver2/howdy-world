@@ -1,8 +1,8 @@
 # astro/Dockerfile.dev
 FROM node:24-alpine
 WORKDIR /app
-COPY package.json ./
-RUN npm install
+COPY package.json package-lock.json ./
+RUN npm ci
 COPY --chown=node:node . .
 USER node
 EXPOSE 4321
