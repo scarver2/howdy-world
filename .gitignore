@@ -10,6 +10,8 @@
 .DS_Store
 
 # AI
-.claude
+/graft/
+.claude/*
+!.claude/skills/
 
 # Misc.
