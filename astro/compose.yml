@@ -1,3 +1,4 @@
+# astro/compose.yml
 services:
   astro:
     build:

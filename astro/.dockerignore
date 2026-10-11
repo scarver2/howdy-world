@@ -1,3 +1,4 @@
+# astro/.dockerignore
 node_modules
 dist
 .git
