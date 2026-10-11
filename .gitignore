@@ -13,6 +13,7 @@
 .vscode/
 
 # AI
+/.ignore
 /graft/
 .claude/*
 !.claude/skills/
