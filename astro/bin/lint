@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# astro/bin/lint
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+abort "No linter configured for astro."
