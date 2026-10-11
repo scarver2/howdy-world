@@ -9,7 +9,13 @@
 # OS Files
 .DS_Store
 
+# Editors
+.vscode/
+
 # AI
-.claude
+/.ignore
+/graft/
+.claude/*
+!.claude/skills/
 
 # Misc.
