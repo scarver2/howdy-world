@@ -1,0 +1,57 @@
+# .github/workflows/astro.yml
+name: Astro
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "astro/**"
+      - "_infrastructure/proxy/nginx/conf.d/astro.conf"
+      - ".github/workflows/astro.yml"
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    name: Docker smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: astro
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Start endpoint (bin/start)
+        run: ./bin/start
+
+      - name: Verify endpoint contract
+        run: |
+          for _ in $(seq 1 20); do
+            body="$(curl -fsS http://localhost:4321/astro/)" && break
+            sleep 1
+          done
+          echo "$body"
+          echo "$body" | grep -q '<h1>Howdy, World!</h1>'
+          code="$(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/astro)"
+          echo "GET /astro -> $code"
+          test "$code" = "301"
+
+      - name: Verify container runs as non-root
+        run: |
+          uid="$(docker compose -f compose.yml exec -T astro id -u)"
+          echo "uid=$uid"
+          test "$uid" != "0"
+
+      - name: Container logs
+        if: always()
+        run: docker compose -f compose.yml logs --no-color
+
+      - name: Stop endpoint (bin/stop)
+        if: always()
+        run: ./bin/stop
+
+      - name: Endpoint smoke test (bin/test)
+        run: ./bin/test
