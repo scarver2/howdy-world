@@ -55,3 +55,28 @@ jobs:
 
       - name: Endpoint smoke test (bin/test)
         run: ./bin/test
+
+  lint:
+    name: Lint (astro check)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: astro
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: astro/package-lock.json
+
+      - name: Install dependencies (bin/setup)
+        run: ./bin/setup
+
+      - name: Lint (bin/lint)
+        run: ./bin/lint

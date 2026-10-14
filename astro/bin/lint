@@ -5,4 +5,8 @@ source "$(dirname "$0")/_lib.sh"
 
 banner
 
-abort "No linter configured for astro."
+require_command npm
+
+[[ -d node_modules ]] || abort "Dependencies not installed — run \`bin/setup\` first."
+
+exec npx --no-install astro check "$@"
