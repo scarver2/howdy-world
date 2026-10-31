@@ -51,13 +51,13 @@ if (( DO_HTTP == 1 )); then
   CHECKS=(
     "/"
     "/javascript-react/"
-    "/jquery4/"
+    "/javascript-jquery/"
     "/go/"
     "/elixir-bandit/"
     "/elixir-phoenix/"
     "/java-spring-boot/"
     "/rust-leptos/"
-    "/dotnet/"
+    "/dotnet-aspnet/"
   )
 
   fails=0
