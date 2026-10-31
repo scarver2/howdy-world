@@ -107,6 +107,11 @@ services:
     container_name: ruby-falcon
     expose:
       - "3000" # Ruby HTTP server listens on this port
+  ruby-kino:
+    build: ./ruby-kino
+    container_name: ruby-kino
+    expose:
+      - "3000" # Ruby HTTP server listens on this port
   ruby-on-rails:
     build: ./ruby-on-rails
     container_name: ruby-on-rails
