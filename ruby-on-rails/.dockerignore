@@ -97,3 +97,8 @@ htmlcov
 *.gem
 coverage
 vendor/bundle
+
+# Rails secrets must never enter the image
+/config/master.key
+/config/credentials.yml.enc
+/config/credentials/
