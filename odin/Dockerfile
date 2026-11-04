@@ -1,6 +1,6 @@
 # odin/Dockerfile
 
-FROM primeimages/odin:latest AS build
+FROM primeimages/odin:dev-2024-02 AS build
 
 WORKDIR /app
 COPY . .

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# astro/bin/outdated
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+require_command npm
+
+npm outdated || true

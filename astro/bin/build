@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# astro/bin/build
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+require_command npm
+
+npm ci
+exec npm run build
