@@ -7,6 +7,14 @@ source "$(dirname "$0")/_lib.sh"
 banner
 
 run_all_contracts
+
+# Negative controls for the proxy contract (no Docker needed)
+echo
+echo "[proxy contract cases]"
+if ! "$ROOT_DIR/_infrastructure/proxy/nginx/test/proxy-contract-cases.sh"; then
+  TOTAL_ERRORS=$((TOTAL_ERRORS + 1))
+fi
+
 contracts_exit_if_failed
 
 # TODO: continue with docker builds / tests
