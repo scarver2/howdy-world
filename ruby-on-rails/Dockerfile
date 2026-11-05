@@ -4,7 +4,8 @@
 
 # This Dockerfile is designed for production, not development.
 # docker build -t my-app .
-# docker run -d -p 80:80 -p 443:443 --name my-app -e RAILS_MASTER_KEY=<value from config/master.key> my-app
+# docker run -d -p 127.0.0.1:3000:3000 --name my-app my-app   # loopback only; Puma listens on 3000
+# Optional: -e SECRET_KEY_BASE=<128 hex chars> for sessions that survive a restart.
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=4.0.1
@@ -66,4 +67,11 @@ EXPOSE 3000
 
 # The default Rails Dockerfile uses `./bin/rails server`, but when using Puma, 
 # they recommend using bundle exec puma. ref: https://github.com/puma/puma#rails
-CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
+# No committed master.key or credentials: the demo only needs secret_key_base.
+# Use SECRET_KEY_BASE when the operator provides one; otherwise generate a random
+# one per container start (the equivalent of `openssl rand -hex 64`). It stays the
+# same for the container's lifetime; every new start (including `docker restart`)
+# invalidates existing sessions and signed cookies. That is fine for this stateless
+# demo endpoint only: a stateful production Rails app needs a persistent secret from
+# its secret store, never one generated at startup.
+CMD ["sh", "-c", "export SECRET_KEY_BASE=\"${SECRET_KEY_BASE:-$(ruby -rsecurerandom -e 'print SecureRandom.hex(64)')}\"; exec bundle exec puma -C config/puma.rb"]
