@@ -31,6 +31,11 @@ services:
     container_name: elixir-bandit
     expose:
       - "4000"
+  elixir-hologram:
+    build: ./elixir-hologram
+    container_name: elixir-hologram
+    expose:
+      - "4000"
   elixir-phoenix:
     build: ./elixir-phoenix
     container_name: elixir-phoenix

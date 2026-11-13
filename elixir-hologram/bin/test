@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# elixir-hologram/bin/test
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+cleanup() {
+  docker compose down --volumes --remove-orphans >/dev/null 2>&1 || true
+}
+trap cleanup EXIT
+
+docker compose up --build -d
+
+for _ in $(seq 1 60); do
+  if body="$(curl --fail --silent http://localhost:4000/ 2>/dev/null)" && grep -q '<h1>Howdy, World!</h1>' <<<"$body"; then
+    exit 0
+  fi
+  sleep 1
+done
+
+docker compose logs
+exit 1

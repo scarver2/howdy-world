@@ -1,0 +1,5 @@
+# elixir-hologram/.dockerignore
+_build
+deps
+.git
+priv/static/hologram

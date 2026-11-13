@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# elixir-hologram/bin/clean
+set -euo pipefail
+cd "$(dirname "$0")/.."
+docker compose down --volumes --remove-orphans
