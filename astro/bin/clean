@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# astro/bin/clean
+
+source "$(dirname "$0")/_lib.sh"
+
+banner
+
+remove_build_artifacts
+
+rm -rf .astro

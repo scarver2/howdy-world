@@ -1,0 +1,8 @@
+# astro/compose.yml
+services:
+  astro:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4321:8080"

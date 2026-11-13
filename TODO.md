@@ -42,6 +42,7 @@
 ### Languages and Frameworks
 
 - [ ] Ada
+- [x] Astro
 - [ ] AWK
 - [ ] BASIC
 - [ ] C
