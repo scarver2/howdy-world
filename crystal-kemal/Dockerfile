@@ -1,6 +1,6 @@
 # crystal-kemal/Dockerfile
 
-FROM crystallang/crystal:latest
+FROM crystallang/crystal:1.21.1
 
 WORKDIR /app
 

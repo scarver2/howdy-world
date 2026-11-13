@@ -1,0 +1,4 @@
+# astro/.gitignore
+node_modules/
+dist/
+.astro/

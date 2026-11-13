@@ -10,6 +10,7 @@ contract_run() {
     bin
     _infrastructure/proxy
     compose.yml
+    AGENTS.md
     ARCHITECTURE.md
     CITATIONS.md
     CONTRIBUTING.md

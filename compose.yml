@@ -1,6 +1,11 @@
 # compose.yml
 name: howdy-world
 services:
+  astro:
+    build: ./astro
+    container_name: astro
+    expose:
+      - "8080"
   caddy:
     build: ./caddy
     container_name: caddy
