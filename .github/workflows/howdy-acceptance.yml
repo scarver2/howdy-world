@@ -1,9 +1,10 @@
+# .github/workflows/howdy-acceptance.yml
 name: Howdy acceptance (offline)
 
 on:
   pull_request:
     paths:
-      - 'howdy-acceptance/**'
+      - '_infrastructure/howdy-acceptance/**'
       - '.github/workflows/howdy-acceptance.yml'
 
 permissions:
@@ -19,5 +20,5 @@ jobs:
           persist-credentials: false
       - run: |
           git rev-parse HEAD
-          python3 -B howdy-acceptance/worktrees.py
-          python3 -B -m unittest discover -s howdy-acceptance -p 'test_offline.py' -v
+          python3 -B _infrastructure/howdy-acceptance/worktrees.py
+          python3 -B -m unittest discover -s _infrastructure/howdy-acceptance -p 'test_offline.py' -v

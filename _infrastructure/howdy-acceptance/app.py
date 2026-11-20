@@ -1,3 +1,4 @@
+# _infrastructure/howdy-acceptance/app.py
 """Disposable HTTP fixture. Only the private root endpoint is served."""
 import os
 import sqlite3

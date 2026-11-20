@@ -17,8 +17,8 @@ and SQLite so these isolation checks can run independently of the full stack.
 From the repository root, using Git 2.31+ and Python 3.9+:
 
 ```sh
-python3 -B howdy-acceptance/worktrees.py
-python3 -B -m unittest discover -s howdy-acceptance -p test_offline.py -v
+python3 -B _infrastructure/howdy-acceptance/worktrees.py
+python3 -B -m unittest discover -s _infrastructure/howdy-acceptance -p test_offline.py -v
 ```
 
 The first command creates a temporary repository, overlaps two worker
@@ -55,7 +55,7 @@ context and strict host-key verification.
 
 ```sh
 set -o pipefail
-python3 -B howdy-acceptance/atlantis.py \
+python3 -B _infrastructure/howdy-acceptance/atlantis.py \
   --authorize CODEX-HOWDY-001 --approval "$APPROVAL_URL" \
   --run-id "$RUN_ID" --context "$ATLANTIS_CONTEXT" --endpoint "$ATLANTIS_SSH_URI" \
   --daemon-id "$ATLANTIS_DAEMON_ID" --daemon-name "$ATLANTIS_DAEMON_NAME" \

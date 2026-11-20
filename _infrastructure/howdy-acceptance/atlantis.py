@@ -1,3 +1,4 @@
+# _infrastructure/howdy-acceptance/atlantis.py
 """Explicitly authorized, disposable Compose isolation exercise."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor
@@ -16,7 +17,7 @@ from urllib.parse import urlsplit
 SCOPE = "CODEX-HOWDY-001"
 PORT = "8080"
 HERE = Path(__file__).resolve().parent
-APP = "howdy-acceptance/app.py"
+APP = "_infrastructure/howdy-acceptance/app.py"
 PROBE = """
 import socket, sys, urllib.request
 mode, host, port = sys.argv[1:]

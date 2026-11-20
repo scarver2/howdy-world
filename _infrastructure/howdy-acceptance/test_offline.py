@@ -1,3 +1,4 @@
+# _infrastructure/howdy-acceptance/test_offline.py
 """Fail-closed Docker checks with a mock that cannot call any daemon."""
 from argparse import Namespace
 from copy import copy

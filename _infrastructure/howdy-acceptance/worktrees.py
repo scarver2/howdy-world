@@ -1,3 +1,4 @@
+# _infrastructure/howdy-acceptance/worktrees.py
 """Two concurrent subprocess workers against a disposable Git repository."""
 import os
 from concurrent.futures import ThreadPoolExecutor
