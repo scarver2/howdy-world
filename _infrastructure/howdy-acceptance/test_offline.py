@@ -3,6 +3,7 @@
 from argparse import Namespace
 from copy import copy
 import json
+import socket
 import unittest
 from unittest.mock import patch
 
@@ -23,7 +24,11 @@ class Offline(unittest.TestCase):
     def test_gate_refuses_before_docker(self, run):
         for field, value in (
             ("authorize", ""), ("endpoint", "unix:///var/run/docker.sock"),
-            ("endpoint", "ssh://worker@localhost"), ("context", "default"),
+            ("endpoint", "ssh://worker@localhost"), ("endpoint", "ssh://worker@localhost."),
+            ("endpoint", "ssh://worker@127.0.0.2"), ("endpoint", "ssh://worker@127.1"),
+            ("endpoint", "ssh://worker@2130706433"), ("endpoint", "ssh://worker@0x7f000001"),
+            ("endpoint", "ssh://worker@0177.0.0.1"), ("endpoint", "ssh://worker@[::ffff:127.0.0.1]"),
+            ("endpoint", "ssh://worker@[0:0:0:0:0:0:0:1]"), ("context", "default"),
             ("daemon_name", "sgc"), ("daemon_id", ""), ("run_id", "../other"),
             ("base_image", "python:latest"), ("commit_b", "a" * 40),
         ):
@@ -41,8 +46,18 @@ class Offline(unittest.TestCase):
             Atlantis(self.args).call("compose", "up")
         self.assertEqual(run.call_count, 1)
 
+    @patch("atlantis.socket.getaddrinfo")
     @patch("atlantis.run")
-    def test_wrong_daemon_stops_before_compose(self, run):
+    def test_loopback_resolution_stops_before_daemon(self, run, resolve):
+        run.return_value = json.dumps([{"Endpoints": {"docker": {"Host": self.args.endpoint}}}])
+        resolve.return_value = [(socket.AF_INET, socket.SOCK_STREAM, 0, "", ("127.0.0.2", 0))]
+        with self.assertRaisesRegex(RuntimeError, "resolves to a local"):
+            Atlantis(self.args).call("compose", "up")
+        self.assertEqual(run.call_count, 1)
+
+    @patch("atlantis.validate_resolution")
+    @patch("atlantis.run")
+    def test_wrong_daemon_stops_before_compose(self, run, resolve):
         run.side_effect = [
             json.dumps([{"Endpoints": {"docker": {"Host": self.args.endpoint}}}]),
             json.dumps(dict(ID="wrong", Name="atlantis", Architecture="x86_64", OSType="linux")),
@@ -51,8 +66,9 @@ class Offline(unittest.TestCase):
             Atlantis(self.args).call("compose", "up")
         self.assertEqual(run.call_count, 2)
 
+    @patch("atlantis.validate_resolution")
     @patch("atlantis.run")
-    def test_verified_command_is_explicitly_targeted(self, run):
+    def test_verified_command_is_explicitly_targeted(self, run, resolve):
         run.side_effect = [
             json.dumps([{"Endpoints": {"docker": {"Host": self.args.endpoint}}}]),
             json.dumps(dict(ID="pinned", Name="atlantis", Architecture="x86_64", OSType="linux")),
@@ -60,6 +76,7 @@ class Offline(unittest.TestCase):
         ]
         with patch.dict("os.environ", {"DOCKER_HOST": "unix:///tmp/local", "COMPOSE_FILE": "/tmp/wrong"}):
             self.assertEqual(Atlantis(self.args).call("compose", "config"), b"fixture")
+        resolve.assert_called_once_with("atlantis")
         argv = run.call_args.args[0]
         self.assertEqual(argv, ["docker", "--context", "approved", "compose", "config"])
         self.assertNotIn("DOCKER_HOST", run.call_args.kwargs["env"])

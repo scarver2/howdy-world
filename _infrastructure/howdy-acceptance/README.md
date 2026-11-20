@@ -64,11 +64,13 @@ python3 -B _infrastructure/howdy-acceptance/atlantis.py \
 ```
 
 Every Docker invocation uses the named context after checking its configured
-SSH URI and the remote daemon identity. The harness strips ambient Docker
+SSH URI, rejecting loopback and other local-only addresses (including DNS
+answers), then confirming the remote daemon identity. The harness strips ambient Docker
 and Compose overrides. The operator supplies identity pins from the
 independent Atlantis inventory. This checks the target during the run.
 It does not pin against concurrent edits to the trusted local context or
-SSH configuration.
+SSH configuration or DNS. Confirm any SSH HostName overrides and routing
+as part of the trusted context preflight.
 
 The source is read with `git show` from each reviewed commit. A tar stream
 containing only the fixture, marker, and generated Dockerfile goes to the

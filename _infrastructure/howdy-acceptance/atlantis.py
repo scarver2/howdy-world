@@ -4,10 +4,12 @@ import argparse
 from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import io
+import ipaddress
 import json
 import os
 from pathlib import Path
 import re
+import socket
 import subprocess
 import tarfile
 import tempfile
@@ -53,15 +55,45 @@ def require(condition, message):
         raise RuntimeError(message)
 
 
+def is_remote_address(host):
+    try:
+        address = ipaddress.ip_address(host)
+    except ValueError:
+        try:
+            address = ipaddress.IPv4Address(socket.inet_aton(host))
+        except OSError:
+            return False
+    if isinstance(address, ipaddress.IPv6Address) and address.ipv4_mapped:
+        address = address.ipv4_mapped
+    return not (address.is_loopback or address.is_unspecified or address.is_link_local)
+
+
+def validate_host(host):
+    require(host.rstrip(".").split(".")[-1] != "localhost", "local SSH host refused")
+    # inet_aton detects legacy shorthand, octal, hexadecimal and integer IPv4.
+    try:
+        socket.inet_aton(host)
+        numeric = True
+    except OSError:
+        numeric = ":" in host
+    require(not numeric or is_remote_address(host), "local or invalid SSH address refused")
+
+
+def validate_resolution(host):
+    endpoints = socket.getaddrinfo(host, None, type=socket.SOCK_STREAM)
+    require(endpoints and all(is_remote_address(item[4][0]) for item in endpoints),
+            "SSH host resolves to a local or invalid address")
+
+
 def gate(args):
     require(args.authorize == SCOPE and args.approval.startswith("https://github.com/"),
             "explicit live authorization and Sheriff approval URL required")
     require(re.fullmatch(r"[a-z0-9]{8,16}", args.run_id), "use an approved 8–16 character run ID")
     endpoint = urlsplit(args.endpoint)
     require(endpoint.scheme == "ssh" and endpoint.hostname and endpoint.username and
-            not (endpoint.password or endpoint.query or endpoint.fragment) and
-            endpoint.hostname not in ("localhost", "127.0.0.1", "::1"),
+            not (endpoint.password or endpoint.query or endpoint.fragment),
             "an authenticated remote SSH endpoint is required")
+    validate_host(endpoint.hostname)
     require(args.context and args.context != "default" and args.daemon_id and
             args.daemon_name.lower().split(".")[0] == "atlantis" and args.arch,
             "pin the Atlantis context, daemon ID, daemon name and architecture independently")
@@ -90,6 +122,7 @@ class Atlantis:
         require(len(context) == 1 and
                 context[0]["Endpoints"]["docker"]["Host"] == args.endpoint,
                 "Docker context endpoint mismatch")
+        validate_resolution(urlsplit(args.endpoint).hostname)
         prefix = ["docker", "--context", args.context]
         identity = json.loads(run(prefix + ["info", "--format", "{{json .}}"], env=self.env))
         actual = (identity["ID"], identity["Name"], identity["Architecture"], identity["OSType"])
