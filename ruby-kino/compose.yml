@@ -1,0 +1,6 @@
+# ruby-kino/compose.yml
+services:
+  ruby-kino:
+    build: .
+    ports:
+      - "3000:3000"
