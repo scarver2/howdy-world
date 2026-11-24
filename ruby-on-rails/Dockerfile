@@ -8,7 +8,7 @@
 # Optional: -e SECRET_KEY_BASE=<128 hex chars> for sessions that survive a restart.
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=4.0.1
+ARG RUBY_VERSION=4.0.10
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
 # Rails app lives here
@@ -18,6 +18,10 @@ WORKDIR /rails
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y curl libjemalloc2 libvips && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# Pin RubyGems and Bundler to 4.1.0 (ruby:4.0.10 ships 4.0.20 of both)
+RUN gem update --system 4.1.0 --no-document && \
+    gem install bundler:4.1.0 --no-document
 
 # Set production environment
 ENV RAILS_ENV="production" \

@@ -1,6 +1,6 @@
 # ruby-rage/Dockerfile
 
-FROM ruby:4.0.1-slim
+FROM ruby:4.0.10-slim
 
 RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends \
@@ -9,6 +9,10 @@ RUN apt-get update -qq && \
     libyaml-dev \
     pkg-config && \
     rm -rf /var/lib/apt/lists/*
+
+# Pin RubyGems and Bundler to 4.1.0 (ruby:4.0.10 ships 4.0.20 of both)
+RUN gem update --system 4.1.0 --no-document && \
+    gem install bundler:4.1.0 --no-document
 
 WORKDIR /app
 
