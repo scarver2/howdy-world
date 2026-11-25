@@ -1,6 +1,7 @@
 # .github/dependabot.yml
 # Weekly version updates. Minor and patch bumps are grouped into one PR per
-# ecosystem; major bumps open their own PRs.
+# directory (each endpoint updates on its own, so one endpoint's failing bump
+# does not hold back the others); major bumps open their own PRs.
 #
 # Not covered here on purpose:
 # - docker: base images are pinned deliberately (for example ruby:4.0.10,
@@ -15,8 +16,8 @@ updates:
     schedule:
       interval: weekly
     groups:
-      github-actions:
-        patterns: ["*"]
+      github-actions-minor-patch:
+        update-types: [minor, patch]
 
   - package-ecosystem: bundler
     directories:
