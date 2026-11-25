@@ -5,7 +5,7 @@ source "https://rubygems.org"
 
 ruby '4.0.10'
 
-gem 'falcon', '~> 0.55'
+gem 'falcon', '~> 0.57'
 
 group :development, :test do
   gem 'rspec', require: false

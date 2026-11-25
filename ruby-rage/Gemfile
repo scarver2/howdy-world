@@ -3,7 +3,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rage-rb', '~> 1.21'
+gem 'rage-rb', '~> 1.29'
 
 group :development, :test do
   gem 'rspec', require: false
