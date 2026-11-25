@@ -1,0 +1,101 @@
+# .github/dependabot.yml
+# Weekly version updates. Minor and patch bumps are grouped into one PR per
+# ecosystem; major bumps open their own PRs.
+#
+# Not covered here on purpose:
+# - docker: base images are pinned deliberately (for example ruby:4.0.10,
+#   which must move together with Gemfile and .ruby-version).
+# - gitsubmodule: odin-http/deps/odin-http is updated by hand.
+# - Leiningen (clojure), Shards (crystal-kemal), Zig: not supported by Dependabot.
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns: ["*"]
+
+  - package-ecosystem: bundler
+    directories:
+      - /ruby-falcon
+      - /ruby-on-rails
+      - /ruby-rage
+      - /ruby-webrick
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      bundler-minor-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: npm
+    directory: /javascript-inertia
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      npm-minor-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: bun
+    directory: /javascript-react
+    schedule:
+      interval: weekly
+    groups:
+      bun-minor-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: pip
+    directory: /python-fastapi
+    schedule:
+      interval: weekly
+    groups:
+      pip-minor-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: cargo
+    directory: /rust-leptos
+    schedule:
+      interval: weekly
+    groups:
+      cargo-minor-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: gomod
+    directories:
+      - /go
+      - /go-fiber
+    schedule:
+      interval: weekly
+    groups:
+      gomod-minor-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: mix
+    directories:
+      - /elixir-bandit
+      - /elixir-phoenix
+    schedule:
+      interval: weekly
+    groups:
+      mix-minor-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: nuget
+    directory: /dotnet-aspnet
+    schedule:
+      interval: weekly
+    groups:
+      nuget-minor-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: maven
+    directory: /java-spring-boot
+    schedule:
+      interval: weekly
+    groups:
+      maven-minor-patch:
+        update-types: [minor, patch]
