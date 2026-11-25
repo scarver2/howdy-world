@@ -21,7 +21,7 @@ defmodule ElixirPhoenix.MixProject do
 
   defp deps do
     [
-      {:phoenix, "~> 1.7.21"},
+      {:phoenix, "~> 1.8.17"},
       {:plug_cowboy, "~> 2.7"}
     ]
   end
